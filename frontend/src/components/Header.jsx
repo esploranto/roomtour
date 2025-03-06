@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { ThemeContext } from "@/context/ThemeContext";
 import { Sun, Moon } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function Header({ isLoggedIn, isHome }) {
   const { theme, toggleTheme } = useContext(ThemeContext); // Получаем текущую тему и функцию переключения
@@ -16,18 +17,18 @@ export default function Header({ isLoggedIn, isHome }) {
         {/* Логика кнопки */}
         {isLoggedIn ? (
           isHome ? (
-            <Link to="/add" className="btn">
-              + Добавить место
-            </Link>
+            <Button variant="outline" asChild>
+              <Link to="/add">+ Добавить место</Link>
+            </Button>
           ) : (
-            <Link to="/profile" className="btn">
-              Профиль
-            </Link>
+            <Button variant="outline" asChild>
+              <Link to="/profile">Профиль</Link>
+            </Button>
           )
         ) : (
-          <Link to="/login" className="btn">
-            Войти
-          </Link>
+          <Button variant="outline" asChild>
+            <Link to="/login">Войти</Link>
+          </Button>
         )}
 
         {/* Переключатель темы */}
