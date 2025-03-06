@@ -20,8 +20,8 @@ export default function Profile() {
       {/* Кнопка "Назад на главную" */}
       <Button variant="outline" asChild className="mb-4">
         <Link to="/">
-          <ArrowLeft size={16} className="mr-2" />
-          Назад на главную
+          <ArrowLeft size={16} className="mr-0" />
+          На главную
         </Link>
       </Button>
 

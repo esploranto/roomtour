@@ -11,12 +11,12 @@ export default function Layout() {
   const isLoggedIn = false; // Меняй на false, чтобы проверить кнопку "Войти"
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex flex-col min-h-screen">
       {/* Хедер */}
       <Header isLoggedIn={isLoggedIn} isHome={isHome} />
 
       {/* Основной контент (растягивается на всю высоту) */}
-      <main className="flex-1 container mx-auto">
+      <main className="flex-1 overflow-auto">
         <Outlet />
       </main>
 

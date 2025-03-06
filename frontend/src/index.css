@@ -6,7 +6,7 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    overflow: hidden; /* Убираем скролл */
+    overflow-x: hidden;
     @apply bg-white text-black dark:bg-gray-900 dark:text-white;
   }
   
@@ -16,7 +16,7 @@ html, body {
     min-height: 100vh;
   }
 
-/* Пример: Применяем темную тему для всего приложения */
+/* Применяем темную тему для всего приложения */
 body {
     @apply bg-white text-black dark:bg-gray-900 dark:text-white;
   }
