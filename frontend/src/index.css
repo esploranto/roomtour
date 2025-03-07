@@ -8,6 +8,8 @@ html, body {
     padding: 0;
     overflow-x: hidden;
     @apply bg-white text-black dark:bg-gray-900 dark:text-white;
+    -ms-overflow-style: none; /* IE и Edge */
+    scrollbar-width: none; /* Firefox */
   }
   
   #root {
@@ -24,4 +26,9 @@ body {
 /* Футер */
 footer {
     @apply bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300;
+}
+
+/* Скрыть скроллбар в Chrome, Safari и Opera */
+::-webkit-scrollbar {
+  display: none;
 }

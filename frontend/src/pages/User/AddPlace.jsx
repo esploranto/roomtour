@@ -1,17 +1,19 @@
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import AddPlacePopup from "@/components/AddPlacePopup";
 
 export default function AddPlace() {
+  const [isPopupOpen, setIsPopupOpen] = useState(true);
+  const navigate = useNavigate();
   const { username } = useParams();
 
+  const handleClose = () => {
+    setIsPopupOpen(false);
+    // Перенаправляем пользователя на страницу профиля после закрытия попапа
+    navigate(`/${username}`);
+  };
+
   return (
-    <div>
-      <h1>Добавить новое место</h1>
-      <form>
-        <input type="text" placeholder="Название места" />
-        <input type="text" placeholder="Адрес" />
-        <textarea placeholder="Комментарии" />
-        <button type="submit">Добавить</button>
-      </form>
-    </div>
+    <AddPlacePopup isOpen={isPopupOpen} onClose={handleClose} />
   );
-}
+} 

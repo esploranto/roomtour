@@ -1,5 +1,6 @@
 import AppRouter from "./router";
 import { ThemeProvider } from "@/context/ThemeContext"; // Импорт провайдера темы
+import "./index.css";
 
 export default function App() {
   return (

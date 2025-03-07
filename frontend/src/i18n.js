@@ -8,7 +8,7 @@ const resources = {
       welcome: "Румтур",
       lead: "Сохраняйте места для воспоминаний, делитесь с другими и ищите вдохновение",
       login: "Войти через Telegram",
-      addPlace: "+ Добавить место",
+      addPlace: "Добавить место",
       profile: "Профиль",
       // Добавь другие переводы
     }
@@ -18,7 +18,7 @@ const resources = {
       welcome: "Roomtour",
       lead: "Keep places to remember, share and look for inspiration",
       login: "Log in with Telegram",
-      addPlace: "+ Add Place",
+      addPlace: "Add Place",
       profile: "Profile",
       // Добавь другие переводы
     }

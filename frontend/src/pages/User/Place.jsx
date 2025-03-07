@@ -17,9 +17,18 @@ export default function Place() {
 
   // Тестовые данные для изображений карусели
   const images = [
-    <img src={image1} alt="Фото 1" className="max-h-[500px] object-cover rounded-md" />,
-    <img src={image2} alt="Фото 2" className="max-h-[500px] object-cover rounded-md" />,
-    <img src={image3} alt="Фото 3" className="max-h-[500px] object-cover rounded-md" />,
+    {
+      src: image1,
+      alt: "Фото 1"
+    },
+    {
+      src: image2,
+      alt: "Фото 2"
+    },
+    {
+      src: image3,
+      alt: "Фото 3"
+    }
   ];
 
   return (
@@ -39,14 +48,28 @@ export default function Place() {
 
       {/* Стандартная карусель */}
       <div className="relative mb-8">
-        <Carousel>
+        <Carousel 
+          opts={{
+            align: "center",
+            loop: true
+          }}
+          className="w-full max-h-[500px]"
+        >
           <CarouselContent>
-            {images.map((img, index) => (
-              <CarouselItem key={index}>{img}</CarouselItem>
+            {images.map((image, index) => (
+              <CarouselItem key={index} className="flex items-center justify-center">
+                <div className="flex items-center justify-center h-full w-full p-2">
+                  <img 
+                    src={image.src} 
+                    alt={image.alt} 
+                    className="max-h-[450px] w-auto object-contain rounded-md mx-auto" 
+                  />
+                </div>
+              </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
+          <CarouselPrevious className="left-2" />
+          <CarouselNext className="right-2" />
         </Carousel>
       </div>
 

@@ -1,19 +1,30 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 
-export default function LoginPopup({ onClose }) {
+export default function LoginPopup({ isOpen, onClose }) {
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/50">
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-md shadow-md">
-        <h2 className="text-xl font-bold mb-4">Войти в Roomtour</h2>
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-md bg-white dark:bg-gray-800">
+        <DialogHeader>
+          <DialogTitle>Войти в Roomtour</DialogTitle>
+        </DialogHeader>
         <div className="flex flex-col gap-2">
-          <Button onClick={onClose}>Войти через Telegram</Button>
-          <Button onClick={onClose}>Войти через почту</Button>
+          <Button onClick={onClose} className="w-full">Войти через Telegram</Button>
+          <Button onClick={onClose} className="w-full">Войти через почту</Button>
         </div>
-        <button onClick={onClose} className="mt-4 underline">
-          Закрыть
-        </button>
-      </div>
-    </div>
+        <DialogFooter className="mt-4">
+          <Button variant="outline" onClick={onClose} className="w-full sm:w-auto">
+            Закрыть
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

@@ -1,24 +1,40 @@
 import React, { useState, useCallback, useEffect } from "react";
-import useEmblaCarousel from "embla-carousel-react";
 import ReactDOM from "react-dom";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from "@/components/ui/carousel";
 
 // Модальное окно для увеличенного просмотра
-function CarouselModal({ isOpen, onClose, children, onPrev, onNext, canPrev, canNext }) {
+function ImageModal({ isOpen, onClose, currentIndex, images, onPrev, onNext, canScrollPrev, canScrollNext }) {
+  // Обработчик клавиш для модального окна
   const handleKeyDown = useCallback(
     (e) => {
       if (e.key === "Escape") onClose();
-      else if (e.key === "ArrowLeft") onPrev();
-      else if (e.key === "ArrowRight") onNext();
+      else if (e.key === "ArrowLeft" && canScrollPrev) onPrev();
+      else if (e.key === "ArrowRight" && canScrollNext) onNext();
     },
-    [onClose, onPrev, onNext]
+    [onClose, onPrev, onNext, canScrollPrev, canScrollNext]
   );
 
+  // Добавляем и удаляем обработчик клавиш
   useEffect(() => {
-    if (isOpen) window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    if (isOpen) {
+      window.addEventListener("keydown", handleKeyDown);
+      // Блокируем прокрутку страницы при открытом модальном окне
+      document.body.style.overflow = "hidden";
+    }
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      // Восстанавливаем прокрутку при закрытии
+      document.body.style.overflow = "";
+    };
   }, [isOpen, handleKeyDown]);
 
   if (!isOpen) return null;
@@ -30,28 +46,54 @@ function CarouselModal({ isOpen, onClose, children, onPrev, onNext, canPrev, can
       aria-modal="true"
       role="dialog"
     >
-      <div className="relative max-w-4xl" onClick={(e) => e.stopPropagation()}>
-        {children}
-        {canPrev && (
+      <div 
+        className="relative w-full h-full flex items-center justify-center" 
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="max-h-screen max-w-full flex items-center justify-center">
+          {images[currentIndex]}
+        </div>
+        
+        {/* Кнопка закрытия */}
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={onClose}
+          className="absolute top-4 right-4 z-10 bg-black bg-opacity-50 hover:bg-opacity-70 text-white"
+        >
+          <X className="h-6 w-6" />
+          <span className="sr-only">Закрыть</span>
+        </Button>
+        
+        {/* Кнопка "Предыдущий" */}
+        {canScrollPrev && (
           <Button
             variant="outline"
             size="icon"
-            onClick={onPrev}
-            className="absolute left-2 top-1/2 -translate-y-1/2"
+            onClick={(e) => {
+              e.stopPropagation();
+              onPrev();
+            }}
+            className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-black bg-opacity-50 hover:bg-opacity-70 text-white"
           >
             <ArrowLeft className="h-6 w-6" />
-            <span className="sr-only">Previous slide</span>
+            <span className="sr-only">Предыдущий слайд</span>
           </Button>
         )}
-        {canNext && (
+        
+        {/* Кнопка "Следующий" */}
+        {canScrollNext && (
           <Button
             variant="outline"
             size="icon"
-            onClick={onNext}
-            className="absolute right-2 top-1/2 -translate-y-1/2"
+            onClick={(e) => {
+              e.stopPropagation();
+              onNext();
+            }}
+            className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-black bg-opacity-50 hover:bg-opacity-70 text-white"
           >
             <ArrowRight className="h-6 w-6" />
-            <span className="sr-only">Next slide</span>
+            <span className="sr-only">Следующий слайд</span>
           </Button>
         )}
       </div>
@@ -60,95 +102,97 @@ function CarouselModal({ isOpen, onClose, children, onPrev, onNext, canPrev, can
   );
 }
 
-// Основной компонент карусели с модальным просмотром
-export function CarouselWithModal({ children, ...props }) {
-  // Инициализируем embla-carousel для стандартной карусели
-  const [emblaRef, emblaApi] = useEmblaCarousel({ axis: "x" });
-  // Преобразуем дочерние элементы в массив
-  const itemsArray = React.Children.toArray(children);
-  const itemCount = itemsArray.length;
+// Компонент карусели с модальным окном
+export function CarouselWithModal({ images, className, ...props }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [api, setApi] = useState(null);
+  
+  // Обработчики для переключения слайдов
+  const handlePrev = useCallback(() => {
+    if (api && api.canScrollPrev()) {
+      api.scrollPrev();
+      setCurrentIndex(api.selectedScrollSnap());
+    }
+  }, [api]);
 
-  // Состояния: активный слайд и модальное окно
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [modalOpen, setModalOpen] = useState(false);
+  const handleNext = useCallback(() => {
+    if (api && api.canScrollNext()) {
+      api.scrollNext();
+      setCurrentIndex(api.selectedScrollSnap());
+    }
+  }, [api]);
 
-  // При клике на слайд открываем модальное окно и сохраняем индекс
-  const handleItemClick = useCallback((index) => {
-    setActiveIndex(index);
-    setModalOpen(true);
+  // Обновляем текущий индекс при изменении выбранного слайда
+  const handleSelect = useCallback(() => {
+    if (api) {
+      setCurrentIndex(api.selectedScrollSnap());
+    }
+  }, [api]);
+
+  // Подписываемся на событие выбора слайда
+  useEffect(() => {
+    if (!api) return;
+    
+    api.on("select", handleSelect);
+    
+    return () => {
+      api.off("select", handleSelect);
+    };
+  }, [api, handleSelect]);
+
+  // Обработчик клика по изображению
+  const handleImageClick = useCallback(() => {
+    setIsModalOpen(true);
   }, []);
 
-  // Добавляем обработчик клика к каждому слайду
-  const modifiedItems = itemsArray.map((child, index) =>
-    React.cloneElement(child, {
-      onClick: () => handleItemClick(index),
-      className: cn("cursor-pointer", child.props.className),
-    })
-  );
-
-  // Функции переключения слайдов: обновляют embla и активный индекс
-  const scrollPrev = useCallback(() => {
-    if (emblaApi) {
-      emblaApi.scrollPrev();
-      setActiveIndex(emblaApi.selectedScrollSnap());
-    }
-  }, [emblaApi]);
-
-  const scrollNext = useCallback(() => {
-    if (emblaApi) {
-      emblaApi.scrollNext();
-      setActiveIndex(emblaApi.selectedScrollSnap());
-    }
-  }, [emblaApi]);
+  // Настройки для карусели, чтобы изображения не обрезались
+  const carouselOptions = {
+    align: "center",
+    containScroll: "trimSnaps",
+  };
 
   return (
     <>
-      {/* Обычная карусель */}
-      <div ref={emblaRef} className="relative overflow-hidden">
-        {/* Оборачиваем слайды в flex-контейнер */}
-        <div className="flex">{modifiedItems}</div>
-        {/* Стрелки для обычного режима */}
-        <Button
-          variant="outline"
-          onClick={scrollPrev}
-          className="absolute left-2 top-1/2 -translate-y-1/2"
-        >
-          <ArrowLeft className="h-6 w-6" />
-          <span className="sr-only">Previous</span>
-        </Button>
-        <Button
-          variant="outline"
-          onClick={scrollNext}
-          className="absolute right-2 top-1/2 -translate-y-1/2"
-        >
-          <ArrowRight className="h-6 w-6" />
-          <span className="sr-only">Next</span>
-        </Button>
-      </div>
-      {/* Модальное окно для увеличенного просмотра */}
-      <CarouselModal
-        isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
-        onPrev={scrollPrev}
-        onNext={scrollNext}
-        canPrev={itemCount > 1}
-        canNext={itemCount > 1}
+      <Carousel 
+        setApi={setApi} 
+        className={cn("w-full", className)} 
+        opts={carouselOptions}
+        {...props}
       >
-        <div className="w-full">{itemsArray[activeIndex]}</div>
-      </CarouselModal>
+        <CarouselContent>
+          {images.map((image, index) => (
+            <CarouselItem key={index}>
+              <div 
+                className="flex items-center justify-center w-full h-full cursor-pointer" 
+                onClick={handleImageClick}
+              >
+                {React.cloneElement(image, {
+                  className: cn(
+                    image.props.className,
+                    "max-h-full max-w-full object-contain mx-auto"
+                  )
+                })}
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious className="left-2" />
+        <CarouselNext className="right-2" />
+      </Carousel>
+
+      <ImageModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        currentIndex={currentIndex}
+        images={images}
+        onPrev={handlePrev}
+        onNext={handleNext}
+        canScrollPrev={api?.canScrollPrev() || false}
+        canScrollNext={api?.canScrollNext() || false}
+      />
     </>
   );
 }
-
-export const CarouselItem = React.forwardRef((props, ref) => (
-  <div
-    ref={ref}
-    role="group"
-    aria-roledescription="slide"
-    className={cn("w-full flex-shrink-0", props.className)}
-    {...props}
-  />
-));
-CarouselItem.displayName = "CarouselItem";
 
 export default CarouselWithModal;

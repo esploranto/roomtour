@@ -1,10 +1,11 @@
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, Plus } from "lucide-react";
 import { ThemeContext } from "@/context/ThemeContext";
 import { AuthContext } from "@/context/AuthContext";
 import LoginPopup from "@/components/LoginPopup";
+import AddPlacePopup from "@/components/AddPlacePopup";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { getInitials } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
@@ -13,10 +14,14 @@ export default function Header() {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const { isLoggedIn, user, login, logout } = useContext(AuthContext);
   const [loginPopupOpen, setLoginPopupOpen] = useState(false);
+  const [addPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
   const { t } = useTranslation();
 
   const openLoginPopup = () => setLoginPopupOpen(true);
   const closeLoginPopup = () => setLoginPopupOpen(false);
+  
+  const openAddPlacePopup = () => setAddPlacePopupOpen(true);
+  const closeAddPlacePopup = () => setAddPlacePopupOpen(false);
 
   return (
     <header className="flex justify-between items-center p-4 bg-gray-100 dark:bg-gray-800 rounded-xl">
@@ -29,8 +34,8 @@ export default function Header() {
       <div className="flex items-center gap-4">
         {isLoggedIn ? (
           // Если пользователь залогинен, показываем кнопку "+ Добавить место"
-          <Button variant="outline" asChild>
-            <Link to={`/${user.username}/add`}>{t("addPlace")}</Link>
+          <Button variant="outline" onClick={openAddPlacePopup}>
+            <Plus className="mr-1 h-4 w-4" /> {t("addPlace")}
           </Button>
         ) : (
           // Если не залогинен, показываем кнопку "Войти"
@@ -59,8 +64,9 @@ export default function Header() {
         </button>
       </div>
 
-      {/* Всплывающее окно для входа */}
-      {loginPopupOpen && <LoginPopup onClose={closeLoginPopup} />}
+      {/* Всплывающие окна */}
+      <LoginPopup isOpen={loginPopupOpen} onClose={closeLoginPopup} />
+      <AddPlacePopup isOpen={addPlacePopupOpen} onClose={closeAddPlacePopup} />
     </header>
   );
 }
