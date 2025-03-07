@@ -1,6 +1,6 @@
 import * as React from "react";
 import useEmblaCarousel, { type UseEmblaCarouselType } from "embla-carousel-react";
-import { ArrowLeft, ArrowRight, Check, ChevronDown, ChevronUp } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -50,6 +50,7 @@ const Carousel = React.forwardRef<
     );
     const [canScrollPrev, setCanScrollPrev] = React.useState(false);
     const [canScrollNext, setCanScrollNext] = React.useState(false);
+    const [isFocused, setIsFocused] = React.useState(false);
 
     const onSelect = React.useCallback((api: CarouselApi) => {
       if (!api) return;
@@ -65,9 +66,9 @@ const Carousel = React.forwardRef<
       api?.scrollNext();
     }, [api]);
 
-    // Локальная обработка клавиш для этой карусели
+    // Локальный обработчик клавиш для элемента карусели
     const handleKeyDown = React.useCallback(
-      (event: KeyboardEvent) => {
+      (event: React.KeyboardEvent<HTMLDivElement>) => {
         if (event.key === "ArrowLeft") {
           event.preventDefault();
           scrollPrev();
@@ -79,11 +80,35 @@ const Carousel = React.forwardRef<
       [scrollPrev, scrollNext]
     );
 
+    // Глобальный обработчик клавиш
+    const handleGlobalKeyDown = React.useCallback(
+      (event: KeyboardEvent) => {
+        // Проверяем, что карусель в фокусе или что мы не находимся в поле ввода
+        const activeElement = document.activeElement;
+        const isInputActive = activeElement instanceof HTMLInputElement || 
+                             activeElement instanceof HTMLTextAreaElement ||
+                             activeElement instanceof HTMLSelectElement;
+        
+        if (isFocused || !isInputActive) {
+          if (event.key === "ArrowLeft" && canScrollPrev) {
+            event.preventDefault();
+            scrollPrev();
+          } else if (event.key === "ArrowRight" && canScrollNext) {
+            event.preventDefault();
+            scrollNext();
+          }
+        }
+      },
+      [scrollPrev, scrollNext, canScrollPrev, canScrollNext, isFocused]
+    );
+
     // Добавляем глобальный слушатель клавиатуры
     React.useEffect(() => {
-      window.addEventListener("keydown", handleKeyDown);
-      return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [handleKeyDown]);
+      window.addEventListener("keydown", handleGlobalKeyDown);
+      return () => {
+        window.removeEventListener("keydown", handleGlobalKeyDown);
+      };
+    }, [handleGlobalKeyDown]);
 
     React.useEffect(() => {
       if (!api || !setApi) return;
@@ -115,10 +140,13 @@ const Carousel = React.forwardRef<
       >
         <div
           ref={ref}
-          // Убираем onKeyDownCapture, т.к. глобальный слушатель уже добавлен
-          className={cn("relative", className)}
+          onKeyDownCapture={handleKeyDown}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          className={cn("relative outline-none", className)}
           role="region"
           aria-roledescription="carousel"
+          tabIndex={0} // Делаем элемент фокусируемым
           {...props}
         >
           {children}
@@ -141,7 +169,6 @@ const CarouselContent = React.forwardRef<
         className={cn(
           "flex",
           orientation === "horizontal" ? "-ml-4" : "-mt-4 flex-col",
-          "items-center justify-center",
           className
         )}
         {...props}
@@ -164,7 +191,6 @@ const CarouselItem = React.forwardRef<
       className={cn(
         "min-w-0 shrink-0 grow-0 basis-full",
         orientation === "horizontal" ? "pl-4" : "pt-4",
-        "flex items-center justify-center",
         className
       )}
       {...props}

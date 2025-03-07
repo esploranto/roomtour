@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { useParams } from "react-router-dom";
 import {
@@ -14,6 +14,7 @@ import image3 from "@/images/IMG_7966.jpeg";
 
 export default function Place() {
   const { username, placeId } = useParams();
+  const carouselRef = useRef(null);
 
   // Тестовые данные для изображений карусели
   const images = [
@@ -30,6 +31,16 @@ export default function Place() {
       alt: "Фото 3"
     }
   ];
+
+  // Автофокус на карусель при загрузке страницы
+  useEffect(() => {
+    if (carouselRef.current) {
+      // Небольшая задержка для уверенности, что компонент полностью отрендерился
+      setTimeout(() => {
+        carouselRef.current.focus();
+      }, 100);
+    }
+  }, []);
 
   return (
     <div className="max-w-5xl mx-auto p-4">
@@ -49,11 +60,13 @@ export default function Place() {
       {/* Стандартная карусель */}
       <div className="relative mb-8">
         <Carousel 
+          ref={carouselRef}
           opts={{
             align: "center",
             loop: true
           }}
-          className="w-full max-h-[500px]"
+          className="w-full max-h-[500px] focus:outline-none"
+          aria-label="Фотографии квартиры"
         >
           <CarouselContent>
             {images.map((image, index) => (
@@ -68,8 +81,8 @@ export default function Place() {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="left-2" />
-          <CarouselNext className="right-2" />
+          <CarouselPrevious className="left-2" aria-label="Предыдущее фото" />
+          <CarouselNext className="right-2" aria-label="Следующее фото" />
         </Carousel>
       </div>
 
