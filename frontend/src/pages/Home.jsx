@@ -1,7 +1,7 @@
 import React from "react";
-import { Button } from "@/components/ui/button"; // Импорт компонента Button
+import { Button } from "@/components/ui/button.tsx"; // Импорт компонента Button
 import { Link } from "react-router-dom";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; // Если хотите использовать Card
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.tsx"; // Если хотите использовать Card
 import { useTranslation } from "react-i18next";
 
 export default function Home() {
@@ -21,14 +21,7 @@ export default function Home() {
         <Card>Правая колонка</Card>
       </div>
 
-      <Card className="mt-4">
-        <CardHeader>
-          <CardTitle>Пример карточки</CardTitle>
-        </CardHeader>
-        <CardContent>
-          Здесь может быть информация.
-        </CardContent>
-      </Card>
+
     </div>
   );
 }

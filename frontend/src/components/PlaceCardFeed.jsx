@@ -1,9 +1,9 @@
 import React from "react";
-import PlaceCard from "@/components/ui/PlaceCard";
+import PlaceCard from "@/components/ui/PlaceCard.jsx";
 
 export default function PlaceCardFeed({ places, username }) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
       {places.map((place) => (
         <PlaceCard
           key={place.id}

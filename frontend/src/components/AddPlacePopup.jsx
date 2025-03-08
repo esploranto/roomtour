@@ -1,25 +1,25 @@
 import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button.tsx";
+import { Input } from "@/components/ui/input.tsx";
+import { Textarea } from "@/components/ui/textarea.tsx";
+import { Label } from "@/components/ui/label.jsx";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { ru } from "date-fns/locale";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils.ts";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from "@/components/ui/dialog";
+} from "@/components/ui/dialog.jsx";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
+} from "@/components/ui/popover.jsx";
+import { Calendar } from "@/components/ui/calendar.jsx";
 
 export default function AddPlacePopup({ isOpen, onClose }) {
   const [name, setName] = useState("");

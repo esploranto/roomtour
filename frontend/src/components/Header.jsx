@@ -1,13 +1,13 @@
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button.tsx";
 import { Moon, Sun, Plus } from "lucide-react";
 import { ThemeContext } from "@/context/ThemeContext";
 import { AuthContext } from "@/context/AuthContext";
 import LoginPopup from "@/components/LoginPopup";
 import AddPlacePopup from "@/components/AddPlacePopup";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { getInitials } from "@/lib/utils";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar.tsx";
+import { getInitials } from "@/lib/utils.ts";
 import { useTranslation } from "react-i18next";
 
 export default function Header() {

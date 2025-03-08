@@ -10,7 +10,7 @@ const Avatar = React.forwardRef<
   <AvatarPrimitive.Root
     ref={ref}
     className={cn(
-      "relative flex h-9 w-9 shrink-0 overflow-hidden rounded-full",
+      "relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700",
       className
     )}
     {...props}
@@ -37,13 +37,11 @@ const AvatarFallback = React.forwardRef<
   <AvatarPrimitive.Fallback
     ref={ref}
     className={cn(
-      "flex h-full w-full items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100",
+      "flex h-full w-full items-center justify-center rounded-full bg-muted",
       className
     )}
     {...props}
-  >
-    {/* Опционально можно добавить иконку или текст */}
-  </AvatarPrimitive.Fallback>
+  />
 ))
 AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName
 

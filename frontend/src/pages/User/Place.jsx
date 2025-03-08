@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button.tsx";
 import { useParams } from "react-router-dom";
 import {
   Carousel,
@@ -7,7 +7,7 @@ import {
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
-} from "@/components/ui/carousel";
+} from "@/components/ui/carousel.tsx";
 import image1 from "@/images/IMG_7927.jpeg";
 import image2 from "@/images/IMG_7932.jpeg";
 import image3 from "@/images/IMG_7966.jpeg";
@@ -70,7 +70,7 @@ export default function Place() {
         >
           <CarouselContent>
             {images.map((image, index) => (
-              <CarouselItem key={index} className="flex items-center justify-center">
+              <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3 flex items-center justify-center">
                 <div className="flex items-center justify-center h-full w-full p-2">
                   <img 
                     src={image.src} 

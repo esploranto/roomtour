@@ -5,7 +5,7 @@ import {
   SelectValue,
   SelectContent,
   SelectItem,
-} from "@/components/ui/select";
+} from "@/components/ui/select.tsx";
 import { useTranslation } from "react-i18next";
 
 export default function LanguageSwitcher() {
