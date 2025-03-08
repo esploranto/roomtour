@@ -1,0 +1,243 @@
+INFO 2025-03-08 19:45:25,106 autoreload 12000 8439777344 Watching for file changes with StatReloader
+INFO 2025-03-08 19:45:49,825 autoreload 12000 8439777344 /Users/esploranto/roomtour/backend/backend/models.py changed, reloading.
+INFO 2025-03-08 19:45:50,088 autoreload 12017 8439777344 Watching for file changes with StatReloader
+INFO 2025-03-08 19:47:28,747 basehttp 12017 6199701504 "GET /api/places/ HTTP/1.1" 200 1727
+INFO 2025-03-08 19:47:28,756 basehttp 12017 6199701504 "GET /media/places/Screenshot_2025-03-02_at_10_mj5b2p7.57.18PM.png HTTP/1.1" 304 0
+INFO 2025-03-08 19:47:30,111 basehttp 12017 6216527872 "GET /api/places/moskva/ HTTP/1.1" 200 1725
+INFO 2025-03-08 19:47:30,124 basehttp 12017 6199701504 "GET /media/places/Screenshot_2025-03-02_at_11.01.27PM.png HTTP/1.1" 304 0
+INFO 2025-03-08 19:47:30,128 basehttp 12017 6216527872 "GET /media/places/Screenshot_2025-03-02_at_11.39.46PM.png HTTP/1.1" 304 0
+INFO 2025-03-08 19:47:30,129 basehttp 12017 6199701504 "GET /media/places/Screenshot_2025-03-02_at_11.51.33PM.png HTTP/1.1" 304 0
+INFO 2025-03-08 19:47:30,130 basehttp 12017 6233354240 "GET /media/places/Screenshot_2025-03-02_at_11.13.19PM.png HTTP/1.1" 304 0
+INFO 2025-03-08 19:47:30,131 basehttp 12017 6250180608 "GET /media/places/Screenshot_2025-03-02_at_11.29.35PM.png HTTP/1.1" 304 0
+INFO 2025-03-08 19:47:30,132 basehttp 12017 6267006976 "GET /media/places/Screenshot_2025-03-02_at_11.08.46PM.png HTTP/1.1" 304 0
+INFO 2025-03-08 19:47:30,132 basehttp 12017 6283833344 "GET /media/places/Screenshot_2025-03-02_at_11.44.19PM.png HTTP/1.1" 304 0
+INFO 2025-03-08 19:47:37,109 basehttp 12017 6300659712 "GET /api/places/ HTTP/1.1" 200 1727
+INFO 2025-03-08 19:47:41,739 basehttp 12017 6300659712 "GET /api/places/ HTTP/1.1" 200 1727
+INFO 2025-03-08 19:48:55,889 basehttp 12017 6300659712 "GET /api/places/ HTTP/1.1" 200 1727
+INFO 2025-03-08 19:54:03,012 basehttp 12017 6199701504 "GET /api/places/ HTTP/1.1" 200 1727
+INFO 2025-03-08 19:54:03,019 basehttp 12017 6199701504 "GET /media/places/Screenshot_2025-03-02_at_10_mj5b2p7.57.18PM.png HTTP/1.1" 304 0
+INFO 2025-03-08 19:54:05,121 basehttp 12017 6216527872 "GET /api/places/moskva/ HTTP/1.1" 200 1725
+INFO 2025-03-08 19:54:05,135 basehttp 12017 6199701504 "GET /media/places/Screenshot_2025-03-02_at_11.08.46PM.png HTTP/1.1" 304 0
+INFO 2025-03-08 19:54:05,135 basehttp 12017 6216527872 "GET /media/places/Screenshot_2025-03-02_at_11.01.27PM.png HTTP/1.1" 304 0
+INFO 2025-03-08 19:54:05,137 basehttp 12017 6233354240 "GET /media/places/Screenshot_2025-03-02_at_11.13.19PM.png HTTP/1.1" 304 0
+INFO 2025-03-08 19:54:05,138 basehttp 12017 6250180608 "GET /media/places/Screenshot_2025-03-02_at_11.29.35PM.png HTTP/1.1" 304 0
+INFO 2025-03-08 19:54:05,139 basehttp 12017 6283833344 "GET /media/places/Screenshot_2025-03-02_at_11.44.19PM.png HTTP/1.1" 304 0
+INFO 2025-03-08 19:54:05,140 basehttp 12017 6267006976 "GET /media/places/Screenshot_2025-03-02_at_11.39.46PM.png HTTP/1.1" 304 0
+INFO 2025-03-08 19:54:05,152 basehttp 12017 6267006976 "GET /media/places/Screenshot_2025-03-02_at_11.51.33PM.png HTTP/1.1" 304 0
+INFO 2025-03-08 19:54:09,936 basehttp 12017 6300659712 "GET /admin/backend/placeimage/ HTTP/1.1" 200 14886
+INFO 2025-03-08 19:54:09,973 basehttp 12017 6300659712 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-03-08 19:54:12,425 basehttp 12017 6300659712 "GET /admin/backend/place/ HTTP/1.1" 200 12112
+INFO 2025-03-08 19:54:12,468 basehttp 12017 6300659712 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-03-08 19:54:16,275 basehttp 12017 6300659712 "GET /admin/backend/placeimage/ HTTP/1.1" 200 14886
+INFO 2025-03-08 19:54:16,329 basehttp 12017 6300659712 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-03-08 19:54:22,700 autoreload 12017 8439777344 /Users/esploranto/roomtour/backend/backend/models.py changed, reloading.
+INFO 2025-03-08 19:54:23,006 autoreload 12239 8439777344 Watching for file changes with StatReloader
+INFO 2025-03-08 19:54:50,240 views 12239 6170750976 Создание нового места: {'name': 'Исполкомская', 'location': 'Питер, ул. Исполкомская, 17', 'rating': 5, 'review': ''}
+INFO 2025-03-08 19:54:50,272 views 12239 6170750976 Место успешно создано: {'id': 7, 'images': [], 'name': 'Исполкомская', 'location': 'Питер, ул. Исполкомская, 17', 'rating': 5, 'review': '', 'created_at': '2025-03-08T19:54:50.266629Z', 'slug': 'ispolkomskaja'}
+INFO 2025-03-08 19:54:50,273 basehttp 12239 6170750976 "POST /api/places/ HTTP/1.1" 201 203
+INFO 2025-03-08 19:54:52,100 views 12239 6170750976 Успешно загружено 3 изображений для места 7
+INFO 2025-03-08 19:54:52,101 basehttp 12239 6170750976 "POST /api/places/ispolkomskaja/upload_images/ HTTP/1.1" 201 459
+INFO 2025-03-08 19:54:52,132 basehttp 12239 6170750976 "GET /api/places/ HTTP/1.1" 200 2388
+INFO 2025-03-08 19:54:52,145 basehttp 12239 6170750976 "GET /api/places/ HTTP/1.1" 200 2388
+INFO 2025-03-08 19:54:52,160 basehttp 12239 6170750976 "GET /media/places/IMG_7927.jpeg HTTP/1.1" 200 130291
+INFO 2025-03-08 19:54:56,706 basehttp 12239 6187577344 "GET /api/places/ispolkomskaja/ HTTP/1.1" 200 660
+INFO 2025-03-08 19:54:56,717 basehttp 12239 6170750976 "GET /media/places/IMG_7932_mcYo1Dv.jpeg HTTP/1.1" 200 122766
+INFO 2025-03-08 19:54:56,717 basehttp 12239 6187577344 "GET /media/places/IMG_7966_bXtK5L6.jpeg HTTP/1.1" 200 174498
+INFO 2025-03-08 19:55:25,504 basehttp 12239 6187577344 "GET /media/places/Screenshot_2025-03-02_at_10_mj5b2p7.57.18PM.png HTTP/1.1" 304 0
+INFO 2025-03-08 19:55:54,701 views 12239 6204403712 Создание нового места: {'name': 'Sergey', 'location': 'asdf', 'rating': 5, 'review': ''}
+INFO 2025-03-08 19:55:54,724 views 12239 6204403712 Место успешно создано: {'id': 8, 'images': [], 'name': 'Sergey', 'location': 'asdf', 'rating': 5, 'review': '', 'created_at': '2025-03-08T19:55:54.720318Z', 'slug': 'sergey'}
+INFO 2025-03-08 19:55:54,725 basehttp 12239 6204403712 "POST /api/places/ HTTP/1.1" 201 136
+INFO 2025-03-08 19:55:55,093 views 12239 6204403712 Успешно загружено 4 изображений для места 8
+INFO 2025-03-08 19:55:55,093 basehttp 12239 6204403712 "POST /api/places/sergey/upload_images/ HTTP/1.1" 201 769
+INFO 2025-03-08 19:55:55,167 basehttp 12239 6204403712 "GET /api/places/ HTTP/1.1" 200 3292
+INFO 2025-03-08 19:55:55,179 basehttp 12239 6204403712 "GET /api/places/ HTTP/1.1" 200 3292
+INFO 2025-03-08 19:55:55,185 basehttp 12239 6187577344 "GET /media/places/Screenshot_2025-03-03_at_1.57.36AM.png HTTP/1.1" 200 251732
+INFO 2025-03-08 19:55:58,329 basehttp 12239 6204403712 "GET /api/places/sergey/ HTTP/1.1" 200 903
+INFO 2025-03-08 19:55:58,346 basehttp 12239 6170750976 "GET /media/places/Screenshot_2025-03-03_at_2.18.10AM.png HTTP/1.1" 200 132288
+INFO 2025-03-08 19:55:58,347 basehttp 12239 6187577344 "GET /media/places/Screenshot_2025-03-03_at_2.08.43AM.png HTTP/1.1" 200 176723
+INFO 2025-03-08 19:55:58,349 basehttp 12239 6204403712 "GET /media/places/Screenshot_2025-03-03_at_2.28.57AM.png HTTP/1.1" 200 448105
+INFO 2025-03-08 19:56:29,668 views 12239 6221230080 Создание нового места: {'name': 'Исполкомская', 'location': 'Питер, ул. Исполкомская, 17', 'rating': 5, 'review': ''}
+ERROR 2025-03-08 19:56:29,682 views 12239 6221230080 Непредвиденная ошибка при создании места: duplicate key value violates unique constraint "backend_place_slug_key"
+DETAIL:  Key (slug)=(ispolkomskaja) already exists.
+
+ERROR 2025-03-08 19:56:29,682 log 12239 6221230080 Internal Server Error: /api/places/
+ERROR 2025-03-08 19:56:29,683 basehttp 12239 6221230080 "POST /api/places/ HTTP/1.1" 500 134
+INFO 2025-03-08 19:56:39,504 views 12239 6221230080 Создание нового места: {'name': 'Исполкомская', 'location': 'Питер, ул. Исполкомская, 17', 'rating': 4, 'review': ''}
+ERROR 2025-03-08 19:56:39,515 views 12239 6221230080 Непредвиденная ошибка при создании места: duplicate key value violates unique constraint "backend_place_slug_key"
+DETAIL:  Key (slug)=(ispolkomskaja) already exists.
+
+ERROR 2025-03-08 19:56:39,516 log 12239 6221230080 Internal Server Error: /api/places/
+ERROR 2025-03-08 19:56:39,516 basehttp 12239 6221230080 "POST /api/places/ HTTP/1.1" 500 134
+INFO 2025-03-08 19:56:40,728 views 12239 6221230080 Создание нового места: {'name': 'Исполкомская', 'location': 'Питер, ул. Исполкомская, 17', 'rating': 4, 'review': ''}
+ERROR 2025-03-08 19:56:40,745 views 12239 6221230080 Непредвиденная ошибка при создании места: duplicate key value violates unique constraint "backend_place_slug_key"
+DETAIL:  Key (slug)=(ispolkomskaja) already exists.
+
+ERROR 2025-03-08 19:56:40,745 log 12239 6221230080 Internal Server Error: /api/places/
+ERROR 2025-03-08 19:56:40,745 basehttp 12239 6221230080 "POST /api/places/ HTTP/1.1" 500 134
+INFO 2025-03-08 19:56:42,719 basehttp 12239 6221230080 "GET /api/places/ HTTP/1.1" 200 3292
+INFO 2025-03-08 19:56:42,728 basehttp 12239 6170750976 "GET /media/places/Screenshot_2025-03-03_at_1.57.36AM.png HTTP/1.1" 304 0
+INFO 2025-03-08 19:56:42,728 basehttp 12239 6187577344 "GET /media/places/IMG_7927.jpeg HTTP/1.1" 304 0
+INFO 2025-03-08 19:56:42,728 basehttp 12239 6204403712 "GET /media/places/Screenshot_2025-03-02_at_10_mj5b2p7.57.18PM.png HTTP/1.1" 304 0
+INFO 2025-03-08 19:59:41,473 autoreload 12239 8439777344 /Users/esploranto/roomtour/backend/backend/models.py changed, reloading.
+INFO 2025-03-08 19:59:41,778 autoreload 12472 8439777344 Watching for file changes with StatReloader
+WARNING 2025-03-08 20:01:16,752 log 12472 6194786304 Not Found: /api/users/Sergey Frolov/
+WARNING 2025-03-08 20:01:16,752 basehttp 12472 6194786304 "GET /api/users/Sergey%20Frolov/ HTTP/1.1" 404 5991
+WARNING 2025-03-08 20:02:33,986 log 12472 6211612672 Not Found: /api/users/Sergey Frolov/
+WARNING 2025-03-08 20:02:33,986 basehttp 12472 6211612672 "GET /api/users/Sergey%20Frolov/ HTTP/1.1" 404 5991
+INFO 2025-03-08 20:02:34,066 basehttp 12472 6194786304 "GET /api/places/ HTTP/1.1" 200 3292
+INFO 2025-03-08 20:02:34,076 basehttp 12472 6194786304 "GET /media/places/Screenshot_2025-03-02_at_10_mj5b2p7.57.18PM.png HTTP/1.1" 304 0
+INFO 2025-03-08 20:02:34,077 basehttp 12472 6211612672 "GET /media/places/Screenshot_2025-03-03_at_1.57.36AM.png HTTP/1.1" 304 0
+INFO 2025-03-08 20:02:34,078 basehttp 12472 6228439040 "GET /media/places/IMG_7927.jpeg HTTP/1.1" 304 0
+WARNING 2025-03-08 20:04:15,612 log 12472 6211612672 Not Found: /api/users/Sergey Frolov/
+WARNING 2025-03-08 20:04:15,616 basehttp 12472 6211612672 "GET /api/users/Sergey%20Frolov/ HTTP/1.1" 404 5991
+INFO 2025-03-08 20:04:15,649 basehttp 12472 6194786304 "GET /api/places/ HTTP/1.1" 200 3292
+WARNING 2025-03-08 20:04:17,130 log 12472 6211612672 Not Found: /api/users/Sergey Frolov/
+WARNING 2025-03-08 20:04:17,130 basehttp 12472 6211612672 "GET /api/users/Sergey%20Frolov/ HTTP/1.1" 404 5991
+INFO 2025-03-08 20:04:17,135 basehttp 12472 6194786304 "GET /api/places/ HTTP/1.1" 200 3292
+INFO 2025-03-08 20:04:17,143 basehttp 12472 6194786304 "GET /media/places/Screenshot_2025-03-03_at_1.57.36AM.png HTTP/1.1" 304 0
+INFO 2025-03-08 20:04:17,144 basehttp 12472 6211612672 "GET /media/places/IMG_7927.jpeg HTTP/1.1" 304 0
+INFO 2025-03-08 20:04:22,364 basehttp 12472 6194786304 "GET /admin/backend/place/ HTTP/1.1" 200 13160
+INFO 2025-03-08 20:04:22,414 basehttp 12472 6194786304 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-03-08 20:04:25,731 basehttp 12472 6194786304 "POST /admin/backend/place/ HTTP/1.1" 200 8824
+INFO 2025-03-08 20:04:26,928 basehttp 12472 6194786304 "POST /admin/backend/place/ HTTP/1.1" 302 0
+INFO 2025-03-08 20:04:26,957 basehttp 12472 6194786304 "GET /admin/backend/place/ HTTP/1.1" 200 12732
+INFO 2025-03-08 20:04:26,990 basehttp 12472 6194786304 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+WARNING 2025-03-08 20:04:30,330 log 12472 6245265408 Not Found: /api/users/Sergey Frolov/
+WARNING 2025-03-08 20:04:30,330 basehttp 12472 6245265408 "GET /api/users/Sergey%20Frolov/ HTTP/1.1" 404 5991
+INFO 2025-03-08 20:04:30,336 basehttp 12472 6228439040 "GET /api/places/ HTTP/1.1" 200 2631
+INFO 2025-03-08 20:04:30,342 basehttp 12472 6228439040 "GET /media/places/Screenshot_2025-03-02_at_10_mj5b2p7.57.18PM.png HTTP/1.1" 304 0
+INFO 2025-03-08 20:04:45,662 views 12472 6194786304 Создание нового места: {'name': 'Исполкомская', 'location': 'Питер, ул. Исполкомская, 17', 'rating': 5, 'review': ''}
+INFO 2025-03-08 20:04:45,698 views 12472 6194786304 Место успешно создано: {'id': 12, 'images': [], 'name': 'Исполкомская', 'location': 'Питер, ул. Исполкомская, 17', 'rating': 5, 'review': '', 'created_at': '2025-03-08T20:04:45.694355Z', 'slug': 'ispolkomskaja'}
+INFO 2025-03-08 20:04:45,699 basehttp 12472 6194786304 "POST /api/places/ HTTP/1.1" 201 204
+INFO 2025-03-08 20:04:46,064 views 12472 6194786304 Успешно загружено 3 изображений для места 12
+INFO 2025-03-08 20:04:46,065 basehttp 12472 6194786304 "POST /api/places/ispolkomskaja/upload_images/ HTTP/1.1" 201 475
+INFO 2025-03-08 20:04:46,116 basehttp 12472 6194786304 "GET /api/places/ HTTP/1.1" 200 3309
+INFO 2025-03-08 20:04:46,167 basehttp 12472 6211612672 "GET /media/places/IMG_7927_NVzwyzZ.jpeg HTTP/1.1" 200 77887
+INFO 2025-03-08 20:04:46,231 basehttp 12472 6194786304 "GET /api/places/ HTTP/1.1" 200 3309
+INFO 2025-03-08 20:04:46,259 basehttp 12472 6194786304 "GET /api/places/ HTTP/1.1" 200 3309
+INFO 2025-03-08 20:04:46,276 basehttp 12472 6194786304 "GET /api/places/ HTTP/1.1" 200 3309
+INFO 2025-03-08 20:04:46,286 basehttp 12472 6194786304 "GET /api/places/ HTTP/1.1" 200 3309
+INFO 2025-03-08 20:04:46,302 basehttp 12472 6194786304 "GET /api/places/ HTTP/1.1" 200 3309
+INFO 2025-03-08 20:04:46,314 basehttp 12472 6194786304 "GET /api/places/ HTTP/1.1" 200 3309
+INFO 2025-03-08 20:04:46,326 basehttp 12472 6194786304 "GET /api/places/ HTTP/1.1" 200 3309
+INFO 2025-03-08 20:04:46,337 basehttp 12472 6194786304 "GET /api/places/ HTTP/1.1" 200 3309
+INFO 2025-03-08 20:04:46,347 basehttp 12472 6194786304 "GET /api/places/ HTTP/1.1" 200 3309
+INFO 2025-03-08 20:04:46,360 basehttp 12472 6194786304 "GET /api/places/ HTTP/1.1" 200 3309
+INFO 2025-03-08 20:04:46,370 basehttp 12472 6194786304 "GET /api/places/ HTTP/1.1" 200 3309
+INFO 2025-03-08 20:04:46,381 basehttp 12472 6194786304 "GET /api/places/ HTTP/1.1" 200 3309
+INFO 2025-03-08 20:04:46,394 basehttp 12472 6194786304 "GET /api/places/ HTTP/1.1" 200 3309
+INFO 2025-03-08 20:05:08,430 basehttp 12472 6194786304 "GET /api/places/ispolkomskaja/ HTTP/1.1" 200 677
+INFO 2025-03-08 20:05:08,458 basehttp 12472 6194786304 "GET /media/places/IMG_7932_Sq63SBN.jpeg HTTP/1.1" 200 73494
+INFO 2025-03-08 20:05:08,459 basehttp 12472 6211612672 "GET /media/places/IMG_7966_WdKJdOx.jpeg HTTP/1.1" 200 104852
+INFO 2025-03-08 20:05:13,751 basehttp 12472 6194786304 "GET /api/places/ HTTP/1.1" 200 3309
+INFO 2025-03-08 20:05:13,755 basehttp 12472 6211612672 "GET /api/places/ispolkomskaja/ HTTP/1.1" 200 677
+INFO 2025-03-08 20:05:13,768 basehttp 12472 6194786304 "GET /media/places/IMG_7966_WdKJdOx.jpeg HTTP/1.1" 304 0
+INFO 2025-03-08 20:05:13,769 basehttp 12472 6211612672 "GET /media/places/IMG_7932_Sq63SBN.jpeg HTTP/1.1" 304 0
+INFO 2025-03-08 20:05:13,769 basehttp 12472 6228439040 "GET /media/places/IMG_7927_NVzwyzZ.jpeg HTTP/1.1" 304 0
+INFO 2025-03-08 20:05:16,501 basehttp 12472 6194786304 "GET /media/places/Screenshot_2025-03-03_at_1.57.36AM.png HTTP/1.1" 304 0
+WARNING 2025-03-08 20:05:16,519 log 12472 6211612672 Not Found: /api/users/Sergey Frolov/
+WARNING 2025-03-08 20:05:16,520 basehttp 12472 6211612672 "GET /api/users/Sergey%20Frolov/ HTTP/1.1" 404 5991
+INFO 2025-03-08 20:06:43,181 views 12472 6194786304 Создание нового места: {'name': 'Москва', 'location': 'Москва', 'rating': 5, 'review': ''}
+ERROR 2025-03-08 20:06:43,206 views 12472 6194786304 Непредвиденная ошибка при создании места: duplicate key value violates unique constraint "backend_place_slug_key"
+DETAIL:  Key (slug)=(moskva) already exists.
+
+ERROR 2025-03-08 20:06:43,207 log 12472 6194786304 Internal Server Error: /api/places/
+ERROR 2025-03-08 20:06:43,207 basehttp 12472 6194786304 "POST /api/places/ HTTP/1.1" 500 134
+WARNING 2025-03-08 20:06:58,829 log 12472 6211612672 Not Found: /api/users/Sergey Frolov/
+WARNING 2025-03-08 20:06:58,829 basehttp 12472 6211612672 "GET /api/users/Sergey%20Frolov/ HTTP/1.1" 404 5991
+INFO 2025-03-08 20:06:58,838 basehttp 12472 6194786304 "GET /api/places/ HTTP/1.1" 200 3309
+INFO 2025-03-08 20:06:58,845 basehttp 12472 6194786304 "GET /media/places/Screenshot_2025-03-02_at_10_mj5b2p7.57.18PM.png HTTP/1.1" 304 0
+INFO 2025-03-08 20:06:58,846 basehttp 12472 6211612672 "GET /media/places/IMG_7927_NVzwyzZ.jpeg HTTP/1.1" 304 0
+INFO 2025-03-08 20:06:58,846 basehttp 12472 6228439040 "GET /media/places/Screenshot_2025-03-03_at_1.57.36AM.png HTTP/1.1" 304 0
+INFO 2025-03-08 20:07:09,619 views 12472 6194786304 Создание нового места: {'name': 'Москва', 'location': 'Москва', 'rating': 5, 'review': ''}
+ERROR 2025-03-08 20:07:09,637 views 12472 6194786304 Непредвиденная ошибка при создании места: duplicate key value violates unique constraint "backend_place_slug_key"
+DETAIL:  Key (slug)=(moskva) already exists.
+
+ERROR 2025-03-08 20:07:09,638 log 12472 6194786304 Internal Server Error: /api/places/
+ERROR 2025-03-08 20:07:09,639 basehttp 12472 6194786304 "POST /api/places/ HTTP/1.1" 500 134
+INFO 2025-03-08 20:07:47,976 basehttp 12472 6194786304 "GET /api/places/moskva/ HTTP/1.1" 200 1725
+INFO 2025-03-08 20:07:47,992 basehttp 12472 6211612672 "GET /media/places/Screenshot_2025-03-02_at_11.08.46PM.png HTTP/1.1" 304 0
+INFO 2025-03-08 20:07:47,992 basehttp 12472 6194786304 "GET /media/places/Screenshot_2025-03-02_at_11.01.27PM.png HTTP/1.1" 304 0
+INFO 2025-03-08 20:07:47,993 basehttp 12472 6228439040 "GET /media/places/Screenshot_2025-03-02_at_11.13.19PM.png HTTP/1.1" 304 0
+INFO 2025-03-08 20:07:47,994 basehttp 12472 6245265408 "GET /media/places/Screenshot_2025-03-02_at_11.29.35PM.png HTTP/1.1" 304 0
+INFO 2025-03-08 20:07:47,995 basehttp 12472 6262091776 "GET /media/places/Screenshot_2025-03-02_at_11.39.46PM.png HTTP/1.1" 304 0
+INFO 2025-03-08 20:07:47,995 basehttp 12472 6278918144 "GET /media/places/Screenshot_2025-03-02_at_11.44.19PM.png HTTP/1.1" 304 0
+INFO 2025-03-08 20:07:48,042 basehttp 12472 6278918144 "GET /media/places/Screenshot_2025-03-02_at_11.51.33PM.png HTTP/1.1" 304 0
+INFO 2025-03-08 20:07:49,664 basehttp 12472 6295744512 "GET /api/places/sergey/ HTTP/1.1" 200 903
+INFO 2025-03-08 20:07:49,674 basehttp 12472 6262091776 "GET /media/places/Screenshot_2025-03-03_at_2.08.43AM.png HTTP/1.1" 304 0
+INFO 2025-03-08 20:07:49,675 basehttp 12472 6278918144 "GET /media/places/Screenshot_2025-03-03_at_2.18.10AM.png HTTP/1.1" 304 0
+INFO 2025-03-08 20:07:49,676 basehttp 12472 6245265408 "GET /media/places/Screenshot_2025-03-03_at_2.28.57AM.png HTTP/1.1" 304 0
+INFO 2025-03-08 20:07:54,229 basehttp 12472 6194786304 "GET /api/places/ispolkomskaja/ HTTP/1.1" 200 677
+INFO 2025-03-08 20:07:54,239 basehttp 12472 6194786304 "GET /media/places/IMG_7966_WdKJdOx.jpeg HTTP/1.1" 304 0
+INFO 2025-03-08 20:07:54,239 basehttp 12472 6211612672 "GET /media/places/IMG_7932_Sq63SBN.jpeg HTTP/1.1" 304 0
+WARNING 2025-03-08 20:07:58,953 log 12472 6211612672 Not Found: /api/users/Sergey Frolov/
+WARNING 2025-03-08 20:07:58,953 basehttp 12472 6211612672 "GET /api/users/Sergey%20Frolov/ HTTP/1.1" 404 5991
+INFO 2025-03-08 20:07:58,958 basehttp 12472 6194786304 "GET /api/places/ HTTP/1.1" 200 3309
+WARNING 2025-03-08 20:08:01,233 log 12472 6194786304 Not Found: /api/users/profile/
+WARNING 2025-03-08 20:08:01,234 basehttp 12472 6194786304 "GET /api/users/profile/ HTTP/1.1" 404 5971
+INFO 2025-03-08 20:08:21,623 views 12472 6194786304 Создание нового места: {'name': 'Москва', 'location': 'Питер, ул. Исполкомская, 17', 'rating': 5, 'review': ''}
+ERROR 2025-03-08 20:08:21,645 views 12472 6194786304 Непредвиденная ошибка при создании места: duplicate key value violates unique constraint "backend_place_slug_key"
+DETAIL:  Key (slug)=(moskva) already exists.
+
+ERROR 2025-03-08 20:08:21,645 log 12472 6194786304 Internal Server Error: /api/places/
+ERROR 2025-03-08 20:08:21,646 basehttp 12472 6194786304 "POST /api/places/ HTTP/1.1" 500 134
+INFO 2025-03-08 20:13:14,573 basehttp 12472 6194786304 "GET /api/places/ HTTP/1.1" 200 3309
+INFO 2025-03-08 20:13:45,517 autoreload 12472 8439777344 /Users/esploranto/roomtour/backend/backend/models.py changed, reloading.
+INFO 2025-03-08 20:13:45,880 autoreload 13060 8439777344 Watching for file changes with StatReloader
+INFO 2025-03-08 20:19:01,011 basehttp 13060 6138720256 "GET /api/places/ HTTP/1.1" 200 3309
+INFO 2025-03-08 20:19:02,663 basehttp 13060 6172372992 "GET /media/places/Screenshot_2025-03-03_at_1.57.36AM.png HTTP/1.1" 304 0
+INFO 2025-03-08 20:19:02,663 basehttp 13060 6138720256 "GET /media/places/Screenshot_2025-03-02_at_10_mj5b2p7.57.18PM.png HTTP/1.1" 304 0
+INFO 2025-03-08 20:19:02,664 basehttp 13060 6155546624 "GET /media/places/IMG_7927_NVzwyzZ.jpeg HTTP/1.1" 304 0
+WARNING 2025-03-08 20:19:02,677 log 13060 6189199360 Not Found: /api/users/profile/
+WARNING 2025-03-08 20:19:02,678 basehttp 13060 6189199360 "GET /api/users/profile/ HTTP/1.1" 404 5971
+INFO 2025-03-08 20:19:26,573 views 13060 6138720256 Создание нового места: {'name': 'Исполкомская', 'location': 'Питер, ул. Исполкомская, 17', 'rating': 5, 'review': ''}
+INFO 2025-03-08 20:19:26,619 views 13060 6138720256 Место успешно создано: {'id': 16, 'images': [], 'name': 'Исполкомская', 'location': 'Питер, ул. Исполкомская, 17', 'rating': 5, 'review': '', 'created_at': '2025-03-08T20:19:26.616618Z', 'slug': 'ispolkomskaja-455150'}
+INFO 2025-03-08 20:19:26,620 basehttp 13060 6138720256 "POST /api/places/ HTTP/1.1" 201 211
+INFO 2025-03-08 20:19:27,017 views 13060 6138720256 Успешно загружено 3 изображений для места 16
+INFO 2025-03-08 20:19:27,017 basehttp 13060 6138720256 "POST /api/places/ispolkomskaja-455150/upload_images/ HTTP/1.1" 201 475
+INFO 2025-03-08 20:19:27,138 basehttp 13060 6138720256 "GET /api/places/ HTTP/1.1" 200 3994
+INFO 2025-03-08 20:19:27,168 basehttp 13060 6138720256 "GET /api/places/ HTTP/1.1" 200 3994
+INFO 2025-03-08 20:19:27,168 basehttp 13060 6155546624 "GET /media/places/IMG_7927_eOPlhbN.jpeg HTTP/1.1" 200 77887
+INFO 2025-03-08 20:19:27,185 basehttp 13060 6138720256 "GET /api/places/ HTTP/1.1" 200 3994
+INFO 2025-03-08 20:19:27,208 basehttp 13060 6138720256 "GET /api/places/ HTTP/1.1" 200 3994
+INFO 2025-03-08 20:19:27,220 basehttp 13060 6138720256 "GET /api/places/ HTTP/1.1" 200 3994
+INFO 2025-03-08 20:19:27,240 basehttp 13060 6138720256 "GET /api/places/ HTTP/1.1" 200 3994
+INFO 2025-03-08 20:19:27,256 basehttp 13060 6138720256 "GET /api/places/ HTTP/1.1" 200 3994
+INFO 2025-03-08 20:19:27,268 basehttp 13060 6138720256 "GET /api/places/ HTTP/1.1" 200 3994
+INFO 2025-03-08 20:19:27,280 basehttp 13060 6138720256 "GET /api/places/ HTTP/1.1" 200 3994
+INFO 2025-03-08 20:19:27,303 basehttp 13060 6138720256 "GET /api/places/ HTTP/1.1" 200 3994
+INFO 2025-03-08 20:19:27,317 basehttp 13060 6138720256 "GET /api/places/ HTTP/1.1" 200 3994
+INFO 2025-03-08 20:19:27,328 basehttp 13060 6138720256 "GET /api/places/ HTTP/1.1" 200 3994
+INFO 2025-03-08 20:19:27,344 basehttp 13060 6138720256 "GET /api/places/ HTTP/1.1" 200 3994
+INFO 2025-03-08 20:19:27,358 basehttp 13060 6138720256 "GET /api/places/ HTTP/1.1" 200 3994
+INFO 2025-03-08 20:19:27,369 basehttp 13060 6138720256 "GET /api/places/ HTTP/1.1" 200 3994
+INFO 2025-03-08 20:19:27,380 basehttp 13060 6138720256 "GET /api/places/ HTTP/1.1" 200 3994
+INFO 2025-03-08 20:19:27,399 basehttp 13060 6138720256 "GET /api/places/ HTTP/1.1" 200 3994
+INFO 2025-03-08 20:19:27,414 basehttp 13060 6138720256 "GET /api/places/ HTTP/1.1" 200 3994
+INFO 2025-03-08 20:19:27,427 basehttp 13060 6138720256 "GET /api/places/ HTTP/1.1" 200 3994
+INFO 2025-03-08 20:19:27,442 basehttp 13060 6138720256 "GET /api/places/ HTTP/1.1" 200 3994
+INFO 2025-03-08 20:19:27,456 basehttp 13060 6138720256 "GET /api/places/ HTTP/1.1" 200 3994
+INFO 2025-03-08 20:19:27,468 basehttp 13060 6138720256 "GET /api/places/ HTTP/1.1" 200 3994
+INFO 2025-03-08 20:19:27,488 basehttp 13060 6138720256 "GET /api/places/ HTTP/1.1" 200 3994
+INFO 2025-03-08 20:19:27,501 basehttp 13060 6138720256 "GET /api/places/ HTTP/1.1" 200 3994
+INFO 2025-03-08 20:19:27,511 basehttp 13060 6138720256 "GET /api/places/ HTTP/1.1" 200 3994
+INFO 2025-03-08 20:19:27,526 basehttp 13060 6138720256 "GET /api/places/ HTTP/1.1" 200 3994
+INFO 2025-03-08 20:19:27,536 basehttp 13060 6138720256 "GET /api/places/ HTTP/1.1" 200 3994
+INFO 2025-03-08 20:19:27,546 basehttp 13060 6138720256 "GET /api/places/ HTTP/1.1" 200 3994
+INFO 2025-03-08 20:19:33,931 basehttp 13060 6138720256 "GET /api/places/ HTTP/1.1" 200 3994
+INFO 2025-03-08 20:19:33,931 basehttp 13060 6155546624 "GET /api/places/ispolkomskaja/ HTTP/1.1" 200 677
+INFO 2025-03-08 20:19:33,943 basehttp 13060 6138720256 "GET /media/places/IMG_7966_WdKJdOx.jpeg HTTP/1.1" 304 0
+INFO 2025-03-08 20:19:33,943 basehttp 13060 6155546624 "GET /media/places/IMG_7932_Sq63SBN.jpeg HTTP/1.1" 304 0
+INFO 2025-03-08 20:19:37,916 basehttp 13060 6138720256 "GET /media/places/IMG_7927_eOPlhbN.jpeg HTTP/1.1" 304 0
+WARNING 2025-03-08 20:19:37,928 log 13060 6155546624 Not Found: /api/users/profile/
+WARNING 2025-03-08 20:19:37,930 basehttp 13060 6155546624 "GET /api/users/profile/ HTTP/1.1" 404 5971
+INFO 2025-03-08 20:19:38,690 basehttp 13060 6155546624 "GET /api/places/ispolkomskaja-455150/ HTTP/1.1" 200 684
+INFO 2025-03-08 20:19:38,702 basehttp 13060 6138720256 "GET /media/places/IMG_7932_QmSoDkk.jpeg HTTP/1.1" 200 73494
+INFO 2025-03-08 20:19:38,703 basehttp 13060 6155546624 "GET /media/places/IMG_7966_XIw1wHg.jpeg HTTP/1.1" 200 104852
+WARNING 2025-03-08 20:19:50,553 log 13060 6155546624 Not Found: /api/users/profile/
+WARNING 2025-03-08 20:19:50,553 basehttp 13060 6155546624 "GET /api/users/profile/ HTTP/1.1" 404 5971
+INFO 2025-03-08 20:19:50,560 basehttp 13060 6138720256 "GET /api/places/ HTTP/1.1" 200 3994
+INFO 2025-03-08 20:19:50,565 basehttp 13060 6138720256 "GET /media/places/IMG_7927_eOPlhbN.jpeg HTTP/1.1" 304 0
+INFO 2025-03-08 20:20:20,571 basehttp 13060 6138720256 "GET /api/places/ispolkomskaja-455150/ HTTP/1.1" 200 684
+INFO 2025-03-08 20:20:20,582 basehttp 13060 6138720256 "GET /media/places/IMG_7932_QmSoDkk.jpeg HTTP/1.1" 304 0
+INFO 2025-03-08 20:20:20,582 basehttp 13060 6155546624 "GET /media/places/IMG_7966_XIw1wHg.jpeg HTTP/1.1" 304 0

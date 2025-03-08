@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { Button } from "@/components/ui/button.tsx";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import {
   Carousel,
   CarouselContent,
@@ -8,119 +8,162 @@ import {
   CarouselPrevious,
   CarouselNext,
 } from "@/components/ui/carousel.tsx";
-import image1 from "@/images/IMG_7927.jpeg";
-import image2 from "@/images/IMG_7932.jpeg";
-import image3 from "@/images/IMG_7966.jpeg";
+import { ArrowLeft } from "lucide-react";
+import { usePlace } from "@/lib/hooks";
 
 export default function Place() {
+  // Здесь placeId может быть как id, так и slug
   const { username, placeId } = useParams();
   const carouselRef = useRef(null);
+  
+  // Используем новый хук для получения данных места
+  const { place, isLoading, error } = usePlace(placeId);
 
-  // Тестовые данные для изображений карусели
-  const images = [
-    {
-      src: image1,
-      alt: "Фото 1"
-    },
-    {
-      src: image2,
-      alt: "Фото 2"
-    },
-    {
-      src: image3,
-      alt: "Фото 3"
-    }
-  ];
+  if (isLoading) {
+    return (
+      <div className="text-center p-8">
+        <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <p className="mt-2">Загрузка данных места...</p>
+      </div>
+    );
+  }
 
-  // Автофокус на карусель при загрузке страницы
-  useEffect(() => {
-    if (carouselRef.current) {
-      // Небольшая задержка для уверенности, что компонент полностью отрендерился
-      setTimeout(() => {
-        carouselRef.current.focus();
-      }, 100);
+  if (error) {
+    return (
+      <div className="p-8">
+        <div className="p-4 bg-red-100 text-red-700 rounded mb-4">
+          Не удалось загрузить данные места. Пожалуйста, попробуйте позже.
+        </div>
+        
+        {/* Кнопка "Назад к профилю" */}
+        <Button variant="outline" asChild className="mb-4">
+          <Link to={`/${username}`}>
+            <ArrowLeft size={16} className="mr-2" />
+            Назад к профилю
+          </Link>
+        </Button>
+        
+        {/* Отладочная информация (только в режиме разработки) */}
+        {process.env.NODE_ENV === 'development' && (
+          <div className="mt-4 p-4 bg-gray-100 rounded">
+            <h3 className="font-bold mb-2">Отладочная информация:</h3>
+            <pre className="text-xs overflow-auto">{JSON.stringify(error, null, 2)}</pre>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  if (!place) {
+    return (
+      <div className="text-center p-8">
+        <p className="text-gray-600">Место не найдено</p>
+        
+        {/* Кнопка "Назад к профилю" */}
+        <Button variant="outline" asChild className="mt-4">
+          <Link to={`/${username}`}>
+            <ArrowLeft size={16} className="mr-2" />
+            Назад к профилю
+          </Link>
+        </Button>
+      </div>
+    );
+  }
+
+  // Определяем настройки карусели в зависимости от количества изображений
+  const hasImages = place.images && place.images.length > 0;
+  const imagesCount = hasImages ? place.images.length : 0;
+  
+  // Определяем класс для CarouselItem в зависимости от количества изображений
+  const getCarouselItemClass = () => {
+    if (imagesCount === 1) {
+      return "basis-full"; // Одно изображение занимает всю ширину
+    } else if (imagesCount === 2) {
+      return "md:basis-1/2"; // Два изображения в ряд
+    } else {
+      return "md:basis-1/2 lg:basis-1/3"; // Три и более изображений
     }
-  }, []);
+  };
 
   return (
-    <div className="max-w-5xl mx-auto p-4">
-      {/* Верхняя часть: Заголовок, кнопка "Поделиться" и рейтинг */}
-      <div className="flex items-center justify-between mb-2">
-        <h1 className="text-xl font-bold">Квартира на Исполкомской</h1>
-        <div className="flex items-center gap-2">
-          <Button variant="outline">Поделиться</Button>
-          <div className="text-5xl font-medium">10</div>
+    <div className="container mx-auto py-8 px-4">
+      {/* Кнопка "Назад к профилю" */}
+      <Button variant="outline" asChild className="mb-4">
+        <Link to={`/${username}`}>
+          <ArrowLeft size={16} className="mr-2" />
+          Назад к профилю
+        </Link>
+      </Button>
+
+      <h1 className="text-3xl font-bold mb-2">{place.name}</h1>
+      <p className="text-gray-600 mb-6">{place.location}</p>
+
+      {/* Карусель с изображениями */}
+      {hasImages ? (
+        <div className="mb-8">
+          <Carousel 
+            ref={carouselRef} 
+            className="w-full max-w-5xl mx-auto"
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+          >
+            <CarouselContent className="max-h-[500px]">
+              {place.images.map((image, index) => (
+                <CarouselItem key={index} className={`h-full ${getCarouselItemClass()}`}>
+                  <div className="p-1 h-full flex items-center justify-center">
+                    <img
+                      src={image.image_url}
+                      alt={`${place.name} - изображение ${index + 1}`}
+                      className="max-h-[480px] w-auto object-contain rounded-lg mx-auto"
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            {imagesCount > 1 && (
+              <>
+                <CarouselPrevious className="left-2" />
+                <CarouselNext className="right-2" />
+              </>
+            )}
+          </Carousel>
         </div>
-      </div>
-
-      {/* Адрес и даты */}
-      <p className="text-gray-500 mb-1">Питер, Исполкомская ул., 17</p>
-      <p className="mb-6">17–21 сен 2023</p>
-
-      {/* Стандартная карусель */}
-      <div className="relative mb-8">
-        <Carousel 
-          ref={carouselRef}
-          opts={{
-            align: "center",
-            loop: true
-          }}
-          className="w-full max-h-[500px] focus:outline-none"
-          aria-label="Фотографии квартиры"
-        >
-          <CarouselContent>
-            {images.map((image, index) => (
-              <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3 flex items-center justify-center">
-                <div className="flex items-center justify-center h-full w-full p-2">
-                  <img 
-                    src={image.src} 
-                    alt={image.alt} 
-                    className="max-h-[450px] w-auto object-contain rounded-md mx-auto" 
-                  />
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious className="left-2" aria-label="Предыдущее фото" />
-          <CarouselNext className="right-2" aria-label="Следующее фото" />
-        </Carousel>
-      </div>
-
-      {/* Две колонки: Понравилось / Не понравилось */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        <div className="border p-4 rounded-md">
-          <h2 className="font-bold mb-2">Понравилось</h2>
-          <p className="text-sm text-gray-600 dark:text-gray-300">
-            Кухня, телек, ремонт, техника (холодильник, плита, микроволновка).
-            Кровать удобная, окна на улицу, классная ванная.
-          </p>
+      ) : (
+        <div className="mb-8 bg-gray-100 h-64 flex items-center justify-center rounded-lg">
+          <p className="text-gray-500">Нет изображений</p>
         </div>
-        <div className="border p-4 rounded-md">
-          <h2 className="font-bold mb-2">Не понравилось</h2>
-          <p className="text-sm text-gray-600 dark:text-gray-300">
-            Вода в ванной ржавеет, радиаторы шумят. Соседи курят на лестнице.
-            Нет нормального вида из окна. Двор колодец, внутрь мало света.
-          </p>
-        </div>
-      </div>
+      )}
 
-      {/* Блок "Оценки" */}
+      {/* Рейтинг */}
       <div className="mb-6">
-        <h2 className="font-bold mb-2">Оценки</h2>
-        <div className="flex flex-col gap-2">
-          <Button variant="outline">Чистота</Button>
-          <Button variant="outline">Красота</Button>
-          <Button variant="outline">Кухня</Button>
-          <Button variant="outline">Ванная</Button>
-          <Button variant="outline">Спальня</Button>
-          <Button variant="outline">Вид из окна</Button>
+        <h2 className="text-xl font-semibold mb-2">Рейтинг</h2>
+        <div className="flex">
+          {Array.from({ length: 5 }, (_, i) => (
+            <span
+              key={i}
+              className={`text-2xl ${
+                i < place.rating ? "text-yellow-500" : "text-gray-300"
+              }`}
+            >
+              ★
+            </span>
+          ))}
         </div>
       </div>
 
-      {/* Место на карте */}
-      <div className="mb-6">
-        <h2 className="font-bold mb-2">Место на карте</h2>
-        <div className="h-40 bg-gray-200 dark:bg-gray-700 rounded-md" />
+      {/* Отзыв */}
+      {place.review && (
+        <div className="mb-6">
+          <h2 className="text-xl font-semibold mb-2">Отзыв</h2>
+          <p className="text-gray-700">{place.review}</p>
+        </div>
+      )}
+
+      {/* Дата добавления */}
+      <div className="text-sm text-gray-500">
+        Добавлено: {new Date(place.created_at).toLocaleDateString()}
       </div>
     </div>
   );

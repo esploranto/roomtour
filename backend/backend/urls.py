@@ -16,13 +16,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
-from .views import PlaceViewSet
+from .views import PlaceViewSet, PlaceImageViewSet
 
 router = DefaultRouter()
 router.register(r'places', PlaceViewSet)
+router.register(r'place-images', PlaceImageViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),  # <-- Админка Django
     path('api/', include(router.urls)),  # <-- API для фронтенда
 ]
+
+# Добавляем обработку медиафайлов в режиме разработки
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

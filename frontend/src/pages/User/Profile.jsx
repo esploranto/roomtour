@@ -1,49 +1,94 @@
-import React, { useState, useContext } from "react";
-import { useParams, Link } from "react-router-dom";
+import React, { useContext, useEffect } from "react";
+import { useParams, Link, useOutletContext } from "react-router-dom";
 import { Button } from "@/components/ui/button.tsx";
-import { ArrowLeft, Plus } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import PlaceCardFeed from "@/components/PlaceCardFeed";
 import ProfileCard from "@/components/ui/profileCard.jsx";
 import { AuthContext } from "@/context/AuthContext";
-
+import { usePlaces, useUserProfile } from "@/lib/hooks";
+import { useToast } from "@/context/ToastContext";
 
 export default function Profile() {
   // Получаем данные пользователя из AuthContext
   const { user } = useContext(AuthContext);
-  
-  // Тестовые данные для карточек
-  const dummyPlaces = [
-    { id: 1, title: "Place 1", dates: "01.01.2023 – 05.01.2023", rating: 8, icon: null, to: "/${username}/{place}" },
-    { id: 2, title: "Place 2", dates: "06.01.2023 – 10.01.2023", rating: 7, icon: null },
-    { id: 3, title: "Place 3", dates: "11.01.2023 – 15.01.2023", rating: 9, icon: null },
-    { id: 4, title: "Place 4", dates: "16.01.2023 – 20.01.2023", rating: 6, icon: null },
-    { id: 5, title: "Place 5", dates: "11.01.2023 – 15.01.2023", rating: 9, icon: null },
-    { id: 6, title: "Place 6", dates: "16.01.2023 – 20.01.2023", rating: 6, icon: null },
-    { id: 7, title: "Place 7", dates: "11.01.2023 – 15.01.2023", rating: 9, icon: null },
-    { id: 8, title: "Place 8", dates: "16.01.2023 – 20.01.2023", rating: 6, icon: null },
-  ];
   const { username: urlUsername } = useParams();
-  const [userDescription, setUserDescription] = useState("Собираю места, в которых жил в поездках. Вдохновляюсь удачными решениями в дизайне и красивыми интерьерами.");
-
-  // Всегда используем данные из AuthContext для демонстрации
-  // В реальном приложении нужно будет загружать данные пользователя с сервера
-  // на основе urlUsername
+  const { lastAddedPlace } = useOutletContext() || {};
+  const { showSuccess, showError, showInfo } = useToast();
   
-  console.log("User from AuthContext:", user);
+  // Используем хук для получения мест
+  const { places, isLoading, error, mutate } = usePlaces();
+  
+  // Используем хук для получения профиля пользователя
+  const username = urlUsername || user?.username;
+  const { 
+    profile, 
+    updateDescription, 
+    shareProfile 
+  } = useUserProfile(username);
+  
+  // Обновляем список мест при добавлении нового через попап
+  useEffect(() => {
+    if (lastAddedPlace) {
+      console.log('Добавлено новое место, обновляем список:', lastAddedPlace);
+      // Вызываем revalidate для обновления данных
+      mutate();
+      showSuccess('Место успешно добавлено!');
+    }
+  }, [lastAddedPlace, mutate, showSuccess]);
 
-  const handleDescriptionChange = (newDescription) => {
-    setUserDescription(newDescription);
-    // Здесь можно добавить логику для сохранения описания на сервере
+  const handleDescriptionChange = async (newDescription) => {
+    console.log("Обновляем описание профиля:", newDescription);
+    const success = await updateDescription(newDescription);
+    if (success) {
+      console.log("Описание профиля успешно обновлено");
+      showSuccess('Описание профиля успешно обновлено');
+    } else {
+      console.error("Не удалось обновить описание профиля");
+      showError('Не удалось обновить описание профиля');
+    }
   };
 
-  const handleShare = () => {
-    // Логика для шаринга профиля
-    console.log("Sharing profile:", user.username);
+  const handleShare = async () => {
+    console.log("Делимся профилем:", username);
+    const shareData = await shareProfile();
+    
+    // Используем Web Share API, если он доступен
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: `Профиль ${username} на RoomTour`,
+          text: `Посмотрите места, которые посетил ${username}`,
+          url: shareData.shareUrl || window.location.href,
+        });
+        console.log("Профиль успешно расшарен");
+        showSuccess('Профиль успешно расшарен');
+      } catch (error) {
+        console.error("Ошибка при шаринге:", error);
+        // Если Web Share API не сработал, копируем ссылку в буфер обмена
+        copyToClipboard(shareData.shareUrl || window.location.href);
+      }
+    } else {
+      // Если Web Share API не поддерживается, копируем ссылку в буфер обмена
+      copyToClipboard(shareData.shareUrl || window.location.href);
+    }
+  };
+
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text)
+      .then(() => {
+        console.log("Ссылка скопирована в буфер обмена");
+        showInfo('Ссылка скопирована в буфер обмена');
+      })
+      .catch(err => {
+        console.error("Не удалось скопировать ссылку:", err);
+        showError('Не удалось скопировать ссылку');
+      });
   };
 
   const handleEditProfile = () => {
     // Логика для редактирования профиля
-    console.log("Editing profile:", user.username);
+    console.log("Editing profile:", username);
+    showInfo('Редактирование профиля пока не реализовано');
   };
 
   return (
@@ -57,21 +102,20 @@ export default function Profile() {
       </Button>
 
       {/* Карточка профиля пользователя */}
-      {user && (
+      {(user || profile) && (
         <ProfileCard 
-          username={user.username}
-          placesCount={dummyPlaces.length}
-          description={userDescription}
-          avatarUrl={user.avatarUrl}
+          username={username}
+          placesCount={places.length}
+          description={profile?.description || ""}
+          avatarUrl={profile?.avatarUrl || user?.avatarUrl}
           onDescriptionChange={handleDescriptionChange}
           onShare={handleShare}
           onEditProfile={handleEditProfile}
         />
       )}
 
-      {/* Лента карточек мест */}
-      <PlaceCardFeed places={dummyPlaces} username={urlUsername} />
-
+      {/* Лента карточек мест с передачей username */}
+      <PlaceCardFeed username={username} />
     </div>
   );
 }

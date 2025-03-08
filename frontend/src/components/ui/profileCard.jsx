@@ -44,7 +44,7 @@ export default function ProfileCard({
   };
 
   return (
-    <div className="w-1/2 flex justify-self-center p-8 pb-12 mb-10 rounded-3xl shadow-sm bg-white dark:bg-gray-800">
+    <div className="w-full md:w-1/2 flex justify-self-center p-8 pb-12 mb-10 rounded-3xl shadow-sm bg-gray-100 dark:bg-gray-800">
       <div className="flex flex-col md:flex-row gap-4">
         {/* Аватар */}
         <div className="flex-shrink-0">
