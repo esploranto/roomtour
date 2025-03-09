@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Home } from "lucide-react";
 import {
@@ -12,6 +12,8 @@ import {
 export default function PlaceCard({ to, title, dates, rating, icon: Icon, imageUrl, images = [], location }) {
   const PlaceIcon = Icon || Home;
   const hasImages = images.length > 0 || imageUrl;
+  const carouselApiRef = useRef(null);
+  const containerRef = useRef(null);
   
   // Исправляем дублирование изображений
   // Если imageUrl уже есть в images, не добавляем его снова
@@ -29,6 +31,7 @@ export default function PlaceCard({ to, title, dates, rating, icon: Icon, imageU
   
   const multipleImages = allImages.length > 1;
   const [activeIndex, setActiveIndex] = useState(0);
+  const [hovering, setHovering] = useState(false);
 
   // Обработчик для предотвращения всплытия события клика по стрелкам
   const handleCarouselControlClick = (e) => {
@@ -40,13 +43,61 @@ export default function PlaceCard({ to, title, dates, rating, icon: Icon, imageU
   const handleSlideChange = (api) => {
     if (api) {
       setActiveIndex(api.selectedScrollSnap());
+      carouselApiRef.current = api;
     }
   };
+
+  // Обработчик движения мыши для последовательного переключения слайдов
+  const handleMouseMove = (e) => {
+    if (!multipleImages || !carouselApiRef.current || !hovering) return;
+    
+    const container = containerRef.current;
+    if (!container) return;
+    
+    const rect = container.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const containerWidth = rect.width;
+    
+    // Вычисляем, какой слайд должен быть активен в зависимости от положения мыши
+    // Делим ширину контейнера на количество слайдов
+    const totalSlides = allImages.length;
+    const slideWidth = containerWidth / totalSlides;
+    
+    // Определяем индекс слайда на основе положения мыши
+    const targetIndex = Math.min(
+      Math.floor(x / slideWidth),
+      totalSlides - 1
+    );
+    
+    // Если текущий индекс отличается от целевого, переключаем слайд
+    if (activeIndex !== targetIndex) {
+      carouselApiRef.current.scrollTo(targetIndex);
+    }
+  };
+
+  // Эффект для добавления обработчика движения мыши
+  useEffect(() => {
+    const container = containerRef.current;
+    if (container && multipleImages) {
+      container.addEventListener('mousemove', handleMouseMove);
+    }
+    
+    return () => {
+      if (container) {
+        container.removeEventListener('mousemove', handleMouseMove);
+      }
+    };
+  }, [multipleImages, hovering, activeIndex]);
 
   const cardContent = (
     <div className="relative border dark:border-gray-700 rounded-xl shadow-sm bg-white dark:bg-gray-800 transition-all duration-200 hover:shadow-lg hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer overflow-hidden">
       {/* Изображение или карусель */}
-      <div className="relative">
+      <div 
+        ref={containerRef}
+        className="relative"
+        onMouseEnter={() => setHovering(true)}
+        onMouseLeave={() => setHovering(false)}
+      >
         {/* Если только одно изображение, показываем его напрямую */}
         {hasImages && !multipleImages ? (
           <div className="relative h-64 w-full">
@@ -64,9 +115,10 @@ export default function PlaceCard({ to, title, dates, rating, icon: Icon, imageU
             opts={{
               dragFree: true,
               skipSnaps: true,
-              loop: false,
+              loop: true, // Включаем зацикливание карусели
             }}
             setApi={(api) => {
+              carouselApiRef.current = api;
               api?.on("select", () => handleSlideChange(api));
             }}
           >
