@@ -15,6 +15,7 @@ type CarouselProps = {
   plugins?: CarouselPlugin;
   orientation?: "horizontal" | "vertical";
   setApi?: (api: CarouselApi) => void;
+  disableKeyboardControls?: boolean;
 };
 
 type CarouselContextProps = {
@@ -24,6 +25,7 @@ type CarouselContextProps = {
   scrollNext: () => void;
   canScrollPrev: boolean;
   canScrollNext: boolean;
+  disableKeyboardControls?: boolean;
 } & CarouselProps;
 
 const CarouselContext = React.createContext<CarouselContextProps | null>(null);
@@ -41,7 +43,7 @@ const Carousel = React.forwardRef<
   React.HTMLAttributes<HTMLDivElement> & CarouselProps
 >(
   (
-    { orientation = "horizontal", opts, setApi, plugins, className, children, ...props },
+    { orientation = "horizontal", opts, setApi, plugins, className, children, disableKeyboardControls = false, ...props },
     ref
   ) => {
     const [carouselRef, api] = useEmblaCarousel(
@@ -66,49 +68,45 @@ const Carousel = React.forwardRef<
       api?.scrollNext();
     }, [api]);
 
-    // Локальный обработчик клавиш для элемента карусели
     const handleKeyDown = React.useCallback(
       (event: React.KeyboardEvent<HTMLDivElement>) => {
-        if (event.key === "ArrowLeft") {
-          event.preventDefault();
-          scrollPrev();
-        } else if (event.key === "ArrowRight") {
-          event.preventDefault();
-          scrollNext();
+        if (disableKeyboardControls) {
+          return;
+        }
+
+        if (!isFocused) {
+          return;
+        }
+
+        switch (event.key) {
+          case "ArrowLeft":
+            event.preventDefault();
+            if (orientation === "horizontal") {
+              scrollPrev();
+            }
+            break;
+          case "ArrowRight":
+            event.preventDefault();
+            if (orientation === "horizontal") {
+              scrollNext();
+            }
+            break;
+          case "ArrowUp":
+            event.preventDefault();
+            if (orientation === "vertical") {
+              scrollPrev();
+            }
+            break;
+          case "ArrowDown":
+            event.preventDefault();
+            if (orientation === "vertical") {
+              scrollNext();
+            }
+            break;
         }
       },
-      [scrollPrev, scrollNext]
+      [scrollPrev, scrollNext, orientation, isFocused, disableKeyboardControls]
     );
-
-    // Глобальный обработчик клавиш
-    const handleGlobalKeyDown = React.useCallback(
-      (event: KeyboardEvent) => {
-        // Проверяем, что карусель в фокусе или что мы не находимся в поле ввода
-        const activeElement = document.activeElement;
-        const isInputActive = activeElement instanceof HTMLInputElement || 
-                             activeElement instanceof HTMLTextAreaElement ||
-                             activeElement instanceof HTMLSelectElement;
-        
-        if (isFocused || !isInputActive) {
-          if (event.key === "ArrowLeft" && canScrollPrev) {
-            event.preventDefault();
-            scrollPrev();
-          } else if (event.key === "ArrowRight" && canScrollNext) {
-            event.preventDefault();
-            scrollNext();
-          }
-        }
-      },
-      [scrollPrev, scrollNext, canScrollPrev, canScrollNext, isFocused]
-    );
-
-    // Добавляем глобальный слушатель клавиатуры
-    React.useEffect(() => {
-      window.addEventListener("keydown", handleGlobalKeyDown);
-      return () => {
-        window.removeEventListener("keydown", handleGlobalKeyDown);
-      };
-    }, [handleGlobalKeyDown]);
 
     React.useEffect(() => {
       if (!api || !setApi) return;
@@ -136,6 +134,7 @@ const Carousel = React.forwardRef<
           scrollNext,
           canScrollPrev,
           canScrollNext,
+          disableKeyboardControls,
         }}
       >
         <div
@@ -146,7 +145,7 @@ const Carousel = React.forwardRef<
           className={cn("relative outline-none", className)}
           role="region"
           aria-roledescription="carousel"
-          tabIndex={0} // Делаем элемент фокусируемым
+          tabIndex={disableKeyboardControls ? -1 : 0}
           {...props}
         >
           {children}

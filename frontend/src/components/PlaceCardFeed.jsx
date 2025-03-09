@@ -38,28 +38,23 @@ export default function PlaceCardFeed({ username, initialPlaces = null }) {
   }
   
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 mb-10">
       {reversedPlaces.map((place, index) => {
         // Определяем идентификатор для URL
         const placeIdentifier = place.slug && place.slug.trim() !== '' 
           ? place.slug 
           : place.id;
           
-        // Определяем класс для элемента
-        // Первый элемент (последний добавленный) будет занимать всю ширину на мобильных устройствах
-        // и одну колонку на больших экранах
-        const itemClass = index === 0 
-          ? "col-span-1" 
-          : "";
-          
         return (
-          <div key={place.id} className={itemClass}>
+          <div key={place.id} className="h-full">
             <PlaceCard
               to={`/${username}/${placeIdentifier}`}
               title={place.title}
               dates={place.dates}
               rating={place.rating}
               icon={place.icon}
+              location={place.location}
+              images={place.images || []}
               imageUrl={place.images && place.images.length > 0 ? place.images[0].image_url : null}
             />
           </div>

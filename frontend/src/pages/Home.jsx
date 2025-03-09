@@ -13,13 +13,8 @@ export default function Home() {
       <p>{t("lead")}</p>
 
       <Button variant="outline" asChild>
-        <Link to="/profile">Перейти в профиль</Link>
+        <Link to="/sergeyfrolov">Перейти в профиль</Link>
       </Button>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Card>Левая колонка</Card>
-        <Card>Правая колонка</Card>
-      </div>
 
 
     </div>

@@ -29,12 +29,14 @@ export default function Profile() {
   // Обновляем список мест при добавлении нового через попап
   useEffect(() => {
     if (lastAddedPlace) {
-      console.log('Добавлено новое место, обновляем список:', lastAddedPlace);
+      console.log('Profile - Добавлено новое место, обновляем список:', lastAddedPlace);
       // Вызываем revalidate для обновления данных
       mutate();
-      showSuccess('Место успешно добавлено!');
+      
+      // Не показываем уведомление, так как пользователь должен быть перенаправлен на страницу места
+      // showSuccess('Место успешно добавлено!');
     }
-  }, [lastAddedPlace, mutate, showSuccess]);
+  }, [lastAddedPlace, mutate]);
 
   const handleDescriptionChange = async (newDescription) => {
     console.log("Обновляем описание профиля:", newDescription);

@@ -1,21 +1,22 @@
 import { Outlet, useLocation, useOutletContext } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { AuthContext } from "@/context/AuthContext";
 
 export default function Layout() {
   const location = useLocation();
   const [lastAddedPlace, setLastAddedPlace] = useState(null);
+  const { isLoggedIn } = useContext(AuthContext);
 
   // Обработчик добавления нового места
   const handlePlaceAdded = (newPlace) => {
+    console.log('Layout - handlePlaceAdded получил newPlace:', newPlace);
     setLastAddedPlace(newPlace);
   };
 
   // Пример логики: если URL — главная страница, isHome = true
   const isHome = location.pathname === "/";
-  // Временно задаем логин как true/false для теста
-  const isLoggedIn = false; // Меняй на false, чтобы проверить кнопку "Войти"
 
   return (
     <div className="flex flex-col min-h-screen">

@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next";
 
 export default function Header({ onPlaceAdded }) {
   const { theme, toggleTheme } = useContext(ThemeContext);
-  const { isLoggedIn, user, login, logout } = useContext(AuthContext);
+  const { isLoggedIn, user } = useContext(AuthContext);
   const [loginPopupOpen, setLoginPopupOpen] = useState(false);
   const [addPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
   const { t } = useTranslation();
@@ -25,18 +25,16 @@ export default function Header({ onPlaceAdded }) {
   const closeAddPlacePopup = () => setAddPlacePopupOpen(false);
 
   const handlePlaceAdded = (newPlace) => {
-    // Закрываем попап
     closeAddPlacePopup();
     
-    // Вызываем колбэк, если он передан
+    // Добавляем отладочный вывод
+    console.log('Header - handlePlaceAdded получил newPlace:', newPlace);
+    
     if (onPlaceAdded) {
       onPlaceAdded(newPlace);
     }
     
-    // Если пользователь находится не на странице профиля, перенаправляем его туда
-    if (user && user.username) {
-      navigate(`/${user.username}`);
-    }
+    // Перенаправление теперь выполняется в AddPlacePopup.jsx
   };
 
   return (
@@ -49,21 +47,18 @@ export default function Header({ onPlaceAdded }) {
       {/* Правая часть */}
       <div className="flex items-center gap-4">
         {isLoggedIn ? (
-          // Если пользователь залогинен, показываем кнопку "+ Добавить место"
           <Button variant="outline" onClick={openAddPlacePopup}>
-            <Plus className="mr-1 h-4 w-4" /> {t("addPlace")}
+            <Plus className="mr-1 h-4 w-4" /> Добавить место
           </Button>
         ) : (
-          // Если не залогинен, показываем кнопку "Войти"
           <Button variant="outline" onClick={openLoginPopup}>
-            {t("login")}
+            Войти
           </Button>
         )}
 
         {isLoggedIn && (
-          // Аватар пользователя (если залогинен)
-          <Link to={`/${user.username}`}>
-            <Avatar className="w-9 h-9">
+          <Link to={`/${user.username.toLowerCase().replace(/\s+/g, '')}`}>
+            <Avatar className="w-9 h-9 cursor-pointer">
               {user.avatarUrl ? (
                 <AvatarImage src={user.avatarUrl} alt={user.username} />
               ) : (

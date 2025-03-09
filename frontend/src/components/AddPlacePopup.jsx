@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { Textarea } from "@/components/ui/textarea.tsx";
@@ -27,6 +28,7 @@ import { useToast } from "@/context/ToastContext";
 
 export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded }) {
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [comment, setComment] = useState("");
@@ -146,24 +148,49 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded }) {
         ...newPlace,
         title: newPlace.name,
         dates: formattedDates,
+        id: newPlace.id,
+        slug: newPlace.slug
       };
 
       console.log('Подготовленное место для UI:', placeForUI);
 
-      // Вызываем колбэк для обновления списка мест в родительском компоненте
-      if (onPlaceAdded) {
-        onPlaceAdded(placeForUI);
-      }
+      // Показываем уведомление об успехе
+      showSuccess('Место успешно добавлено!');
       
       // Обновляем кэш SWR
       mutate();
-      
-      // Показываем уведомление об успехе
-      showSuccess('Место успешно добавлено!');
 
-      // Сбрасываем форму и закрываем попап
+      // Закрываем попап и сбрасываем форму
       resetForm();
       onClose();
+
+      // Вызываем колбэк для обновления списка мест в родительском компоненте
+      if (onPlaceAdded) {
+        console.log('AddPlacePopup - вызываем onPlaceAdded с данными:', placeForUI);
+        onPlaceAdded(placeForUI);
+      } else {
+        console.error('AddPlacePopup - onPlaceAdded не определен');
+      }
+      
+      // Перенаправляем пользователя на страницу добавленного места
+      if (user && user.username && placeForUI) {
+        // Используем slug или id места для формирования URL
+        const placeIdentifier = placeForUI.slug && placeForUI.slug.trim() !== '' 
+          ? placeForUI.slug 
+          : placeForUI.id;
+        
+        const targetUrl = `/${user.username.toLowerCase().replace(/\s+/g, '')}/${placeIdentifier}`;
+        console.log('AddPlacePopup - перенаправляем на:', targetUrl);
+        
+        // Используем setTimeout, чтобы дать время другим операциям завершиться
+        setTimeout(() => {
+          console.log('AddPlacePopup - выполняем перенаправление на:', targetUrl);
+          // Используем window.location.href вместо navigate
+          window.location.href = targetUrl;
+        }, 100);
+      } else {
+        console.error('AddPlacePopup - не удалось перенаправить: user или placeForUI отсутствуют', { user, placeForUI });
+      }
     } catch (err) {
       console.error("Ошибка при добавлении места:", err);
       setError("Не удалось добавить место. Пожалуйста, попробуйте позже.");
@@ -174,12 +201,18 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded }) {
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => {
-      if (!open) {
-        resetForm();
-        onClose();
-      }
-    }}>
+    <Dialog 
+      open={isOpen} 
+      onOpenChange={(open) => {
+        if (!open) {
+          // Если диалог закрывается через крестик или клик вне диалога,
+          // а не через кнопку "Добавить место", то просто сбрасываем форму и закрываем
+          console.log('AddPlacePopup - диалог закрывается через onOpenChange');
+          resetForm();
+          onClose();
+        }
+      }}
+    >
       <DialogContent className="sm:max-w-md bg-white dark:bg-gray-800">
         <DialogHeader>
           <DialogTitle>Новое место</DialogTitle>

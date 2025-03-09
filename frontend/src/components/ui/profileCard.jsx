@@ -1,16 +1,18 @@
 import React, { useState, useContext } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar.tsx";
 import { Button } from "@/components/ui/button.tsx";
-import { ArrowUp, MoreVertical, Edit } from "lucide-react";
+import { Share, MoreVertical, Edit, LogOut } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu.tsx";
 import { Textarea } from "@/components/ui/textarea.tsx";
 import { getInitials } from "@/lib/utils.ts";
 import { AuthContext } from "@/context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function ProfileCard({ 
   username, 
@@ -21,17 +23,19 @@ export default function ProfileCard({
   onShare = () => {},
   onEditProfile = () => {}
 }) {
-  const { user } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
   const [isEditing, setIsEditing] = useState(false);
   const [editedDescription, setEditedDescription] = useState(description);
+  const navigate = useNavigate();
 
   // Используем данные из AuthContext, если это профиль текущего пользователя
-  const displayUsername = user && user.username === username ? user.username : username;
-  const displayAvatarUrl = user && user.username === username ? user.avatarUrl : avatarUrl;
-
-  console.log("ProfileCard - User from AuthContext:", user);
-  console.log("ProfileCard - Username prop:", username);
-  console.log("ProfileCard - Display username:", displayUsername);
+  const displayUsername = user?.username || username;
+  const displayAvatarUrl = user?.avatarUrl || avatarUrl;
+  
+  // Добавляем отладочную информацию
+  console.log("ProfileCard - Current user:", user?.username);
+  console.log("ProfileCard - Profile username:", username);
+  console.log("ProfileCard - Are they equal?:", user?.username === username);
 
   const handleSaveDescription = () => {
     onDescriptionChange(editedDescription);
@@ -43,9 +47,14 @@ export default function ProfileCard({
     setIsEditing(false);
   };
 
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
+
   return (
-    <div className="w-full md:w-1/2 flex justify-self-center p-8 pb-12 mb-10 rounded-3xl shadow-sm bg-gray-100 dark:bg-gray-800">
-      <div className="flex flex-col md:flex-row gap-4">
+    <div className="w-full xl:w-1/2 flex justify-self-center p-8 pb-12 mb-10 rounded-3xl shadow-sm bg-gray-100 dark:bg-gray-800">
+      <div className="w-full flex flex-col md:flex-row gap-4">
         {/* Аватар */}
         <div className="flex-shrink-0">
           <Avatar className="h-24 w-24">
@@ -66,14 +75,14 @@ export default function ProfileCard({
             </div>
             
             {/* Кнопки действий */}
-            <div className="flex gap-2">
+            <div className="flex gap-2 items-center">
               <Button 
                 variant="ghost" 
                 size="icon" 
                 onClick={onShare}
                 title="Поделиться"
               >
-                <ArrowUp size={20} />
+                <Share className="h-5 w-5" />
               </Button>
               
               <DropdownMenu>
@@ -83,13 +92,18 @@ export default function ProfileCard({
                     size="icon"
                     title="Дополнительные действия"
                   >
-                    <MoreVertical size={20} />
+                    <MoreVertical className="h-5 w-5" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={onEditProfile}>
+                <DropdownMenuContent align="end" className="w-48 bg-white dark:bg-gray-800">
+                  <DropdownMenuItem onClick={() => setIsEditing(true)}>
                     <Edit className="mr-2 h-4 w-4" />
-                    Редактировать профиль
+                    Редактировать описание
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleLogout}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Выйти
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -99,32 +113,22 @@ export default function ProfileCard({
           {/* Описание профиля */}
           <div className="mt-4">
             {isEditing ? (
-              <div>
+              <div className="w-full">
                 <Textarea
                   value={editedDescription}
                   onChange={(e) => setEditedDescription(e.target.value)}
                   placeholder="Расскажите о себе..."
-                  className="min-h-[80px]"
+                  className="min-h-[80px] w-full resize-none"
                 />
                 <div className="flex gap-2 mt-2">
-                  <Button size="sm" onClick={handleSaveDescription}>Сохранить</Button>
-                  <Button size="sm" variant="outline" onClick={handleCancelEdit}>Отмена</Button>
+                  <Button variant="outline" size="sm" onClick={handleSaveDescription}>Сохранить</Button>
+                  <Button variant="outline" size="sm" onClick={handleCancelEdit}>Отмена</Button>
                 </div>
               </div>
             ) : (
-              <div className="relative">
-                <p className="text-gray-700 dark:text-gray-200 whitespace-pre-wrap">
-                  {description || "Нет описания"}
-                </p>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  className="absolute top-0 right-0" 
-                  onClick={() => setIsEditing(true)}
-                >
-                  <Edit size={16} />
-                </Button>
-              </div>
+              <p className="text-gray-700 dark:text-gray-200 whitespace-pre-wrap">
+                {description || "Нет описания"}
+              </p>
             )}
           </div>
         </div>

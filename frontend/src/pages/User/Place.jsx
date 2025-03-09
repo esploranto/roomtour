@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button.tsx";
 import { useParams, Link } from "react-router-dom";
 import {
@@ -16,8 +16,52 @@ export default function Place() {
   const { username, placeId } = useParams();
   const carouselRef = useRef(null);
   
+  console.log('Place - получены параметры из URL:', { username, placeId });
+  
   // Используем новый хук для получения данных места
   const { place, isLoading, error } = usePlace(placeId);
+  
+  console.log('Place - получены данные места:', { place, isLoading, error });
+
+  // Устанавливаем фокус на карусель после загрузки компонента
+  useEffect(() => {
+    if (carouselRef.current && place && place.images && place.images.length > 0) {
+      // Находим элемент карусели и устанавливаем фокус
+      const carouselElement = carouselRef.current;
+      
+      // Используем setTimeout для гарантии, что DOM полностью загружен
+      setTimeout(() => {
+        if (carouselElement) {
+          carouselElement.focus();
+          
+          // Добавляем глобальный обработчик клавиатурных событий
+          const handleKeyDown = (e) => {
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+              // Предотвращаем стандартное поведение (прокрутку страницы)
+              e.preventDefault();
+              
+              // Эмулируем клик по соответствующей кнопке
+              if (e.key === 'ArrowLeft') {
+                const prevButton = carouselElement.querySelector('[data-carousel-prev]');
+                if (prevButton) prevButton.click();
+              } else {
+                const nextButton = carouselElement.querySelector('[data-carousel-next]');
+                if (nextButton) nextButton.click();
+              }
+            }
+          };
+          
+          // Добавляем обработчик
+          window.addEventListener('keydown', handleKeyDown);
+          
+          // Очищаем обработчик при размонтировании
+          return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+          };
+        }
+      }, 300);
+    }
+  }, [place]);
 
   if (isLoading) {
     return (
@@ -108,6 +152,7 @@ export default function Place() {
               align: "start",
               loop: true,
             }}
+            tabIndex={0} // Делаем карусель фокусируемой
           >
             <CarouselContent className="max-h-[500px]">
               {place.images.map((image, index) => (
@@ -124,8 +169,8 @@ export default function Place() {
             </CarouselContent>
             {imagesCount > 1 && (
               <>
-                <CarouselPrevious className="left-2" />
-                <CarouselNext className="right-2" />
+                <CarouselPrevious className="left-2" data-carousel-prev />
+                <CarouselNext className="right-2" data-carousel-next />
               </>
             )}
           </Carousel>
