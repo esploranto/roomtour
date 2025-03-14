@@ -16,7 +16,7 @@ export function usePlaces() {
         id: place.id,
         slug: place.slug,
         title: place.name,
-        dates: formatDateRange(place.created_at),
+        dates: place.dates || formatDateRange(place.created_at),
         rating: place.rating,
         icon: null,
         location: place.location,

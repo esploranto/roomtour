@@ -9,8 +9,10 @@ export default function PlaceCardFeed({ username, initialPlaces = null }) {
   // Используем initialPlaces, если они предоставлены, иначе используем данные из хука
   const places = initialPlaces || fetchedPlaces;
   
-  // Создаем копию массива и переворачиваем его, чтобы последние добавленные элементы были в начале
-  const reversedPlaces = [...places].reverse();
+  // Сортируем места по дате создания в обратном порядке
+  const sortedPlaces = places ? [...places].sort((a, b) => {
+    return new Date(b.created_at) - new Date(a.created_at);
+  }) : [];
   
   if (isLoading) {
     return (
@@ -39,7 +41,7 @@ export default function PlaceCardFeed({ username, initialPlaces = null }) {
   
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 mb-10">
-      {reversedPlaces.map((place, index) => {
+      {sortedPlaces.map((place, index) => {
         // Определяем идентификатор для URL
         const placeIdentifier = place.slug && place.slug.trim() !== '' 
           ? place.slug 

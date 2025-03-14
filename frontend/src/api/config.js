@@ -81,19 +81,56 @@ api.interceptors.response.use(
       // Ошибка от сервера (4xx, 5xx)
       console.error('API Error:', error.response.status, error.response.data);
       
-      // Обработка 401 Unauthorized
-      if (error.response.status === 401) {
-        // Здесь можно перенаправить на страницу логина
-        // window.location.href = '/login';
+      // Специальная обработка для 404
+      if (error.response.status === 404) {
+        console.warn(`Resource not found: ${error.config.url}`);
+        // Для GET-запросов можно вернуть пустой результат вместо ошибки
+        if (error.config.method === 'get') {
+          if (error.config.url.includes('/users/')) {
+            return Promise.resolve({ data: { username: null, places: [] } });
+          }
+          if (error.config.url.includes('/places/')) {
+            return Promise.resolve({ data: [] });
+          }
+        }
       }
+      
+      // Если сервер вернул объект с ошибкой, возвращаем его
+      if (error.response.data) {
+        // Если ошибка пришла в виде строки, оборачиваем её в объект
+        if (typeof error.response.data === 'string') {
+          return Promise.reject({
+            error: error.response.data,
+            status: error.response.status
+          });
+        }
+        // Если это объект, возвращаем как есть
+        return Promise.reject({
+          ...error.response.data,
+          status: error.response.status
+        });
+      }
+      
+      // Если нет данных об ошибке, возвращаем общее сообщение с кодом
+      return Promise.reject({
+        error: `Ошибка сервера (${error.response.status}). Пожалуйста, попробуйте позже.`,
+        status: error.response.status
+      });
     } else if (error.request) {
       // Запрос был сделан, но ответ не получен
       console.error('API Request Error (No Response):', error.request);
+      return Promise.reject({
+        error: 'Не удалось подключиться к серверу. Пожалуйста, проверьте подключение к интернету.',
+        status: 0
+      });
     } else {
       // Ошибка при настройке запроса
       console.error('API Setup Error:', error.message);
+      return Promise.reject({
+        error: 'Произошла ошибка при отправке запроса. Пожалуйста, попробуйте позже.',
+        status: 0
+      });
     }
-    return Promise.reject(error);
   }
 );
 

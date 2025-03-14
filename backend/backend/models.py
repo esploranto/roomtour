@@ -72,6 +72,7 @@ class Place(models.Model):
     location = models.CharField(max_length=255, verbose_name="Локация")
     rating = models.PositiveSmallIntegerField(verbose_name="Рейтинг (1-5)")
     review = models.TextField(blank=True, verbose_name="Отзыв")
+    dates = models.CharField(max_length=255, blank=True, default='', verbose_name="Даты пребывания")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата добавления")
     slug = models.SlugField(max_length=255, unique=True, blank=True, verbose_name="URL")
     

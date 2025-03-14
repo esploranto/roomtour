@@ -24,8 +24,38 @@ class PlaceImageSerializer(serializers.ModelSerializer):
 class PlaceSerializer(serializers.ModelSerializer):
     """Сериализатор для мест проживания."""
     images = PlaceImageSerializer(many=True, read_only=True)
+    dates = serializers.CharField(max_length=255, required=False, allow_blank=True)
     
     class Meta:
         model = Place
         fields = '__all__'
         read_only_fields = ['slug']
+        
+    def create(self, validated_data):
+        """Создание места с правильной обработкой поля dates."""
+        # Извлекаем dates из validated_data, если оно есть
+        dates = validated_data.pop('dates', '')
+        
+        # Создаем объект Place без поля dates
+        instance = Place.objects.create(**validated_data)
+        
+        # Устанавливаем значение dates после создания
+        instance.dates = dates
+        instance.save()
+        
+        return instance
+        
+    def update(self, instance, validated_data):
+        """Обновление места с правильной обработкой поля dates."""
+        # Извлекаем dates из validated_data, если оно есть
+        dates = validated_data.pop('dates', instance.dates)
+        
+        # Обновляем остальные поля
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+            
+        # Обновляем dates
+        instance.dates = dates
+        instance.save()
+        
+        return instance

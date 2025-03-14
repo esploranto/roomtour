@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button.tsx";
 import { Moon, Sun, Plus } from "lucide-react";
@@ -9,14 +9,23 @@ import AddPlacePopup from "@/components/AddPlacePopup";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar.tsx";
 import { getInitials } from "@/lib/utils.ts";
 import { useTranslation } from "react-i18next";
+import LogoLightMode from "@/images/logo-light-mode.svg";
+import LogoDarkMode from "@/images/logo-dark-mode.svg";
 
-export default function Header({ onPlaceAdded }) {
+export default function Header({ onPlaceAdded, onDialogStateChange }) {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const { isLoggedIn, user } = useContext(AuthContext);
   const [loginPopupOpen, setLoginPopupOpen] = useState(false);
   const [addPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
   const { t } = useTranslation();
   const navigate = useNavigate();
+
+  // Уведомляем родительский компонент об изменении состояния диалогов
+  useEffect(() => {
+    if (onDialogStateChange) {
+      onDialogStateChange(loginPopupOpen || addPlacePopupOpen);
+    }
+  }, [loginPopupOpen, addPlacePopupOpen, onDialogStateChange]);
 
   const openLoginPopup = () => setLoginPopupOpen(true);
   const closeLoginPopup = () => setLoginPopupOpen(false);
@@ -38,10 +47,15 @@ export default function Header({ onPlaceAdded }) {
   };
 
   return (
-    <header className="flex justify-between items-center p-4 bg-gray-100 dark:bg-gray-800 rounded-xl">
+    <header className="flex justify-between items-center p-3 pt-1 pb-1 bg-gray-100 dark:bg-gray-800 rounded-xl">
       {/* Логотип */}
-      <Link to="/" className="text-xl font-bold text-gray-900 dark:text-white">
-        🏡 Roomtour
+      <Link to="/" className="flex items-center text-xl font-bold text-gray-900 dark:text-white">
+        <img 
+          src={theme === "light" ? LogoLightMode : LogoDarkMode} 
+          alt="Roomtour Logo" 
+          className="h-14 mr-2" 
+        />
+        Roomtour
       </Link>
 
       {/* Правая часть */}

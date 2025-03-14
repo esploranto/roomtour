@@ -20,7 +20,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu.tsx";
-import EditPlacePopup from "@/components/EditPlacePopup";
+import AddPlacePopup from "@/components/AddPlacePopup";
 import ConfirmDialog from "@/components/ui/confirm-dialog";
 
 export default function Place() {
@@ -292,6 +292,14 @@ export default function Place() {
       
       <p className="text-gray-600 mb-6">{place.location}</p>
 
+      {/* Даты */}
+      {place.dates && (
+        <div className="mb-6">
+          <h2 className="text-xl font-semibold mb-2">Даты проживания</h2>
+          <p className="text-gray-700">{place.dates}</p>
+        </div>
+      )}
+
       {/* Карусель с изображениями */}
       {hasImages ? (
         <div className="mb-8">
@@ -356,14 +364,9 @@ export default function Place() {
           <p className="text-gray-700">{place.review}</p>
         </div>
       )}
-
-      {/* Дата добавления */}
-      <div className="text-sm text-gray-500">
-        Добавлено: {new Date(place.created_at).toLocaleDateString()}
-      </div>
       
       {/* Попап редактирования места */}
-      <EditPlacePopup 
+      <AddPlacePopup 
         isOpen={isEditPopupOpen} 
         onClose={() => setIsEditPopupOpen(false)} 
         place={place}
