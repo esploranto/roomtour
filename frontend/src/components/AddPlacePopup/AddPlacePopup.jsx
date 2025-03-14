@@ -1,34 +1,23 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button.tsx";
-import { Input } from "@/components/ui/input.tsx";
-import { Textarea } from "@/components/ui/textarea.tsx";
-import { Label } from "@/components/ui/label.jsx";
-import { CalendarIcon, X, RefreshCw, MapPin } from "lucide-react";
 import { format, parse } from "date-fns";
 import { ru } from "date-fns/locale";
-import { cn } from "@/lib/utils.ts";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
-  DialogClose,
 } from "@/components/ui/dialog.jsx";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover.jsx";
-import { Calendar } from "@/components/ui/calendar.jsx";
 import { AuthContext } from "@/context/AuthContext";
 import { placesService } from "@/api";
 import { usePlaces } from "@/lib/hooks";
 import { useToast } from "@/context/ToastContext";
-import DatePicker from "@/components/ui/date-picker.jsx";
-import { networkService } from '../services/networkService';
-import { queueService } from '../services/queueService';
+import { networkService } from '../../services/networkService';
+import { queueService } from '../../services/queueService';
+import PhotoUploadArea from './PhotoUploadArea';
+import PlaceForm from './PlaceForm';
+import { X } from "lucide-react";
 
 export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, place }) {
   const { user } = useContext(AuthContext);
@@ -49,10 +38,8 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, place }) 
   const [showMap, setShowMap] = useState(false);
   const [formChanged, setFormChanged] = useState(false);
   const [initialFormState, setInitialFormState] = useState({});
+  const [startDatePopoverOpen, setStartDatePopoverOpen] = useState(false);
   const [endDatePopoverOpen, setEndDatePopoverOpen] = useState(false);
-  
-  const dropZoneRef = useRef(null);
-  const fileInputRef = useRef(null);
   
   const { mutate } = usePlaces();
   
@@ -121,50 +108,15 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, place }) 
     }
   }, [name, address, comment, rating, photos, startDate, endDate, isOpen]);
 
-  useEffect(() => {
-    const handleDragOver = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      if (dropZoneRef.current) {
-        dropZoneRef.current.classList.add('bg-gray-100');
-      }
-    };
-    
-    const handleDragLeave = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      if (dropZoneRef.current) {
-        dropZoneRef.current.classList.remove('bg-gray-100');
-      }
-    };
-    
-    const handleDrop = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      if (dropZoneRef.current) {
-        dropZoneRef.current.classList.remove('bg-gray-100');
-      }
-      
-      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-        handleFiles(e.dataTransfer.files);
-      }
-    };
-    
-    if (isOpen) {
-      document.addEventListener('dragover', handleDragOver);
-      document.addEventListener('dragleave', handleDragLeave);
-      document.addEventListener('drop', handleDrop);
-    }
-    
-    return () => {
-      document.removeEventListener('dragover', handleDragOver);
-      document.removeEventListener('dragleave', handleDragLeave);
-      document.removeEventListener('drop', handleDrop);
-    };
-  }, [isOpen]);
-
   const handleStartDateSelect = (date) => {
     setStartDate(date);
+    setStartDatePopoverOpen(false);
+    
+    // Если дата заезда позже даты выезда, сбрасываем дату выезда
+    if (endDate && date > endDate) {
+      setEndDate(null);
+    }
+    
     setTimeout(() => {
       setEndDatePopoverOpen(true);
     }, 100);
@@ -173,6 +125,14 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, place }) 
   const handleEndDateSelect = (date) => {
     setEndDate(date);
     setEndDatePopoverOpen(false);
+    
+    // Если дата выезда раньше даты заезда, сбрасываем дату заезда
+    if (startDate && date < startDate) {
+      setStartDate(null);
+      setTimeout(() => {
+        setStartDatePopoverOpen(true);
+      }, 100);
+    }
   };
 
   const handleFiles = (files) => {
@@ -187,21 +147,14 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, place }) 
     }
   };
 
-  const handlePhotoChange = (e) => {
-    if (e.target.files && e.target.files.length > 0) {
-      handleFiles(e.target.files);
-    }
-  };
-
-  const removePhoto = (index, isExisting = false) => {
+  const removePhoto = (photoId, isExisting = false) => {
     if (isExisting) {
-      const photoToDelete = existingPhotos[index];
-      setDeletedPhotos(prev => [...prev, photoToDelete.id]);
-      setExistingPhotos(prev => prev.filter((_, i) => i !== index));
+      setDeletedPhotos(prev => [...prev, photoId]);
+      setExistingPhotos(prev => prev.filter(photo => photo.id !== photoId));
     } else {
       setDisabledPhotos(prev => ({
         ...prev,
-        [index]: true
+        [photoId]: true
       }));
     }
   };
@@ -334,8 +287,12 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, place }) 
       resetForm();
       onClose();
 
-      if (isEditMode && onPlaceAdded) {
+      if (onPlaceAdded) {
         onPlaceAdded(placeForUI);
+      }
+
+      if (isEditMode) {
+        // Ничего не делаем, так как форма уже закрыта
       } else if (user && user.username && placeForUI) {
         const placeIdentifier = placeForUI.slug || placeForUI.id;
         const targetUrl = `/${user.username.toLowerCase().replace(/\s+/g, '')}/${placeIdentifier}`;
@@ -388,53 +345,36 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, place }) 
   };
 
   useEffect(() => {
-    if (isEditMode && place && isOpen) {
+    if (isOpen && isEditMode && place) {
       setName(place.name || "");
       setAddress(place.location || "");
       setComment(place.review || "");
       setRating(place.rating || 0);
       
       if (place.dates) {
-        try {
-          const datesParts = place.dates.split(' – ');
-          if (datesParts[0]) {
-            const parsedStartDate = parse(datesParts[0].trim(), 'dd.MM.yyyy', new Date());
-            if (!isNaN(parsedStartDate.getTime())) {
-              setStartDate(parsedStartDate);
-            }
-          }
-          if (datesParts[1]) {
-            const parsedEndDate = parse(datesParts[1].trim(), 'dd.MM.yyyy', new Date());
-            if (!isNaN(parsedEndDate.getTime())) {
-              setEndDate(parsedEndDate);
-            }
-          }
-        } catch (error) {
-          console.error('Ошибка при парсинге дат:', error);
-          setStartDate(null);
-          setEndDate(null);
+        const [startDateStr, endDateStr] = place.dates.split(' – ');
+        if (startDateStr) {
+          setStartDate(parse(startDateStr, "dd.MM.yyyy", new Date()));
+        }
+        if (endDateStr) {
+          setEndDate(parse(endDateStr, "dd.MM.yyyy", new Date()));
         }
       }
       
       if (place.images && place.images.length > 0) {
-        setExistingPhotos(place.images.map((image, index) => ({
-          id: image.id || index,
-          url: image.image_url,
-          isExisting: true
-        })));
+        setExistingPhotos(place.images);
       }
       
-      setFormChanged(false);
       setInitialFormState({
         name: place.name || "",
         address: place.location || "",
         comment: place.review || "",
         rating: place.rating || 0,
-        startDate: null,
-        endDate: null,
+        startDate: startDate,
+        endDate: endDate,
       });
     }
-  }, [isEditMode, place, isOpen]);
+  }, [isOpen, isEditMode, place]);
 
   return (
     <Dialog 
@@ -445,9 +385,16 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, place }) 
         }
       }}
     >
-      <DialogContent className="sm:max-w-5xl bg-white dark:bg-gray-800 max-h-[90vh] overflow-y-auto p-0 z-50">
-        <DialogHeader className="p-6 pb-2">
+      <DialogContent className="sm:max-w-5xl bg-white dark:bg-gray-800 max-h-[90vh] overflow-hidden p-0 z-50 rounded-xl">
+        <DialogHeader className="p-6 pb-2 sticky top-0 bg-white dark:bg-gray-800 z-10 border-b">
           <DialogTitle className="text-xl">{isEditMode ? 'Редактирование места' : 'Новое место'}</DialogTitle>
+          <button
+            onClick={handleCancel}
+            className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
+          >
+            <X className="h-4 w-4" />
+            <span className="sr-only">Close</span>
+          </button>
         </DialogHeader>
         
         {error && (
@@ -470,207 +417,48 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, place }) 
           </div>
         )}
         
-        <form onSubmit={handleSubmit} className="p-6 pt-2">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="name" className="block mb-2">Название</Label>
-                <Input
-                  id="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Например «Выходные на майские»"
-                  autoComplete="off"
-                  aria-autocomplete="none"
-                />
-              </div>
+        <form onSubmit={handleSubmit} className="overflow-y-auto" style={{ maxHeight: 'calc(90vh - 180px)', padding: '0 24px' }}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-6">
+            <PlaceForm 
+              name={name}
+              setName={setName}
+              address={address}
+              setAddress={setAddress}
+              comment={comment}
+              setComment={setComment}
+              startDate={startDate}
+              setStartDate={setStartDate}
+              endDate={endDate}
+              setEndDate={setEndDate}
+              rating={rating}
+              setRating={setRating}
+              showMap={showMap}
+              setShowMap={setShowMap}
+              startDatePopoverOpen={startDatePopoverOpen}
+              setStartDatePopoverOpen={setStartDatePopoverOpen}
+              endDatePopoverOpen={endDatePopoverOpen}
+              setEndDatePopoverOpen={setEndDatePopoverOpen}
+              handleStartDateSelect={handleStartDateSelect}
+              handleEndDateSelect={handleEndDateSelect}
+            />
 
-              <div>
-                <Label htmlFor="address" className="block mb-2">Адрес</Label>
-                <div className="flex">
-                  <Input
-                    id="address"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                    placeholder="Укажите адрес"
-                    className="flex-grow rounded-r-none"
-                    autoComplete="off"
-                    aria-autocomplete="none"
-                  />
-                  <Button 
-                    type="button" 
-                    variant="outline" 
-                    className="rounded-l-none border-l-0"
-                    onClick={() => setShowMap(!showMap)}
-                  >
-                    Карта
-                  </Button>
-                </div>
-
-                {showMap && (
-                  <div className="mt-2 border rounded-md p-4 h-[200px] flex items-center justify-center bg-gray-50">
-                    <div className="text-center text-gray-500">
-                      <MapPin className="mx-auto mb-2" />
-                      <p>Функционал карты будет добавлен позже</p>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <div>
-                <Label className="block mb-2">Даты проживания</Label>
-                <div className="grid grid-cols-2 gap-4">
-                  <DatePicker
-                    value={startDate}
-                    onChange={handleStartDateSelect}
-                    onClear={() => {
-                      setStartDate(null);
-                      setEndDate(null);
-                    }}
-                    placeholder="Заезд"
-                  />
-                  <DatePicker
-                    value={endDate}
-                    onChange={handleEndDateSelect}
-                    onClear={() => setEndDate(null)}
-                    placeholder="Выезд"
-                    disabled={!startDate}
-                    popoverOpen={endDatePopoverOpen}
-                    onPopoverOpenChange={setEndDatePopoverOpen}
-                  />
-                </div>
-              </div>
-
-              <div>
-                <Label htmlFor="comment" className="block mb-2">Комментарий</Label>
-                <Textarea
-                  id="comment"
-                  value={comment}
-                  onChange={(e) => setComment(e.target.value)}
-                  placeholder="Опишите опыт проживания"
-                  rows={3}
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="rating" className="block mb-2">Оценка</Label>
-                <div className="flex items-center space-x-1">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <button
-                      key={star}
-                      type="button"
-                      onClick={() => setRating(star)}
-                      className={`text-2xl ${
-                        star <= rating ? "text-yellow-500" : "text-gray-300"
-                      }`}
-                    >
-                      ★
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="flex flex-col">
-              <div 
-                ref={dropZoneRef}
-                className="border-2 border-dashed rounded-md p-6 flex flex-col items-center justify-center transition-colors h-full"
-                onDragOver={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  dropZoneRef.current.classList.add('bg-gray-100');
-                }}
-                onDragLeave={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  dropZoneRef.current.classList.remove('bg-gray-100');
-                }}
-                onDrop={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  dropZoneRef.current.classList.remove('bg-gray-100');
-                  if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-                    handleFiles(e.dataTransfer.files);
-                  }
-                }}
-              >
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={handlePhotoChange}
-                  className="hidden"
-                  multiple
-                />
-                
-                <div className="w-full text-center">
-                  <p className="text-gray-500 mb-4">
-                    Перетащите сюда фото или видео
-                  </p>
-                  <Button 
-                    type="button" 
-                    variant="secondary" 
-                    onClick={() => fileInputRef.current.click()}
-                    className="w-full sm:w-auto"
-                  >
-                    Загрузить фото
-                  </Button>
-                </div>
-              </div>
-
-              {(photos.length > 0 || existingPhotos.length > 0) && (
-                <div className="mt-4 grid grid-cols-2 gap-2">
-                  {existingPhotos.map((photo, index) => (
-                    <div key={`existing-${index}`} className="relative group">
-                      <div className="aspect-w-16 aspect-h-9 rounded-md overflow-hidden">
-                        <img 
-                          src={photo.url} 
-                          alt={`Preview ${index}`} 
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => removePhoto(index, true)}
-                        className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                        title="Удалить фото"
-                      >
-                        <X size={14} />
-                      </button>
-                    </div>
-                  ))}
-                  
-                  {photos.map((photo, index) => (
-                    !disabledPhotos[index] && (
-                      <div key={`new-${index}`} className="relative group">
-                        <div className="aspect-w-16 aspect-h-9 rounded-md overflow-hidden">
-                          <img 
-                            src={photo.preview} 
-                            alt={`Preview ${index}`} 
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => removePhoto(index)}
-                          className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                          title="Удалить фото"
-                        >
-                          <X size={14} />
-                        </button>
-                      </div>
-                    )
-                  ))}
-                </div>
-              )}
-            </div>
+            <PhotoUploadArea 
+              photos={photos}
+              existingPhotos={existingPhotos}
+              disabledPhotos={disabledPhotos}
+              onFileSelect={handleFiles}
+              onRemovePhoto={removePhoto}
+            />
           </div>
+        </form>
 
-          <div className="flex justify-start space-x-4 mt-6">
+        <div className="sticky bottom-0 left-0 right-0 bg-white dark:bg-gray-800 p-6 border-t border-gray-200 dark:border-gray-700 mt-auto">
+          <div className="flex justify-start space-x-4">
             <Button 
               type="submit" 
               disabled={loading || !isFormValid} 
               className="w-full sm:w-auto bg-blue-600 text-white"
+              onClick={handleSubmit}
             >
               {loading ? (isEditMode ? "Сохранение..." : "Добавление...") : (isEditMode ? "Сохранить" : "Добавить место")}
             </Button>
@@ -683,7 +471,7 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, place }) 
               Отмена
             </Button>
           </div>
-        </form>
+        </div>
       </DialogContent>
     </Dialog>
   );

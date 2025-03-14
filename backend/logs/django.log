@@ -2360,3 +2360,126 @@ INFO 2025-03-14 21:02:03,864 basehttp 43734 6189494272 "PUT /api/places/danang/ 
 INFO 2025-03-14 21:02:03,884 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
 INFO 2025-03-14 21:02:04,165 basehttp 43734 6206320640 "GET /api/places/danang/ HTTP/1.1" 200 758
 INFO 2025-03-14 21:02:04,165 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
+INFO 2025-03-14 21:08:37,044 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
+INFO 2025-03-14 21:11:12,360 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
+INFO 2025-03-14 21:12:01,242 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
+INFO 2025-03-14 21:13:14,280 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
+WARNING 2025-03-14 21:13:29,917 log 43734 6189494272 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-14 21:13:29,918 basehttp 43734 6189494272 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 5986
+WARNING 2025-03-14 21:14:01,577 log 43734 6206320640 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-14 21:14:01,581 basehttp 43734 6206320640 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 5986
+INFO 2025-03-14 21:14:01,594 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
+WARNING 2025-03-14 21:14:03,531 log 43734 6206320640 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-14 21:14:03,531 basehttp 43734 6206320640 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 5986
+INFO 2025-03-14 21:14:03,538 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
+WARNING 2025-03-14 21:14:07,443 log 43734 6206320640 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-14 21:14:07,444 basehttp 43734 6206320640 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 5986
+INFO 2025-03-14 21:14:07,450 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
+WARNING 2025-03-14 21:14:08,590 log 43734 6206320640 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-14 21:14:08,590 basehttp 43734 6206320640 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 5986
+INFO 2025-03-14 21:14:08,596 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
+WARNING 2025-03-14 21:14:09,426 log 43734 6206320640 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-14 21:14:09,426 basehttp 43734 6206320640 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 5986
+INFO 2025-03-14 21:14:09,433 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
+WARNING 2025-03-14 21:14:13,058 log 43734 6206320640 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-14 21:14:13,058 basehttp 43734 6206320640 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 5986
+INFO 2025-03-14 21:14:13,064 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
+WARNING 2025-03-14 21:16:37,300 log 43734 6206320640 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-14 21:16:37,301 basehttp 43734 6206320640 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 5986
+INFO 2025-03-14 21:16:37,314 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
+WARNING 2025-03-14 21:17:01,482 log 43734 6189494272 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-14 21:17:01,483 basehttp 43734 6189494272 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 5986
+INFO 2025-03-14 21:17:01,495 basehttp 43734 6206320640 "GET /api/places/ HTTP/1.1" 200 5934
+WARNING 2025-03-14 21:18:49,534 log 43734 6189494272 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-14 21:18:49,535 basehttp 43734 6189494272 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 5986
+INFO 2025-03-14 21:18:49,545 basehttp 43734 6206320640 "GET /api/places/ HTTP/1.1" 200 5934
+WARNING 2025-03-14 21:18:54,282 log 43734 6189494272 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-14 21:18:54,282 basehttp 43734 6189494272 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 5986
+INFO 2025-03-14 21:18:54,288 basehttp 43734 6206320640 "GET /api/places/ HTTP/1.1" 200 5934
+WARNING 2025-03-14 21:18:59,279 log 43734 6206320640 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-14 21:18:59,279 basehttp 43734 6206320640 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 5986
+INFO 2025-03-14 21:18:59,287 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
+INFO 2025-03-14 21:19:04,351 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
+INFO 2025-03-14 21:19:06,739 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
+INFO 2025-03-14 21:19:07,735 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
+INFO 2025-03-14 21:19:37,650 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
+INFO 2025-03-14 21:20:24,291 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
+INFO 2025-03-14 21:21:09,570 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
+INFO 2025-03-14 21:21:12,418 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
+INFO 2025-03-14 21:21:31,994 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
+WARNING 2025-03-14 21:21:56,916 log 43734 6189494272 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-14 21:21:56,918 basehttp 43734 6189494272 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 5986
+INFO 2025-03-14 21:23:53,626 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
+WARNING 2025-03-14 21:23:55,525 log 43734 6206320640 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-14 21:23:55,525 basehttp 43734 6206320640 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 5986
+INFO 2025-03-14 21:23:55,538 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
+WARNING 2025-03-14 21:24:08,020 log 43734 6206320640 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-14 21:24:08,021 basehttp 43734 6206320640 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 5986
+INFO 2025-03-14 21:24:08,029 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
+WARNING 2025-03-14 21:24:54,045 log 43734 6206320640 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-14 21:24:54,045 basehttp 43734 6206320640 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 5986
+INFO 2025-03-14 21:24:54,125 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
+WARNING 2025-03-14 21:25:17,561 log 43734 6189494272 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-14 21:25:17,561 basehttp 43734 6189494272 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 5986
+INFO 2025-03-14 21:25:17,577 basehttp 43734 6206320640 "GET /api/places/ HTTP/1.1" 200 5934
+INFO 2025-03-14 21:25:22,522 basehttp 43734 6189494272 "GET /api/places/testing/ HTTP/1.1" 200 930
+INFO 2025-03-14 21:34:57,002 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
+INFO 2025-03-14 21:34:59,587 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
+INFO 2025-03-14 21:34:59,587 basehttp 43734 6206320640 "GET /api/places/testing/ HTTP/1.1" 200 930
+INFO 2025-03-14 21:36:26,128 basehttp 43734 6189494272 "GET /media/places/IMG_2994_fn6KLJ3.jpeg HTTP/1.1" 304 0
+INFO 2025-03-14 21:36:26,132 basehttp 43734 6206320640 "GET /media/places/IMG_2994_IhEDEdm.jpeg HTTP/1.1" 304 0
+INFO 2025-03-14 21:36:26,133 basehttp 43734 6223720448 "GET /media/places/Screenshot_2025-03-14_at_11.30.36AM.png HTTP/1.1" 304 0
+WARNING 2025-03-14 21:36:26,175 log 43734 6240546816 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-14 21:36:26,175 basehttp 43734 6240546816 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 5986
+INFO 2025-03-14 21:36:26,323 basehttp 43734 6257373184 "GET /api/places/ HTTP/1.1" 200 5934
+INFO 2025-03-14 21:37:28,340 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
+WARNING 2025-03-14 21:38:35,159 log 43734 6206320640 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-14 21:38:35,160 basehttp 43734 6206320640 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 5986
+INFO 2025-03-14 21:38:35,176 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
+INFO 2025-03-14 21:38:48,269 basehttp 43734 6189494272 "GET /api/places/testing/ HTTP/1.1" 200 930
+INFO 2025-03-14 21:39:37,589 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
+INFO 2025-03-14 21:39:39,431 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
+INFO 2025-03-14 21:39:39,433 basehttp 43734 6206320640 "GET /api/places/testing/ HTTP/1.1" 200 930
+INFO 2025-03-14 21:41:05,860 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
+INFO 2025-03-14 21:41:05,860 basehttp 43734 6206320640 "GET /api/places/testing/ HTTP/1.1" 200 930
+INFO 2025-03-14 21:41:15,566 basehttp 43734 6206320640 "GET /api/places/testing/ HTTP/1.1" 200 930
+INFO 2025-03-14 21:41:15,566 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
+INFO 2025-03-14 21:55:48,275 basehttp 43734 6206320640 "GET /api/places/testing/ HTTP/1.1" 200 930
+INFO 2025-03-14 21:55:48,281 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
+INFO 2025-03-14 22:19:59,018 basehttp 43734 6206320640 "GET /api/places/testing/ HTTP/1.1" 200 930
+INFO 2025-03-14 22:19:59,022 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
+INFO 2025-03-14 22:20:18,436 basehttp 43734 6206320640 "GET /api/places/testing/ HTTP/1.1" 200 930
+INFO 2025-03-14 22:20:18,436 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5934
+INFO 2025-03-14 22:20:31,070 views 43734 6189494272 Обновление места 17: {'name': 'Тестинг 2', 'location': 'Москва', 'rating': 5, 'review': '', 'dates': '04.03.2025 – 02.03.2025'}
+INFO 2025-03-14 22:20:31,077 views 43734 6189494272 Место успешно обновлено: {'id': 17, 'images': [{'id': 32, 'image': 'http://localhost:8000/media/places/IMG_2994.jpeg', 'order': 0, 'image_url': 'http://localhost:8000/media/places/IMG_2994.jpeg'}, {'id': 54, 'image': 'http://localhost:8000/media/places/Screenshot_2025-01-20_at_6_EEpTnGp.04.08PM.png', 'order': 0, 'image_url': 'http://localhost:8000/media/places/Screenshot_2025-01-20_at_6_EEpTnGp.04.08PM.png'}, {'id': 55, 'image': 'http://localhost:8000/media/places/Screenshot_2025-01-20_at_6_pnSO5XV.09.10PM.png', 'order': 1, 'image_url': 'http://localhost:8000/media/places/Screenshot_2025-01-20_at_6_pnSO5XV.09.10PM.png'}, {'id': 56, 'image': 'http://localhost:8000/media/places/Screenshot_2025-01-20_at_6_sDCAnQI.11.50PM.png', 'order': 2, 'image_url': 'http://localhost:8000/media/places/Screenshot_2025-01-20_at_6_sDCAnQI.11.50PM.png'}], 'dates': '04.03.2025 – 02.03.2025', 'name': 'Тестинг 2', 'location': 'Москва', 'rating': 5, 'review': '', 'created_at': '2025-03-09T20:14:22.148980Z', 'slug': 'testing'}
+INFO 2025-03-14 22:20:31,078 basehttp 43734 6189494272 "PUT /api/places/testing/ HTTP/1.1" 200 957
+INFO 2025-03-14 22:20:31,096 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5961
+INFO 2025-03-14 22:20:35,371 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5961
+INFO 2025-03-14 22:20:35,371 basehttp 43734 6206320640 "GET /api/places/testing/ HTTP/1.1" 200 957
+INFO 2025-03-14 22:21:10,616 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5961
+INFO 2025-03-14 22:21:10,617 basehttp 43734 6206320640 "GET /api/places/testing/ HTTP/1.1" 200 957
+INFO 2025-03-14 22:23:50,193 basehttp 43734 6189494272 "GET /api/places/testing/ HTTP/1.1" 200 957
+INFO 2025-03-14 22:23:50,193 basehttp 43734 6206320640 "GET /api/places/ HTTP/1.1" 200 5961
+INFO 2025-03-14 22:28:00,178 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5961
+INFO 2025-03-14 22:28:38,321 basehttp 43734 6206320640 "GET /api/places/testing/ HTTP/1.1" 200 957
+INFO 2025-03-14 22:28:38,321 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5961
+INFO 2025-03-14 22:32:52,029 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5961
+INFO 2025-03-14 22:33:15,712 basehttp 43734 6189494272 "GET /media/places/IMG_2994_fn6KLJ3.jpeg HTTP/1.1" 304 0
+INFO 2025-03-14 22:33:15,752 basehttp 43734 6206320640 "GET /media/places/IMG_2994_uKlOM1A.jpeg HTTP/1.1" 304 0
+INFO 2025-03-14 22:33:15,774 basehttp 43734 6224293888 "GET /media/places/IMG_2994_IhEDEdm.jpeg HTTP/1.1" 304 0
+INFO 2025-03-14 22:33:15,804 basehttp 43734 6241120256 "GET /media/places/Screenshot_2025-03-14_at_11.30.36AM.png HTTP/1.1" 304 0
+WARNING 2025-03-14 22:33:15,875 log 43734 6257946624 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-14 22:33:15,878 basehttp 43734 6257946624 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 5986
+WARNING 2025-03-14 22:35:57,676 log 43734 6206320640 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-14 22:35:57,677 basehttp 43734 6206320640 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 5986
+INFO 2025-03-14 22:35:57,697 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5961
+WARNING 2025-03-14 22:37:55,388 log 43734 6206320640 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-14 22:37:55,388 basehttp 43734 6206320640 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 5986
+INFO 2025-03-14 22:37:55,421 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5961
+INFO 2025-03-14 22:38:07,370 basehttp 43734 6189494272 "GET /api/places/testing/ HTTP/1.1" 200 957
+INFO 2025-03-14 22:46:58,749 basehttp 43734 6206320640 "GET /api/places/testing/ HTTP/1.1" 200 957
+INFO 2025-03-14 22:46:58,749 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5961
+INFO 2025-03-14 22:47:01,933 basehttp 43734 6206320640 "GET /api/places/ HTTP/1.1" 200 5961
+INFO 2025-03-14 22:47:01,933 basehttp 43734 6189494272 "GET /api/places/testing/ HTTP/1.1" 200 957
+INFO 2025-03-14 22:49:48,447 basehttp 43734 6206320640 "GET /api/places/testing/ HTTP/1.1" 200 957
+INFO 2025-03-14 22:49:48,447 basehttp 43734 6189494272 "GET /api/places/ HTTP/1.1" 200 5961

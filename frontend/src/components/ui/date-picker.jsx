@@ -49,7 +49,7 @@ export default function DatePicker({
                     onClear();
                   }
                 }}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 hover:bg-gray-100 rounded-full p-1 cursor-pointer"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 hover:bg-gray-100 dark:hover:bg-gray-800/50 rounded-full p-1 cursor-pointer"
               >
                 <X size={16} />
               </div>

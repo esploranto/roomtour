@@ -1,14 +1,18 @@
-import React from "react";
-import { DayPicker } from "react-day-picker";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { cn } from "@/lib/utils";
+import * as React from "react"
+import { ChevronLeft, ChevronRight } from "lucide-react"
+import { DayPicker } from "react-day-picker"
 
-const Calendar = ({
+import { cn } from "@/lib/utils"
+import { buttonVariants } from "@/components/ui/button.tsx"
+
+export type CalendarProps = React.ComponentProps<typeof DayPicker>
+
+function Calendar({
   className,
   classNames,
   showOutsideDays = true,
   ...props
-}) => {
+}: CalendarProps) {
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
@@ -20,6 +24,7 @@ const Calendar = ({
         caption_label: "text-sm font-medium",
         nav: "space-x-1 flex items-center",
         nav_button: cn(
+          buttonVariants({ variant: "outline" }),
           "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100"
         ),
         nav_button_previous: "absolute left-1",
@@ -31,6 +36,7 @@ const Calendar = ({
         row: "flex w-full mt-2",
         cell: "h-9 w-9 text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
         day: cn(
+          buttonVariants({ variant: "ghost" }),
           "h-9 w-9 p-0 font-normal aria-selected:opacity-100"
         ),
         day_range_end: "day-range-end",
@@ -51,15 +57,14 @@ const Calendar = ({
       }}
       {...props}
     />
-  );
-};
+  )
+}
+Calendar.displayName = "Calendar"
 
-export { Calendar };
+export { Calendar }
 
-export const CalendarIcon = ({ className, ...props }) => (
+export const CalendarIcon = ({ className, ...props }: React.ComponentProps<"svg">) => (
   <svg
-    {...props}
-    className={cn("h-4 w-4", className)}
     xmlns="http://www.w3.org/2000/svg"
     width="24"
     height="24"
@@ -69,10 +74,12 @@ export const CalendarIcon = ({ className, ...props }) => (
     strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
+    className={cn("lucide lucide-calendar", className)}
+    {...props}
   >
     <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
     <line x1="16" x2="16" y1="2" y2="6" />
     <line x1="8" x2="8" y1="2" y2="6" />
     <line x1="3" x2="21" y1="10" y2="10" />
   </svg>
-); 
+) 

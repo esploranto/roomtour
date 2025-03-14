@@ -7,6 +7,7 @@ import {
   SelectItem,
 } from "@/components/ui/select.tsx";
 import { useTranslation } from "react-i18next";
+import { isLocalStorageAvailable } from "@/utils/storage";
 
 export default function LanguageSwitcher() {
   const { i18n } = useTranslation();
@@ -14,6 +15,10 @@ export default function LanguageSwitcher() {
 
   const handleChange = (value) => {
     i18n.changeLanguage(value);
+    // Сохраняем выбранный язык в localStorage, если он доступен
+    if (isLocalStorageAvailable()) {
+      localStorage.setItem('i18nextLng', value);
+    }
   };
 
   return (

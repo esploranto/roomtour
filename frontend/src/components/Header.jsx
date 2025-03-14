@@ -5,7 +5,7 @@ import { Moon, Sun, Plus } from "lucide-react";
 import { ThemeContext } from "@/context/ThemeContext";
 import { AuthContext } from "@/context/AuthContext";
 import LoginPopup from "@/components/LoginPopup";
-import AddPlacePopup from "@/components/AddPlacePopup";
+import AddPlacePopup from "./AddPlacePopup/AddPlacePopup";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar.tsx";
 import { getInitials } from "@/lib/utils.ts";
 import { useTranslation } from "react-i18next";
@@ -55,14 +55,14 @@ export default function Header({ onPlaceAdded, onDialogStateChange }) {
           alt="Roomtour Logo" 
           className="h-14 mr-2" 
         />
-        Roomtour
+        {t("logo")}
       </Link>
 
       {/* Правая часть */}
       <div className="flex items-center gap-4">
         {isLoggedIn ? (
           <Button variant="outline" onClick={openAddPlacePopup}>
-            <Plus className="mr-1 h-4 w-4" /> Добавить место
+            <Plus className="mr-1 h-4 w-4" /> {t("addPlace")}
           </Button>
         ) : (
           <Button variant="outline" onClick={openLoginPopup}>

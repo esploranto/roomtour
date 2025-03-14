@@ -20,7 +20,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu.tsx";
-import AddPlacePopup from "@/components/AddPlacePopup";
+import AddPlacePopup from "@/components/AddPlacePopup/AddPlacePopup";
 import ConfirmDialog from "@/components/ui/confirm-dialog";
 
 export default function Place() {

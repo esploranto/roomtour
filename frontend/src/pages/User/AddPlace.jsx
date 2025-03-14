@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import AddPlacePopup from "@/components/AddPlacePopup";
+import AddPlacePopup from "@/components/AddPlacePopup/AddPlacePopup";
 
 export default function AddPlace() {
   const [isPopupOpen, setIsPopupOpen] = useState(true);
