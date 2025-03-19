@@ -80,6 +80,14 @@ export function formatDateRange(startDate: Date | null, endDate: Date | null): s
   const sameMonth = isSameMonth(startDate as Date, endDate as Date);
   const sameYear = isSameYear(startDate as Date, endDate as Date);
   
+  // Проверяем, совпадают ли даты полностью
+  if (startDate && endDate && startDate.getTime() === endDate.getTime()) {
+    // Если даты одинаковые, возвращаем одну дату
+    const formattedDate = format(startDate, "d MMM yyyy", { locale })
+      .replace('.', ''); // Убираем точку после месяца
+    return formattedDate.charAt(0) + formattedDate.slice(1).toLowerCase();
+  }
+  
   if (sameMonth && sameYear) {
     // Формат "2–8 мар 2025"
     const startDay = format(startDate as Date, "d", { locale });
