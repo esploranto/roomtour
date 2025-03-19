@@ -59,7 +59,14 @@ const placesService = {
    * @returns {Promise<Object>} Обновленное место
    */
   updatePlace: async (identifier, placeData) => {
+    console.log('placesService - отправка запроса на обновление места:', {
+      identifier,
+      placeData
+    });
+    
     const response = await api.put(`/places/${identifier}/`, placeData);
+    console.log('placesService - получен ответ от сервера:', response);
+    
     // Очищаем кэш после обновления
     api.clearCacheFor(`/places/${identifier}/`);
     api.clearCacheFor('/places/');

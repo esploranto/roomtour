@@ -247,6 +247,7 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, place }) 
     setUploadProgress(0);
 
     const formattedDates = formatDateRange(startDate, endDate);
+    console.log('AddPlacePopup - форматированные даты для отправки:', formattedDates);
     
     const placeData = {
       name: name.trim() || 'Без названия',
@@ -255,13 +256,16 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, place }) 
       review: comment.trim(),
       dates: formattedDates
     };
+    console.log('AddPlacePopup - данные для отправки:', placeData);
 
     try {
       let updatedPlace;
       
       if (isEditMode) {
         const identifier = place.slug || place.id;
+        console.log('AddPlacePopup - отправка запроса на обновление места:', identifier);
         updatedPlace = await placesService.updatePlace(identifier, placeData);
+        console.log('AddPlacePopup - получен ответ от сервера:', updatedPlace);
         setUploadProgress(30);
         
         // Удаляем фото, если есть удаленные
@@ -329,7 +333,7 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, place }) 
       showSuccess(isEditMode ? 'Место успешно обновлено!' : 'Место успешно добавлено!');
       mutate(); // Обновляем общий список мест
       
-      // Вызываем колбэк с обновленными данными перед закрытием попапа
+      console.log('AddPlacePopup - вызов onPlaceAdded с данными:', placeForUI);
       if (onPlaceAdded) {
         onPlaceAdded(placeForUI);
       }
@@ -411,15 +415,35 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, place }) 
 
   useEffect(() => {
     if (isOpen && isEditMode && place) {
+      console.log('AddPlacePopup: Редактирование места:', place);
+      console.log('AddPlacePopup: Значение place.dates:', place.dates);
+      
       setName(place.name || "");
       setAddress(place.location || "");
       setComment(place.review || "");
       setRating(place.rating || 0);
       
+      let parsedStartDate = null;
+      let parsedEndDate = null;
+      
       if (place.dates) {
-        const [parsedStartDate, parsedEndDate] = parseDateRange(place.dates);
+        console.log('AddPlacePopup: Начинаем парсинг dates:', place.dates);
+        [parsedStartDate, parsedEndDate] = parseDateRange(place.dates);
+        console.log('AddPlacePopup: Результат парсинга:', {
+          parsedStartDate,
+          parsedEndDate,
+          rawDates: place.dates
+        });
+        
         setStartDate(parsedStartDate);
         setEndDate(parsedEndDate);
+        
+        console.log('AddPlacePopup: Установлены даты в состояние:', {
+          startDate: parsedStartDate,
+          endDate: parsedEndDate
+        });
+      } else {
+        console.log('AddPlacePopup: place.dates отсутствует');
       }
       
       if (place.images && place.images.length > 0) {
@@ -431,11 +455,26 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, place }) 
         address: place.location || "",
         comment: place.review || "",
         rating: place.rating || 0,
-        startDate: startDate,
-        endDate: endDate,
+        startDate: parsedStartDate,
+        endDate: parsedEndDate
+      });
+      
+      console.log('AddPlacePopup: Установлен initialFormState:', {
+        startDate: parsedStartDate,
+        endDate: parsedEndDate
       });
     }
   }, [isOpen, isEditMode, place]);
+
+  // Добавляем логи для отслеживания изменений состояния дат
+  useEffect(() => {
+    if (isEditMode) {
+      console.log('AddPlacePopup: Изменение состояния дат:', {
+        startDate,
+        endDate
+      });
+    }
+  }, [startDate, endDate, isEditMode]);
 
   return (
     <Dialog.Root open={isOpen} onOpenChange={(open) => {

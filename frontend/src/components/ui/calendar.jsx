@@ -1,7 +1,7 @@
 import * as React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { DayPicker } from "react-day-picker";
-import { cn } from "@/lib/utils";
+import { cn, getCurrentLocale } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 
 function Calendar({
@@ -11,6 +11,8 @@ function Calendar({
   styles,
   ...props
 }) {
+  const locale = getCurrentLocale();
+  
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
@@ -74,6 +76,7 @@ function Calendar({
         IconLeft: ({ ...props }) => <ChevronLeft className="h-4 w-4" />,
         IconRight: ({ ...props }) => <ChevronRight className="h-4 w-4" />,
       }}
+      locale={locale}
       {...props}
     />
   );

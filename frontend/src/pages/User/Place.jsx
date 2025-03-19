@@ -25,29 +25,47 @@ import AddPlacePopup from "@/components/AddPlacePopup/AddPlacePopup";
 import ConfirmDialog from "@/components/ui/confirm-dialog";
 
 export default function Place() {
-  // Здесь placeId может быть как id, так и slug
   const { username, placeId } = useParams();
   const carouselRef = useRef(null);
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
   const { showSuccess, showError } = useToast();
+  const { mutate: mutatePlaces } = usePlaces();
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
   
   // Состояние для полноэкранного просмотра изображений
   const [fullscreenImage, setFullscreenImage] = useState(null);
   const [fullscreenIndex, setFullscreenIndex] = useState(0);
   
-  console.log('Place - получены параметры из URL:', { username, placeId });
+  console.log('Place - монтирование компонента');
   
-  // Используем новый хук для получения данных места
-  const { place, isLoading, error, mutate } = usePlace(placeId);
+  const [place, setPlace] = useState(null);
   
-  // Получаем функцию мутации для списка всех мест
-  const { mutate: mutatePlaces } = usePlaces();
-  
-  console.log('Place - получены данные места:', { place, isLoading, error });
+  useEffect(() => {
+    console.log('Place - получены параметры из URL:', { username, placeId });
+    setIsLoading(true);
+    
+    const fetchPlace = async () => {
+      try {
+        const data = await placesService.getPlace(placeId);
+        console.log('Place - получены данные места:', data);
+        setPlace(data);
+        setError(null);
+      } catch (err) {
+        console.error('Ошибка при загрузке места:', err);
+        setError(err);
+        showError('Не удалось загрузить данные места');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchPlace();
+  }, [placeId, showError]);
 
   // Устанавливаем фокус на карусель после загрузки компонента
   useEffect(() => {
@@ -117,64 +135,17 @@ export default function Place() {
 
   // Обработчик для редактирования места
   const handleEditPlace = () => {
-    console.log('Открываем попап редактирования');
-    // Сбрасываем возможные предыдущие удаленные изображения
+    console.log('Place - открываем попап редактирования');
     setIsEditPopupOpen(true);
     console.log('isEditPopupOpen установлен в:', true);
   };
 
   // Обработчик для обновления места после редактирования
   const handlePlaceUpdated = (updatedPlace) => {
-    console.log('Place - место обновлено:', updatedPlace);
-    
-    // Проверяем, что у нас есть полные обновленные данные 
-    if (!updatedPlace) {
-      console.error('Получены пустые данные места при обновлении');
-      return;
-    }
-    
-    console.log('Текущие данные места:', place);
-    console.log('Обновленные данные места:', updatedPlace);
-    
-    // Вместо вызова mutate(), который может не сразу обновить данные,
-    // обновляем данные напрямую в состоянии компонента с помощью функции обновления
-    mutate(
-      async () => {
-        // Создаем полностью обновленный объект места
-        const completelyUpdatedPlace = {
-          ...place, // Начинаем с текущих данных
-          ...updatedPlace, // Перезаписываем новыми данными
-          
-          // Гарантируем, что критические поля обновлены
-          name: updatedPlace.name || place.name,
-          location: updatedPlace.location || place.location,
-          rating: updatedPlace.rating !== undefined ? updatedPlace.rating : place.rating,
-          review: updatedPlace.review !== undefined ? updatedPlace.review : place.review,
-          dates: updatedPlace.dates || place.dates,
-          
-          // Обрабатываем изображения
-          images: updatedPlace.images || place.images,
-        };
-        
-        console.log('Финальные обновленные данные места:', completelyUpdatedPlace);
-        return completelyUpdatedPlace;
-      },
-      {
-        // Не ждем ребалансировки данных с сервера
-        revalidate: false,
-        
-        // Немедленно обновляем данные в кэше
-        populateCache: true,
-        
-        // Используем обновленные данные оптимистично 
-        optimisticData: (currentData) => {
-          return {
-            ...currentData, // Сохраняем текущую структуру данных
-            ...updatedPlace, // Добавляем обновленные поля
-          };
-        }
-      }
-    );
+    console.log('Place - вызван handlePlaceUpdated с данными:', updatedPlace);
+    setPlace(updatedPlace);
+    console.log('Place - состояние обновлено:', updatedPlace);
+    setIsEditPopupOpen(false);
   };
 
   // Обработчик для открытия диалога подтверждения удаления
@@ -186,6 +157,7 @@ export default function Place() {
   const handleDeletePlace = async () => {
     try {
       setIsDeleting(true);
+      setError(null);
       
       // Получаем идентификатор места
       const identifier = place.slug && place.slug.trim() !== '' 
@@ -203,8 +175,9 @@ export default function Place() {
       
       // Перенаправляем на страницу профиля
       navigate(`/${username}`);
-    } catch (error) {
-      console.error('Ошибка при удалении места:', error);
+    } catch (err) {
+      console.error('Ошибка при удалении места:', err);
+      setError(err);
       showError('Не удалось удалить место. Пожалуйста, попробуйте позже.');
       setIsDeleting(false);
     }
@@ -250,51 +223,59 @@ export default function Place() {
 
   if (isLoading) {
     return (
-      <div className="text-center p-8">
-        <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-        <p className="mt-2">Загрузка данных места...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="p-8">
-        <div className="p-4 bg-red-100 text-red-700 rounded mb-4">
-          Не удалось загрузить данные места. Пожалуйста, попробуйте позже.
-        </div>
-        
-        {/* Кнопка "Назад к профилю" */}
+      <div className="container mx-auto py-8 px-4">
         <Button variant="outline" asChild className="mb-4">
           <Link to={`/${username}`}>
             <ArrowLeft size={16} className="mr-2" />
             Назад к профилю
           </Link>
         </Button>
-        
-        {/* Отладочная информация (только в режиме разработки) */}
-        {process.env.NODE_ENV === 'development' && (
-          <div className="mt-4 p-4 bg-gray-100 rounded">
-            <h3 className="font-bold mb-2">Отладочная информация:</h3>
-            <pre className="text-xs overflow-auto">{JSON.stringify(error, null, 2)}</pre>
+        <div className="text-center p-8">
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          <p className="mt-2">Загрузка данных места...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="container mx-auto py-8 px-4">
+        <Button variant="outline" asChild className="mb-4">
+          <Link to={`/${username}`}>
+            <ArrowLeft size={16} className="mr-2" />
+            Назад к профилю
+          </Link>
+        </Button>
+        <div className="p-8">
+          <div className="p-4 bg-red-100 text-red-700 rounded mb-4">
+            Не удалось загрузить данные места. Пожалуйста, попробуйте позже.
           </div>
-        )}
+          
+          {/* Отладочная информация (только в режиме разработки) */}
+          {process.env.NODE_ENV === 'development' && (
+            <div className="mt-4 p-4 bg-gray-100 rounded">
+              <h3 className="font-bold mb-2">Отладочная информация:</h3>
+              <pre className="text-xs overflow-auto">{JSON.stringify(error, null, 2)}</pre>
+            </div>
+          )}
+        </div>
       </div>
     );
   }
 
   if (!place) {
     return (
-      <div className="text-center p-8">
-        <p className="text-gray-600">Место не найдено</p>
-        
-        {/* Кнопка "Назад к профилю" */}
-        <Button variant="outline" asChild className="mt-4">
+      <div className="container mx-auto py-8 px-4">
+        <Button variant="outline" asChild className="mb-4">
           <Link to={`/${username}`}>
             <ArrowLeft size={16} className="mr-2" />
             Назад к профилю
           </Link>
         </Button>
+        <div className="text-center p-8">
+          <p className="text-gray-600">Место не найдено</p>
+        </div>
       </div>
     );
   }

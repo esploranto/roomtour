@@ -1,5 +1,7 @@
 import useSWR from 'swr';
 import { placesService, userService } from '@/api';
+import { format } from 'date-fns';
+import { getCurrentLocale } from '@/lib/utils.ts';
 
 /**
  * Кастомный хук для получения списка всех мест с кэшированием
@@ -153,6 +155,9 @@ function formatDateRange(createdAt) {
   if (!createdAt) return "";
   
   const date = new Date(createdAt);
-  const formattedDate = date.toLocaleDateString('ru-RU');
-  return formattedDate;
+  const locale = getCurrentLocale();
+  // Используем format из date-fns с удалением точки
+  const formattedDate = format(date, "d MMM yyyy", { locale })
+    .replace('.', ''); // Убираем точку после месяца
+  return formattedDate.charAt(0) + formattedDate.slice(1).toLowerCase();
 } 

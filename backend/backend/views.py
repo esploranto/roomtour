@@ -5,13 +5,20 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from django.shortcuts import get_object_or_404
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.contrib.auth.models import User
 import logging
 import os
 from .models import Place, PlaceImage
-from .serializers import PlaceSerializer, PlaceImageSerializer
+from .serializers import PlaceSerializer, PlaceImageSerializer, UserSerializer
 
 # Настройка логирования
 logger = logging.getLogger(__name__)
+
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
+    """ViewSet для пользователей (только чтение)."""
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    lookup_field = 'username'
 
 class PlaceViewSet(viewsets.ModelViewSet):
     """ViewSet для мест проживания."""

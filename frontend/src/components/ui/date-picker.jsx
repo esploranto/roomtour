@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button.tsx";
 import { CalendarIcon, X } from "lucide-react";
 import { format } from "date-fns";
 import { ru } from "date-fns/locale";
-import { cn } from "@/lib/utils.ts";
+import { cn, getCurrentLocale } from "@/lib/utils.ts";
 import * as Popover from "@radix-ui/react-popover";
 import { Calendar } from "@/components/ui/calendar.jsx";
 
@@ -52,7 +52,8 @@ export default function DatePicker({
       return placeholder;
     }
     
-    const formattedDate = format(date, "d MMM yyyy", { locale: ru }).replace('.', '');
+    const locale = getCurrentLocale();
+    const formattedDate = format(date, "d MMM yyyy", { locale }).replace('.', '');
     return formattedDate.charAt(0) + formattedDate.slice(1).toLowerCase();
   };
 
