@@ -1,0 +1,23 @@
+{
+  "name": "roomtour-backend",
+  "version": "1.0.0",
+  "description": "Безопасное API для загрузки и просмотра фотографий помещений",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "multer": "^1.4.5-lts.1",
+    "file-type": "^16.5.4",
+    "crypto": "^1.0.1",
+    "helmet": "^7.1.0",
+    "cors": "^2.8.5",
+    "express-rate-limit": "^7.1.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+} 

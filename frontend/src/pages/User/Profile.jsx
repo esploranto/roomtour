@@ -95,13 +95,6 @@ export default function Profile() {
 
   return (
     <div className="pt-12">
-      {/* Кнопка "Назад на главную" */}
-      <Button variant="outline" asChild className="mb-4">
-        <Link to="/">
-          <ArrowLeft size={16} className="mr-0" />
-          На главную
-        </Link>
-      </Button>
 
       {/* Карточка профиля пользователя */}
       {(user || profile) && (

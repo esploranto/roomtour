@@ -3,15 +3,8 @@ import { Input } from "@/components/ui/input.tsx";
 import { Textarea } from "@/components/ui/textarea.tsx";
 import { Label } from "@/components/ui/label.jsx";
 import { Button } from "@/components/ui/button.tsx";
-import { MapPin, X } from "lucide-react";
-import { Popover, PopoverTrigger, PopoverContent } from "@radix-ui/react-popover";
-import { Calendar } from "@/components/ui/calendar.jsx";
-import { CalendarIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
-import { ru } from "date-fns/locale";
+import { MapPin } from "lucide-react";
 import DatePicker from "@/components/ui/date-picker.jsx";
-import { handleStartDateSelect, handleEndDateSelect } from "@/lib/utils";
 
 const PlaceForm = ({
   name,
@@ -32,6 +25,8 @@ const PlaceForm = ({
   setStartDatePopoverOpen,
   endDatePopoverOpen,
   setEndDatePopoverOpen,
+  handleStartDateSelect,
+  handleEndDateSelect
 }) => {
   return (
     <div className="space-y-4">
@@ -82,88 +77,30 @@ const PlaceForm = ({
       <div>
         <Label className="block mb-2">Даты проживания</Label>
         <div className="grid grid-cols-2 gap-4">
-          <div className="flex items-center gap-2">
-            <Popover open={startDatePopoverOpen} onOpenChange={setStartDatePopoverOpen}>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className={cn(
-                    "w-full justify-start text-left font-normal",
-                    !startDate && "text-muted-foreground"
-                  )}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {startDate ? format(startDate, "PPP", { locale: ru }) : "Дата заезда"}
-                </Button>
-              </PopoverTrigger>
-              {startDate && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 p-0 hover:bg-gray-200 dark:hover:bg-gray-700"
-                  onClick={() => setStartDate(null)}
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-              )}
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                  mode="single"
-                  selected={startDate}
-                  onSelect={(date) => {
-                    setStartDate(date);
-                    setStartDatePopoverOpen(false);
-                    if (endDate && date > endDate) {
-                      setEndDate(null);
-                    }
-                  }}
-                  disabled={(date) => endDate && date > endDate}
-                  initialFocus
-                />
-              </PopoverContent>
-            </Popover>
+          <div className="relative z-[100]">
+            <DatePicker
+              value={startDate}
+              onChange={handleStartDateSelect}
+              onClear={() => {
+                setStartDate(null);
+                setEndDate(null);
+              }}
+              placeholder="Заезд"
+              popoverOpen={startDatePopoverOpen}
+              onPopoverOpenChange={setStartDatePopoverOpen}
+              maxDate={endDate}
+            />
           </div>
-          <div className="flex items-center gap-2">
-            <Popover open={endDatePopoverOpen} onOpenChange={setEndDatePopoverOpen}>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className={cn(
-                    "w-full justify-start text-left font-normal",
-                    !endDate && "text-muted-foreground"
-                  )}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {endDate ? format(endDate, "PPP", { locale: ru }) : "Дата выезда"}
-                </Button>
-              </PopoverTrigger>
-              {endDate && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 p-0 hover:bg-gray-200 dark:hover:bg-gray-700"
-                  onClick={() => setEndDate(null)}
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-              )}
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                  mode="single"
-                  selected={endDate}
-                  onSelect={(date) => {
-                    setEndDate(date);
-                    setEndDatePopoverOpen(false);
-                    if (startDate && date < startDate) {
-                      setStartDate(null);
-                      setStartDatePopoverOpen(true);
-                    }
-                  }}
-                  disabled={(date) => startDate && date < startDate}
-                  initialFocus
-                />
-              </PopoverContent>
-            </Popover>
+          <div className="relative z-[100]">
+            <DatePicker
+              value={endDate}
+              onChange={handleEndDateSelect}
+              onClear={() => setEndDate(null)}
+              placeholder="Выезд"
+              popoverOpen={endDatePopoverOpen}
+              onPopoverOpenChange={setEndDatePopoverOpen}
+              minDate={startDate}
+            />
           </div>
         </div>
       </div>

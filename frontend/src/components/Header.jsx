@@ -47,7 +47,7 @@ export default function Header({ onPlaceAdded, onDialogStateChange }) {
   };
 
   return (
-    <header className="flex justify-between items-center p-3 pt-1 pb-1 bg-gray-100 dark:bg-gray-800 rounded-xl">
+    <header className="flex justify-between items-center pt-1 pb-1 rounded-xl">
       {/* Логотип */}
       <Link to="/" className="flex items-center text-xl font-bold text-gray-900 dark:text-white">
         <img 

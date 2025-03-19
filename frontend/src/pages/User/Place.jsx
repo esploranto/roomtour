@@ -13,6 +13,7 @@ import { usePlace, usePlaces } from "@/lib/hooks";
 import { AuthContext } from "@/context/AuthContext";
 import { placesService } from "@/api";
 import { useToast } from "@/context/ToastContext";
+import { parseDateRange, formatDateRange } from "@/lib/utils.ts";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -114,39 +115,66 @@ export default function Place() {
     }
   }, [fullscreenImage, fullscreenIndex]);
 
-  // Обработчик для открытия изображения в полноэкранном режиме
-  const openFullscreenImage = (image, index) => {
-    setFullscreenImage(image);
-    setFullscreenIndex(index);
-  };
-
-  // Обработчик для показа предыдущего изображения в полноэкранном режиме
-  const showPreviousFullscreenImage = () => {
-    if (place && place.images && place.images.length > 0) {
-      const newIndex = (fullscreenIndex - 1 + place.images.length) % place.images.length;
-      setFullscreenIndex(newIndex);
-      setFullscreenImage(place.images[newIndex]);
-    }
-  };
-
-  // Обработчик для показа следующего изображения в полноэкранном режиме
-  const showNextFullscreenImage = () => {
-    if (place && place.images && place.images.length > 0) {
-      const newIndex = (fullscreenIndex + 1) % place.images.length;
-      setFullscreenIndex(newIndex);
-      setFullscreenImage(place.images[newIndex]);
-    }
-  };
-
   // Обработчик для редактирования места
   const handleEditPlace = () => {
+    console.log('Открываем попап редактирования');
+    // Сбрасываем возможные предыдущие удаленные изображения
     setIsEditPopupOpen(true);
+    console.log('isEditPopupOpen установлен в:', true);
   };
 
   // Обработчик для обновления места после редактирования
   const handlePlaceUpdated = (updatedPlace) => {
     console.log('Place - место обновлено:', updatedPlace);
-    mutate(); // Обновляем данные места
+    
+    // Проверяем, что у нас есть полные обновленные данные 
+    if (!updatedPlace) {
+      console.error('Получены пустые данные места при обновлении');
+      return;
+    }
+    
+    console.log('Текущие данные места:', place);
+    console.log('Обновленные данные места:', updatedPlace);
+    
+    // Вместо вызова mutate(), который может не сразу обновить данные,
+    // обновляем данные напрямую в состоянии компонента с помощью функции обновления
+    mutate(
+      async () => {
+        // Создаем полностью обновленный объект места
+        const completelyUpdatedPlace = {
+          ...place, // Начинаем с текущих данных
+          ...updatedPlace, // Перезаписываем новыми данными
+          
+          // Гарантируем, что критические поля обновлены
+          name: updatedPlace.name || place.name,
+          location: updatedPlace.location || place.location,
+          rating: updatedPlace.rating !== undefined ? updatedPlace.rating : place.rating,
+          review: updatedPlace.review !== undefined ? updatedPlace.review : place.review,
+          dates: updatedPlace.dates || place.dates,
+          
+          // Обрабатываем изображения
+          images: updatedPlace.images || place.images,
+        };
+        
+        console.log('Финальные обновленные данные места:', completelyUpdatedPlace);
+        return completelyUpdatedPlace;
+      },
+      {
+        // Не ждем ребалансировки данных с сервера
+        revalidate: false,
+        
+        // Немедленно обновляем данные в кэше
+        populateCache: true,
+        
+        // Используем обновленные данные оптимистично 
+        optimisticData: (currentData) => {
+          return {
+            ...currentData, // Сохраняем текущую структуру данных
+            ...updatedPlace, // Добавляем обновленные поля
+          };
+        }
+      }
+    );
   };
 
   // Обработчик для открытия диалога подтверждения удаления
@@ -179,6 +207,44 @@ export default function Place() {
       console.error('Ошибка при удалении места:', error);
       showError('Не удалось удалить место. Пожалуйста, попробуйте позже.');
       setIsDeleting(false);
+    }
+  };
+
+  // Полноэкранный просмотр изображений - исправляем проверку изображений
+  const openFullscreenImage = (image, index) => {
+    if (!image || !image.image_url) {
+      console.warn('Попытка открыть некорректное изображение:', image);
+      return;
+    }
+    setFullscreenImage(image);
+    setFullscreenIndex(index);
+  };
+
+  // Обработчик для показа предыдущего изображения в полноэкранном режиме
+  const showPreviousFullscreenImage = () => {
+    if (place && place.images && place.images.length > 0) {
+      const newIndex = (fullscreenIndex - 1 + place.images.length) % place.images.length;
+      const newImage = place.images[newIndex];
+      if (newImage && newImage.image_url) {
+        setFullscreenIndex(newIndex);
+        setFullscreenImage(newImage);
+      } else {
+        console.warn('Некорректное предыдущее изображение:', newImage);
+      }
+    }
+  };
+
+  // Обработчик для показа следующего изображения в полноэкранном режиме
+  const showNextFullscreenImage = () => {
+    if (place && place.images && place.images.length > 0) {
+      const newIndex = (fullscreenIndex + 1) % place.images.length;
+      const newImage = place.images[newIndex];
+      if (newImage && newImage.image_url) {
+        setFullscreenIndex(newIndex);
+        setFullscreenImage(newImage);
+      } else {
+        console.warn('Некорректное следующее изображение:', newImage);
+      }
     }
   };
 
@@ -296,7 +362,16 @@ export default function Place() {
       {place.dates && (
         <div className="mb-6">
           <h2 className="text-xl font-semibold mb-2">Даты проживания</h2>
-          <p className="text-gray-700">{place.dates}</p>
+          <p className="text-gray-700">
+            {(() => {
+              // Парсим и форматируем даты в нужном формате
+              const [startDate, endDate] = parseDateRange(place.dates);
+              if (startDate || endDate) {
+                return formatDateRange(startDate, endDate);
+              }
+              return place.dates; // Fallback на исходный формат, если парсинг не удался
+            })()}
+          </p>
         </div>
       )}
 
@@ -366,9 +441,13 @@ export default function Place() {
       )}
       
       {/* Попап редактирования места */}
+      {console.log('Рендерим AddPlacePopup, isOpen:', isEditPopupOpen)}
       <AddPlacePopup 
         isOpen={isEditPopupOpen} 
-        onClose={() => setIsEditPopupOpen(false)} 
+        onClose={() => {
+          console.log('Закрываем попап');
+          setIsEditPopupOpen(false);
+        }} 
         place={place}
         onPlaceUpdated={handlePlaceUpdated}
       />

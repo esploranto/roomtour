@@ -32,3 +32,85 @@ footer {
 ::-webkit-scrollbar {
   display: none;
 }
+
+/* Стили для Swiper пагинации */
+.swiper-pagination {
+  bottom: 10px !important;
+}
+
+.swiper-pagination-bullet {
+  width: 8px;
+  height: 8px;
+  background-color: white;
+  opacity: 0.5;
+  transition: all 0.25s ease;
+  box-shadow: none;
+}
+
+.swiper-pagination-bullet-active {
+  opacity: 1;
+  background-color: white;
+  transform: scale(1.5);
+  box-shadow: none;
+}
+
+/* Стили для динамических буллитов */
+.swiper-pagination-bullet-active-main {
+  opacity: 1;
+  background-color: white;
+  transform: scale(1.5);
+  box-shadow: none;
+}
+
+.swiper-pagination-bullet-active-prev,
+.swiper-pagination-bullet-active-next {
+  opacity: 0.7;
+  transform: scale(1);
+  box-shadow: none;
+}
+
+.swiper-pagination-bullet-active-prev-prev,
+.swiper-pagination-bullet-active-next-next {
+  opacity: 0.5;
+  transform: scale(0.8);
+  box-shadow: none;
+}
+
+/* Скрываем стандартные иконки стрелок */
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  display: none;
+}
+
+/* Стили для кнопок навигации */
+.swiper-nav-button {
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.swiper-nav-button:hover {
+  background: rgba(0, 0, 0, 0.35);
+}
+
+/* Уменьшенные размеры для индикаторов пагинации */
+.swiper-pagination-bullet-sm {
+  width: 6px;
+  height: 6px;
+}
+
+.swiper-pagination-bullet-xs {
+  width: 4px;
+  height: 4px;
+}
+
+/* Стили для кнопок навигации */
+.swiper-button-prev,
+.swiper-button-next {
+  transition: opacity 0.3s ease;
+}
+
+.swiper-button-prev:after,
+.swiper-button-next:after {
+  font-size: 14px;
+  color: white;
+}

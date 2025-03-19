@@ -13,3 +13,42 @@ db.sqlite3
 
 # Игнорируем файлы OS
 .DS_Store
+
+# Защита пользовательских данных
+uploads/
+media/
+user_content/
+*.log
+logs/
+
+# Конфиденциальные данные
+.env
+.env.*
+*.pem
+*.key
+secrets.yaml
+config.json
+credentials.json
+
+# Временные файлы
+tmp/
+temp/
+cache/
+
+# Файлы с токенами и сессиями
+*.token
+sessions/
+.cookies
+.session
+
+# Резервные копии баз данных
+*.sql
+*.sqlite
+*.sqlite3
+*.db
+backup/
+
+# Файлы с отладочной информацией
+debug/
+*.debug
+debug.log
