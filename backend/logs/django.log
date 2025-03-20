@@ -5069,3 +5069,748 @@ INFO 2025-03-19 20:27:09,722 basehttp 48228 6189576192 "GET /api/places/ HTTP/1.
 INFO 2025-03-19 20:27:09,729 basehttp 48228 6206402560 "GET /api/places/bajkal/ HTTP/1.1" 200 205
 WARNING 2025-03-19 20:27:17,000 log 48228 6189576192 Not Found: /api/users/sergeyfrolov/
 WARNING 2025-03-19 20:27:17,007 basehttp 48228 6189576192 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+WARNING 2025-03-19 20:30:30,532 log 48228 6206402560 Not Found: /api/users/sergeyfrolov/
+INFO 2025-03-19 20:30:30,536 basehttp 48228 6189576192 "GET /api/places/ HTTP/1.1" 200 7410
+WARNING 2025-03-19 20:30:30,536 basehttp 48228 6206402560 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-19 20:30:36,076 basehttp 48228 6189576192 "GET /api/places/moskva/ HTTP/1.1" 200 2154
+INFO 2025-03-19 20:30:47,587 views 48228 6189576192 Обновление места 6: {'name': 'Москва', 'location': 'Питер, ул. Исполкомская, 17', 'rating': 4, 'review': 'фыва', 'dates': '8–8 мар 2025'}
+INFO 2025-03-19 20:30:47,595 views 48228 6189576192 Место успешно обновлено: {'id': 6, 'images': [{'id': 11, 'image': 'http://localhost:8000/media/places/Screenshot_2025-03-02_at_10_mj5b2p7.57.18PM.png', 'order': 0, 'image_url': 'http://localhost:8000/media/places/Screenshot_2025-03-02_at_10_mj5b2p7.57.18PM.png'}, {'id': 98, 'image': 'http://localhost:8000/media/places/Screenshot_2025-03-17_at_2.39.26PM.png', 'order': 0, 'image_url': 'http://localhost:8000/media/places/Screenshot_2025-03-17_at_2.39.26PM.png'}, {'id': 99, 'image': 'http://localhost:8000/media/places/Screenshot_2025-03-04_at_10.04.29AM.png', 'order': 0, 'image_url': 'http://localhost:8000/media/places/Screenshot_2025-03-04_at_10.04.29AM.png'}, {'id': 46, 'image': 'http://localhost:8000/media/places/Screenshot_2025-01-31_at_2.05.08PM.png', 'order': 1, 'image_url': 'http://localhost:8000/media/places/Screenshot_2025-01-31_at_2.05.08PM.png'}, {'id': 12, 'image': 'http://localhost:8000/media/places/Screenshot_2025-03-02_at_11.01.27PM.png', 'order': 2, 'image_url': 'http://localhost:8000/media/places/Screenshot_2025-03-02_at_11.01.27PM.png'}, {'id': 14, 'image': 'http://localhost:8000/media/places/Screenshot_2025-03-02_at_11.13.19PM.png', 'order': 4, 'image_url': 'http://localhost:8000/media/places/Screenshot_2025-03-02_at_11.13.19PM.png'}, {'id': 15, 'image': 'http://localhost:8000/media/places/Screenshot_2025-03-02_at_11.29.35PM.png', 'order': 5, 'image_url': 'http://localhost:8000/media/places/Screenshot_2025-03-02_at_11.29.35PM.png'}, {'id': 16, 'image': 'http://localhost:8000/media/places/Screenshot_2025-03-02_at_11.39.46PM.png', 'order': 6, 'image_url': 'http://localhost:8000/media/places/Screenshot_2025-03-02_at_11.39.46PM.png'}, {'id': 17, 'image': 'http://localhost:8000/media/places/Screenshot_2025-03-02_at_11.44.19PM.png', 'order': 7, 'image_url': 'http://localhost:8000/media/places/Screenshot_2025-03-02_at_11.44.19PM.png'}, {'id': 18, 'image': 'http://localhost:8000/media/places/Screenshot_2025-03-02_at_11.51.33PM.png', 'order': 8, 'image_url': 'http://localhost:8000/media/places/Screenshot_2025-03-02_at_11.51.33PM.png'}], 'dates': '8–8 мар 2025', 'name': 'Москва', 'location': 'Питер, ул. Исполкомская, 17', 'rating': 4, 'review': 'фыва', 'created_at': '2025-03-08T19:43:34.236547Z', 'slug': 'moskva'}
+INFO 2025-03-19 20:30:47,596 basehttp 48228 6189576192 "PUT /api/places/moskva/ HTTP/1.1" 200 2171
+INFO 2025-03-19 20:30:47,625 basehttp 48228 6189576192 "GET /api/places/ HTTP/1.1" 200 7427
+INFO 2025-03-19 20:30:47,631 basehttp 48228 6206402560 "GET /api/places/moskva/ HTTP/1.1" 200 2171
+INFO 2025-03-19 20:30:56,032 basehttp 48228 6189576192 "GET /api/places/ispolkomskaja-455150/ HTTP/1.1" 200 695
+WARNING 2025-03-19 20:32:51,762 log 48228 6206402560 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-19 20:32:51,763 basehttp 48228 6206402560 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-19 20:32:51,770 basehttp 48228 6189576192 "GET /api/places/ HTTP/1.1" 200 7427
+WARNING 2025-03-19 20:33:58,673 log 48228 6189576192 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-19 20:33:58,677 basehttp 48228 6189576192 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-19 20:33:58,677 basehttp 48228 6206402560 "GET /api/places/ HTTP/1.1" 200 7427
+INFO 2025-03-19 20:34:05,251 basehttp 48228 6189576192 "GET /api/places/vyhodnye-na-majskie/ HTTP/1.1" 200 395
+INFO 2025-03-19 20:34:16,526 views 48228 6189576192 Обновление места 25: {'name': 'Выходные на майские 3', 'location': 'Без адреса', 'rating': 4, 'review': 'Было норм', 'dates': '6–7 мар 2025'}
+INFO 2025-03-19 20:34:16,533 views 48228 6189576192 Место успешно обновлено: {'id': 25, 'images': [{'id': 61, 'image': 'http://localhost:8000/media/places/IMG_2994_fn6KLJ3.jpeg', 'order': 0, 'image_url': 'http://localhost:8000/media/places/IMG_2994_fn6KLJ3.jpeg'}], 'dates': '6–7 мар 2025', 'name': 'Выходные на майские 3', 'location': 'Без адреса', 'rating': 4, 'review': 'Было норм', 'created_at': '2025-03-14T14:49:48.727334Z', 'slug': 'vyhodnye-na-majskie'}
+INFO 2025-03-19 20:34:16,534 basehttp 48228 6189576192 "PUT /api/places/vyhodnye-na-majskie/ HTTP/1.1" 200 399
+INFO 2025-03-19 20:34:16,559 basehttp 48228 6189576192 "GET /api/places/ HTTP/1.1" 200 7431
+INFO 2025-03-19 20:34:16,565 basehttp 48228 6206402560 "GET /api/places/vyhodnye-na-majskie/ HTTP/1.1" 200 399
+INFO 2025-03-19 20:34:36,237 basehttp 48228 6189576192 "GET /api/places/bez-nazvanija-42586f/ HTTP/1.1" 200 172
+WARNING 2025-03-19 20:36:50,768 log 48228 6206402560 Not Found: /api/users/sergeyfrolov/
+INFO 2025-03-19 20:36:50,774 basehttp 48228 6189576192 "GET /api/places/ HTTP/1.1" 200 7431
+WARNING 2025-03-19 20:36:50,774 basehttp 48228 6206402560 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+WARNING 2025-03-19 20:37:19,086 log 48228 6206402560 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-19 20:37:19,086 basehttp 48228 6206402560 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-19 20:37:19,090 basehttp 48228 6189576192 "GET /api/places/ HTTP/1.1" 200 7431
+INFO 2025-03-19 20:37:24,138 basehttp 48228 6189576192 "GET /api/places/bez-nazvanija-42586f/ HTTP/1.1" 200 172
+INFO 2025-03-19 20:37:41,350 views 48228 6189576192 Создание нового места: {'name': 'Место без дат', 'location': 'Без адреса', 'rating': 0, 'review': '', 'dates': ''}
+INFO 2025-03-19 20:37:41,388 views 48228 6189576192 Место успешно создано: {'id': 32, 'images': [], 'dates': '', 'name': 'Место без дат', 'location': 'Без адреса', 'rating': 0, 'review': '', 'created_at': '2025-03-19T20:37:41.383120Z', 'slug': 'mesto-bez-dat'}
+INFO 2025-03-19 20:37:41,389 basehttp 48228 6189576192 "POST /api/places/ HTTP/1.1" 201 188
+INFO 2025-03-19 20:37:41,413 basehttp 48228 6189576192 "GET /api/places/ HTTP/1.1" 200 7620
+INFO 2025-03-19 20:37:41,460 basehttp 48228 6189576192 "GET /api/places/ HTTP/1.1" 200 7620
+INFO 2025-03-19 20:37:41,640 basehttp 48228 6206402560 "GET /api/places/mesto-bez-dat/ HTTP/1.1" 200 188
+INFO 2025-03-19 20:37:41,640 basehttp 48228 6189576192 "GET /api/places/ HTTP/1.1" 200 7620
+WARNING 2025-03-19 20:37:46,017 log 48228 6189576192 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-19 20:37:46,018 basehttp 48228 6189576192 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+WARNING 2025-03-19 20:39:29,303 log 48228 6206402560 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-19 20:39:29,303 basehttp 48228 6206402560 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-19 20:39:29,307 basehttp 48228 6189576192 "GET /api/places/ HTTP/1.1" 200 7620
+INFO 2025-03-19 20:39:41,198 basehttp 48228 6189576192 "GET /api/places/mesto-bez-dat/ HTTP/1.1" 200 188
+INFO 2025-03-19 20:40:03,221 views 48228 6189576192 Обновление места 32: {'name': 'Место без дат', 'location': 'Без адреса', 'rating': 0, 'review': '', 'dates': '1 мар 2025'}
+INFO 2025-03-19 20:40:03,227 views 48228 6189576192 Место успешно обновлено: {'id': 32, 'images': [], 'dates': '1 мар 2025', 'name': 'Место без дат', 'location': 'Без адреса', 'rating': 0, 'review': '', 'created_at': '2025-03-19T20:37:41.383120Z', 'slug': 'mesto-bez-dat'}
+INFO 2025-03-19 20:40:03,228 basehttp 48228 6189576192 "PUT /api/places/mesto-bez-dat/ HTTP/1.1" 200 201
+INFO 2025-03-19 20:40:03,258 basehttp 48228 6189576192 "GET /api/places/ HTTP/1.1" 200 7633
+INFO 2025-03-19 20:40:03,265 basehttp 48228 6206402560 "GET /api/places/mesto-bez-dat/ HTTP/1.1" 200 201
+INFO 2025-03-19 20:40:26,064 views 48228 6189576192 Обновление места 32: {'name': 'Место без дат', 'location': 'Без адреса', 'rating': 0, 'review': '', 'dates': ''}
+INFO 2025-03-19 20:40:26,068 views 48228 6189576192 Место успешно обновлено: {'id': 32, 'images': [], 'dates': '', 'name': 'Место без дат', 'location': 'Без адреса', 'rating': 0, 'review': '', 'created_at': '2025-03-19T20:37:41.383120Z', 'slug': 'mesto-bez-dat'}
+INFO 2025-03-19 20:40:26,069 basehttp 48228 6189576192 "PUT /api/places/mesto-bez-dat/ HTTP/1.1" 200 188
+INFO 2025-03-19 20:40:26,097 basehttp 48228 6189576192 "GET /api/places/ HTTP/1.1" 200 7620
+INFO 2025-03-19 20:40:26,102 basehttp 48228 6206402560 "GET /api/places/mesto-bez-dat/ HTTP/1.1" 200 188
+INFO 2025-03-19 20:44:01,841 basehttp 48228 6189576192 "GET /api/places/ HTTP/1.1" 200 7620
+WARNING 2025-03-19 20:44:37,412 log 48228 6206402560 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-19 20:44:37,413 basehttp 48228 6206402560 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-19 20:44:37,418 basehttp 48228 6189576192 "GET /api/places/ HTTP/1.1" 200 7620
+INFO 2025-03-19 20:44:41,652 basehttp 48228 6189576192 "GET /api/places/mesto-bez-dat/ HTTP/1.1" 200 188
+INFO 2025-03-19 20:44:52,890 views 48228 6189576192 Обновление места 32: {'name': '', 'location': 'Без адреса', 'rating': 0, 'review': '', 'dates': ''}
+ERROR 2025-03-19 20:44:52,891 views 48228 6189576192 Непредвиденная ошибка при обновлении места: {'name': [ErrorDetail(string='This field may not be blank.', code='blank')]}
+ERROR 2025-03-19 20:44:52,892 log 48228 6189576192 Internal Server Error: /api/places/mesto-bez-dat/
+ERROR 2025-03-19 20:44:52,892 basehttp 48228 6189576192 "PUT /api/places/mesto-bez-dat/ HTTP/1.1" 500 138
+INFO 2025-03-19 20:45:06,860 views 48228 6189576192 Обновление места 32: {'name': '', 'location': 'Москва', 'rating': 0, 'review': '', 'dates': ''}
+ERROR 2025-03-19 20:45:06,862 views 48228 6189576192 Непредвиденная ошибка при обновлении места: {'name': [ErrorDetail(string='This field may not be blank.', code='blank')]}
+ERROR 2025-03-19 20:45:06,863 log 48228 6189576192 Internal Server Error: /api/places/mesto-bez-dat/
+ERROR 2025-03-19 20:45:06,863 basehttp 48228 6189576192 "PUT /api/places/mesto-bez-dat/ HTTP/1.1" 500 138
+INFO 2025-03-19 20:45:21,765 views 48228 6189576192 Обновление места 32: {'name': '', 'location': 'Москва', 'rating': 0, 'review': '', 'dates': ''}
+ERROR 2025-03-19 20:45:21,766 views 48228 6189576192 Непредвиденная ошибка при обновлении места: {'name': [ErrorDetail(string='This field may not be blank.', code='blank')]}
+ERROR 2025-03-19 20:45:21,767 log 48228 6189576192 Internal Server Error: /api/places/mesto-bez-dat/
+ERROR 2025-03-19 20:45:21,767 basehttp 48228 6189576192 "PUT /api/places/mesto-bez-dat/ HTTP/1.1" 500 138
+INFO 2025-03-19 20:45:26,241 basehttp 48228 6189576192 "GET /api/places/ HTTP/1.1" 200 7620
+INFO 2025-03-19 20:45:26,241 basehttp 48228 6206402560 "GET /api/places/mesto-bez-dat/ HTTP/1.1" 200 188
+WARNING 2025-03-19 20:45:27,359 log 48228 6189576192 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-19 20:45:27,359 basehttp 48228 6189576192 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+WARNING 2025-03-19 20:46:06,134 log 48228 6206402560 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-19 20:46:06,135 basehttp 48228 6206402560 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-19 20:46:06,139 basehttp 48228 6189576192 "GET /api/places/ HTTP/1.1" 200 7620
+INFO 2025-03-19 20:46:07,923 basehttp 48228 6189576192 "GET /api/places/mesto-bez-dat/ HTTP/1.1" 200 188
+INFO 2025-03-19 20:46:24,443 views 48228 6189576192 Обновление места 32: {'name': '', 'location': 'Москва', 'rating': 0, 'review': '', 'dates': ''}
+ERROR 2025-03-19 20:46:24,445 views 48228 6189576192 Непредвиденная ошибка при обновлении места: {'name': [ErrorDetail(string='This field may not be blank.', code='blank')]}
+ERROR 2025-03-19 20:46:24,446 log 48228 6189576192 Internal Server Error: /api/places/mesto-bez-dat/
+ERROR 2025-03-19 20:46:24,446 basehttp 48228 6189576192 "PUT /api/places/mesto-bez-dat/ HTTP/1.1" 500 138
+INFO 2025-03-19 20:47:44,140 basehttp 48228 6189576192 "GET /api/places/ HTTP/1.1" 200 7620
+INFO 2025-03-19 20:48:39,476 basehttp 48228 6206402560 "GET /api/places/mesto-bez-dat/ HTTP/1.1" 200 188
+INFO 2025-03-19 20:48:39,476 basehttp 48228 6189576192 "GET /api/places/ HTTP/1.1" 200 7620
+INFO 2025-03-19 20:48:57,761 views 48228 6189576192 Обновление места 32: {'name': '', 'location': 'Без адреса', 'rating': 0, 'review': '', 'dates': ''}
+ERROR 2025-03-19 20:48:57,763 views 48228 6189576192 Непредвиденная ошибка при обновлении места: {'name': [ErrorDetail(string='This field may not be blank.', code='blank')]}
+ERROR 2025-03-19 20:48:57,764 log 48228 6189576192 Internal Server Error: /api/places/mesto-bez-dat/
+ERROR 2025-03-19 20:48:57,764 basehttp 48228 6189576192 "PUT /api/places/mesto-bez-dat/ HTTP/1.1" 500 138
+INFO 2025-03-19 20:49:08,050 views 48228 6189576192 Обновление места 32: {'name': '', 'location': 'Москва', 'rating': 0, 'review': '', 'dates': ''}
+ERROR 2025-03-19 20:49:08,073 views 48228 6189576192 Непредвиденная ошибка при обновлении места: {'name': [ErrorDetail(string='This field may not be blank.', code='blank')]}
+ERROR 2025-03-19 20:49:08,074 log 48228 6189576192 Internal Server Error: /api/places/mesto-bez-dat/
+ERROR 2025-03-19 20:49:08,074 basehttp 48228 6189576192 "PUT /api/places/mesto-bez-dat/ HTTP/1.1" 500 138
+INFO 2025-03-19 20:49:19,016 basehttp 48228 6189576192 "GET /api/places/ HTTP/1.1" 200 7620
+INFO 2025-03-19 20:49:19,016 basehttp 48228 6206402560 "GET /api/places/mesto-bez-dat/ HTTP/1.1" 200 188
+INFO 2025-03-19 20:49:20,103 basehttp 48228 6189576192 "GET /api/places/ HTTP/1.1" 200 7620
+INFO 2025-03-19 20:49:20,103 basehttp 48228 6206402560 "GET /api/places/mesto-bez-dat/ HTTP/1.1" 200 188
+INFO 2025-03-19 20:51:31,496 basehttp 48228 6189576192 "GET /api/places/ HTTP/1.1" 200 7620
+INFO 2025-03-19 20:52:25,268 views 48228 6189576192 Обновление места 32: {'name': 'Место без дат', 'location': 'Москва', 'rating': 0, 'review': '', 'dates': ''}
+INFO 2025-03-19 20:52:25,271 views 48228 6189576192 Место успешно обновлено: {'id': 32, 'images': [], 'dates': '', 'name': 'Место без дат', 'location': 'Москва', 'rating': 0, 'review': '', 'created_at': '2025-03-19T20:37:41.383120Z', 'slug': 'mesto-bez-dat'}
+INFO 2025-03-19 20:52:25,272 basehttp 48228 6189576192 "PUT /api/places/mesto-bez-dat/ HTTP/1.1" 200 181
+INFO 2025-03-19 20:52:25,304 basehttp 48228 6189576192 "GET /api/places/ HTTP/1.1" 200 7613
+INFO 2025-03-19 20:52:25,310 basehttp 48228 6206402560 "GET /api/places/mesto-bez-dat/ HTTP/1.1" 200 181
+INFO 2025-03-19 20:52:37,345 views 48228 6189576192 Обновление места 32: {'name': '', 'location': 'Москва', 'rating': 0, 'review': '', 'dates': ''}
+ERROR 2025-03-19 20:52:37,348 views 48228 6189576192 Непредвиденная ошибка при обновлении места: {'name': [ErrorDetail(string='This field may not be blank.', code='blank')]}
+ERROR 2025-03-19 20:52:37,349 log 48228 6189576192 Internal Server Error: /api/places/mesto-bez-dat/
+ERROR 2025-03-19 20:52:37,349 basehttp 48228 6189576192 "PUT /api/places/mesto-bez-dat/ HTTP/1.1" 500 138
+INFO 2025-03-19 20:52:54,595 views 48228 6189576192 Обновление места 32: {'name': '', 'location': 'Москва', 'rating': 0, 'review': '', 'dates': ''}
+ERROR 2025-03-19 20:52:54,597 views 48228 6189576192 Непредвиденная ошибка при обновлении места: {'name': [ErrorDetail(string='This field may not be blank.', code='blank')]}
+ERROR 2025-03-19 20:52:54,597 log 48228 6189576192 Internal Server Error: /api/places/mesto-bez-dat/
+ERROR 2025-03-19 20:52:54,597 basehttp 48228 6189576192 "PUT /api/places/mesto-bez-dat/ HTTP/1.1" 500 138
+INFO 2025-03-19 20:53:07,112 views 48228 6189576192 Обновление места 32: {'name': '', 'location': 'Москва', 'rating': 0, 'review': '', 'dates': ''}
+ERROR 2025-03-19 20:53:07,114 views 48228 6189576192 Непредвиденная ошибка при обновлении места: {'name': [ErrorDetail(string='This field may not be blank.', code='blank')]}
+ERROR 2025-03-19 20:53:07,115 log 48228 6189576192 Internal Server Error: /api/places/mesto-bez-dat/
+ERROR 2025-03-19 20:53:07,115 basehttp 48228 6189576192 "PUT /api/places/mesto-bez-dat/ HTTP/1.1" 500 138
+INFO 2025-03-19 20:55:30,460 basehttp 48228 6206402560 "GET /api/places/mesto-bez-dat/ HTTP/1.1" 200 181
+INFO 2025-03-19 20:55:30,460 basehttp 48228 6189576192 "GET /api/places/ HTTP/1.1" 200 7613
+INFO 2025-03-19 20:55:37,948 views 48228 6189576192 Обновление места 32: {'name': '', 'location': 'Москва', 'rating': 0, 'review': '', 'dates': ''}
+ERROR 2025-03-19 20:55:37,949 views 48228 6189576192 Непредвиденная ошибка при обновлении места: {'name': [ErrorDetail(string='This field may not be blank.', code='blank')]}
+ERROR 2025-03-19 20:55:37,950 log 48228 6189576192 Internal Server Error: /api/places/mesto-bez-dat/
+ERROR 2025-03-19 20:55:37,950 basehttp 48228 6189576192 "PUT /api/places/mesto-bez-dat/ HTTP/1.1" 500 138
+INFO 2025-03-19 21:16:08,181 autoreload 55753 8439777344 Watching for file changes with StatReloader
+INFO 2025-03-19 21:16:09,171 basehttp 55753 6162673664 "GET /api/places/ HTTP/1.1" 200 7613
+WARNING 2025-03-19 21:16:12,884 log 55753 6179500032 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-19 21:16:12,884 basehttp 55753 6179500032 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-19 21:16:12,888 basehttp 55753 6162673664 "GET /api/places/ HTTP/1.1" 200 7613
+WARNING 2025-03-19 21:16:25,038 log 55753 6178926592 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-19 21:16:25,039 basehttp 55753 6178926592 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-19 21:16:25,042 basehttp 55753 6162100224 "GET /api/places/ HTTP/1.1" 200 7613
+INFO 2025-03-19 21:16:28,945 basehttp 55753 6162100224 "GET /api/places/mesto-bez-dat/ HTTP/1.1" 200 181
+WARNING 2025-03-19 21:16:40,926 log 55753 6178353152 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-19 21:16:40,927 basehttp 55753 6178353152 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-19 21:16:40,931 basehttp 55753 6161526784 "GET /api/places/ HTTP/1.1" 200 7613
+WARNING 2025-03-19 21:16:59,585 log 55753 6178353152 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-19 21:16:59,585 basehttp 55753 6178353152 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-19 21:16:59,589 basehttp 55753 6161526784 "GET /api/places/ HTTP/1.1" 200 7613
+INFO 2025-03-19 21:17:37,936 basehttp 55753 6161526784 "GET /api/places/mesto-bez-dat/ HTTP/1.1" 200 181
+INFO 2025-03-19 21:17:47,121 views 55753 6161526784 Обновление места 32: {'name': 'Место без дат', 'location': None, 'rating': 0, 'review': '', 'dates': ''}
+ERROR 2025-03-19 21:17:47,122 views 55753 6161526784 Непредвиденная ошибка при обновлении места: {'location': [ErrorDetail(string='This field may not be null.', code='null')]}
+ERROR 2025-03-19 21:17:47,122 log 55753 6161526784 Internal Server Error: /api/places/mesto-bez-dat/
+ERROR 2025-03-19 21:17:47,123 basehttp 55753 6161526784 "PUT /api/places/mesto-bez-dat/ HTTP/1.1" 500 138
+INFO 2025-03-19 21:19:02,694 basehttp 55753 6161526784 "GET /api/places/ HTTP/1.1" 200 7613
+INFO 2025-03-19 21:19:02,694 basehttp 55753 6178353152 "GET /api/places/mesto-bez-dat/ HTTP/1.1" 200 181
+WARNING 2025-03-19 21:19:04,141 log 55753 6161526784 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-19 21:19:04,143 basehttp 55753 6161526784 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+WARNING 2025-03-19 21:19:05,895 log 55753 6178353152 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-19 21:19:05,895 basehttp 55753 6178353152 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-19 21:19:05,899 basehttp 55753 6161526784 "GET /api/places/ HTTP/1.1" 200 7613
+WARNING 2025-03-19 21:19:12,365 log 55753 6178353152 Not Found: /api/users/sergeyfrolov/
+INFO 2025-03-19 21:19:12,365 basehttp 55753 6161526784 "GET /api/places/ HTTP/1.1" 200 7613
+WARNING 2025-03-19 21:19:12,366 basehttp 55753 6178353152 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+WARNING 2025-03-19 21:40:23,959 log 55753 6178353152 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-19 21:40:23,960 basehttp 55753 6178353152 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-19 21:40:23,964 basehttp 55753 6161526784 "GET /api/places/ HTTP/1.1" 200 7613
+WARNING 2025-03-19 21:46:16,155 log 55753 6178353152 Not Found: /api/users/sergeyfrolov/
+INFO 2025-03-19 21:46:16,160 basehttp 55753 6161526784 "GET /api/places/ HTTP/1.1" 200 7613
+WARNING 2025-03-19 21:46:16,160 basehttp 55753 6178353152 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-20 06:07:41,477 views 55753 6161526784 Создание нового места: {'name': 'Без названия', 'location': 'Без адреса', 'rating': 0, 'review': '', 'dates': {'start_date': '2025-03-05', 'end_date': '2025-03-08'}}
+ERROR 2025-03-20 06:07:41,510 views 55753 6161526784 Непредвиденная ошибка при создании места: {'dates': [ErrorDetail(string='Not a valid string.', code='invalid')]}
+ERROR 2025-03-20 06:07:41,511 log 55753 6161526784 Internal Server Error: /api/places/
+ERROR 2025-03-20 06:07:41,512 basehttp 55753 6161526784 "POST /api/places/ HTTP/1.1" 500 134
+WARNING 2025-03-20 08:07:12,846 log 55753 6178353152 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-20 08:07:12,855 basehttp 55753 6178353152 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-20 08:07:12,856 basehttp 55753 6161526784 "GET /api/places/ HTTP/1.1" 200 7613
+INFO 2025-03-20 08:07:12,950 basehttp 55753 6178353152 "GET /media/places/IMG_2994_M0zmYeg.jpeg HTTP/1.1" 304 0
+INFO 2025-03-20 08:07:12,963 basehttp 55753 6213152768 "GET /media/places/add-place-form-with-map_wRy8X90.png HTTP/1.1" 304 0
+INFO 2025-03-20 08:07:12,980 basehttp 55753 6229979136 "GET /media/places/Desktop_-_2.png HTTP/1.1" 304 0
+INFO 2025-03-20 08:07:13,021 basehttp 55753 6246805504 "GET /media/places/Screenshot_2025-01-31_at_2.05.08PM.png HTTP/1.1" 200 154579
+INFO 2025-03-20 08:07:13,023 basehttp 55753 6246805504 "GET /media/places/add-place-form.png HTTP/1.1" 304 0
+INFO 2025-03-20 08:07:13,025 basehttp 55753 6246805504 "GET /media/places/Screenshot_2025-03-04_at_10.04.29AM.png HTTP/1.1" 304 0
+INFO 2025-03-20 08:07:13,042 basehttp 55753 6246805504 "GET /media/places/Screenshot_2025-03-17_at_2.39.26PM.png HTTP/1.1" 304 0
+INFO 2025-03-20 08:07:13,056 basehttp 55753 6246805504 "GET /media/places/Screenshot_2025-03-17_at_2.45.48PM.png HTTP/1.1" 304 0
+INFO 2025-03-20 08:07:13,064 basehttp 55753 6246805504 "GET /media/places/Screenshot_2025-03-17_at_2_CSSuHnn.39.26PM.png HTTP/1.1" 304 0
+INFO 2025-03-20 08:07:13,076 basehttp 55753 6196326400 "GET /media/places/Screenshot_2025-03-18_at_5.45.55PM.png HTTP/1.1" 200 173592
+INFO 2025-03-20 08:07:13,082 basehttp 55753 6196326400 "GET /media/places/Screenshot_2025-03-17_at_2.39.45PM.png HTTP/1.1" 304 0
+INFO 2025-03-20 08:07:13,092 basehttp 55753 6161526784 "GET /media/places/Screenshot_2025-02-03_at_4.55.48PM.png HTTP/1.1" 200 262378
+INFO 2025-03-20 08:07:13,123 basehttp 55753 6213152768 "GET /media/places/Screenshot_2025-03-02_at_11.01.27PM.png HTTP/1.1" 200 502499
+INFO 2025-03-20 08:07:13,141 basehttp 55753 6178353152 "GET /media/places/Screenshot_2025-03-02_at_10_mj5b2p7.57.18PM.png HTTP/1.1" 200 1110223
+INFO 2025-03-20 08:07:13,156 basehttp 55753 6161526784 "GET /media/places/Screenshot_2025-03-02_at_11.39.46PM.png HTTP/1.1" 200 839378
+INFO 2025-03-20 08:07:13,166 basehttp 55753 6246805504 "GET /media/places/Screenshot_2025-03-02_at_11.13.19PM.png HTTP/1.1" 200 1064722
+INFO 2025-03-20 08:07:13,172 basehttp 55753 6196326400 "GET /media/places/Screenshot_2025-03-02_at_11.29.35PM.png HTTP/1.1" 200 1160603
+INFO 2025-03-20 08:07:13,175 basehttp 55753 6229979136 "GET /media/places/Screenshot_2025-03-02_at_11.51.33PM.png HTTP/1.1" 200 1801646
+INFO 2025-03-20 08:07:13,178 basehttp 55753 6213152768 "GET /media/places/Screenshot_2025-03-02_at_11.44.19PM.png HTTP/1.1" 200 1803919
+INFO 2025-03-20 08:07:17,898 basehttp 55753 6161526784 "GET /api/places/testing-formy-257am/ HTTP/1.1" 200 854
+INFO 2025-03-20 08:07:52,521 basehttp 55753 6161526784 "GET /api/places/bez-nazvanija/ HTTP/1.1" 200 527
+INFO 2025-03-20 08:08:14,512 basehttp 55753 6178353152 "GET /api/places/ HTTP/1.1" 200 7613
+INFO 2025-03-20 08:08:14,512 basehttp 55753 6161526784 "GET /api/places/vyhodnye-na-majskie/ HTTP/1.1" 200 399
+WARNING 2025-03-20 08:08:17,679 log 55753 6161526784 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-20 08:08:17,679 basehttp 55753 6161526784 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-20 08:10:29,179 basehttp 55753 6161526784 "GET /api/places/ HTTP/1.1" 200 7613
+INFO 2025-03-20 08:10:51,030 basehttp 55753 6161526784 "GET /api/places/bez-nazvanija/ HTTP/1.1" 200 527
+INFO 2025-03-20 08:11:50,191 basehttp 55753 6178353152 "GET /api/places/bez-nazvanija/ HTTP/1.1" 200 527
+INFO 2025-03-20 08:11:50,191 basehttp 55753 6161526784 "GET /api/places/ HTTP/1.1" 200 7613
+INFO 2025-03-20 08:11:58,795 views 55753 6161526784 Обновление места 23: {'name': 'фыва', 'location': 'Тула', 'rating': 5, 'review': '', 'dates': ''}
+INFO 2025-03-20 08:11:58,813 views 55753 6161526784 Место успешно обновлено: {'id': 23, 'images': [{'id': 58, 'image': 'http://localhost:8000/media/places/IMG_2994_IhEDEdm.jpeg', 'order': 0, 'image_url': 'http://localhost:8000/media/places/IMG_2994_IhEDEdm.jpeg'}, {'id': 59, 'image': 'http://localhost:8000/media/places/Screenshot_2025-03-14_at_11.30.36AM.png', 'order': 1, 'image_url': 'http://localhost:8000/media/places/Screenshot_2025-03-14_at_11.30.36AM.png'}], 'dates': '', 'name': 'фыва', 'location': 'Тула', 'rating': 5, 'review': '', 'created_at': '2025-03-14T14:08:10.409388Z', 'slug': 'bez-nazvanija'}
+INFO 2025-03-20 08:11:58,814 basehttp 55753 6161526784 "PUT /api/places/bez-nazvanija/ HTTP/1.1" 200 512
+INFO 2025-03-20 08:11:58,857 basehttp 55753 6178353152 "GET /api/places/bez-nazvanija/ HTTP/1.1" 200 512
+INFO 2025-03-20 08:11:58,858 basehttp 55753 6161526784 "GET /api/places/ HTTP/1.1" 200 7598
+WARNING 2025-03-20 08:12:01,919 log 55753 6161526784 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-20 08:12:01,919 basehttp 55753 6161526784 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+WARNING 2025-03-20 08:12:06,815 log 55753 6178353152 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-20 08:12:06,816 basehttp 55753 6178353152 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-20 08:12:06,819 basehttp 55753 6161526784 "GET /api/places/ HTTP/1.1" 200 7598
+INFO 2025-03-20 08:12:09,084 basehttp 55753 6161526784 "GET /api/places/bez-nazvanija/ HTTP/1.1" 200 512
+WARNING 2025-03-20 08:14:45,027 log 55753 6178353152 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-20 08:14:45,027 basehttp 55753 6178353152 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-20 08:14:45,032 basehttp 55753 6161526784 "GET /api/places/ HTTP/1.1" 200 7598
+INFO 2025-03-20 08:14:52,137 basehttp 55753 6161526784 "GET /api/places/mesto-bez-dat/ HTTP/1.1" 200 181
+INFO 2025-03-20 08:17:17,366 basehttp 55753 6161526784 "GET /api/places/ HTTP/1.1" 200 7598
+WARNING 2025-03-20 08:17:54,941 log 55753 6178353152 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-20 08:17:54,942 basehttp 55753 6178353152 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-20 08:17:54,945 basehttp 55753 6161526784 "GET /api/places/ HTTP/1.1" 200 7598
+INFO 2025-03-20 08:18:32,596 views 55753 6161526784 Создание нового места: {'name': '', 'location': 'Москва', 'rating': 0, 'review': '', 'dates': ''}
+ERROR 2025-03-20 08:18:32,599 views 55753 6161526784 Непредвиденная ошибка при создании места: {'name': [ErrorDetail(string='This field may not be blank.', code='blank')]}
+ERROR 2025-03-20 08:18:32,600 log 55753 6161526784 Internal Server Error: /api/places/
+ERROR 2025-03-20 08:18:32,600 basehttp 55753 6161526784 "POST /api/places/ HTTP/1.1" 500 134
+INFO 2025-03-20 08:18:47,924 views 55753 6161526784 Создание нового места: {'name': 'фыва', 'location': 'Москва', 'rating': 0, 'review': '', 'dates': ''}
+INFO 2025-03-20 08:18:47,989 views 55753 6161526784 Место успешно создано: {'id': 33, 'images': [], 'dates': '', 'name': 'фыва', 'location': 'Москва', 'rating': 0, 'review': '', 'created_at': '2025-03-20T08:18:47.979710Z', 'slug': 'fyva-b778ee'}
+INFO 2025-03-20 08:18:47,989 basehttp 55753 6161526784 "POST /api/places/ HTTP/1.1" 201 163
+INFO 2025-03-20 08:18:48,027 basehttp 55753 6161526784 "GET /api/places/ HTTP/1.1" 200 7762
+INFO 2025-03-20 08:18:48,062 basehttp 55753 6161526784 "GET /api/places/ HTTP/1.1" 200 7762
+INFO 2025-03-20 08:18:48,498 basehttp 55753 6161526784 "GET /api/places/ HTTP/1.1" 200 7762
+INFO 2025-03-20 08:18:48,500 basehttp 55753 6178353152 "GET /api/places/fyva-b778ee/ HTTP/1.1" 200 163
+INFO 2025-03-20 08:18:57,696 basehttp 55753 6195752960 "GET /media/places/IMG_2994_uKlOM1A.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 08:18:57,696 basehttp 55753 6161526784 "GET /media/places/Screenshot_2025-02-05_at_8_8xPR0eX.46.35PM.png HTTP/1.1" 200 87996
+INFO 2025-03-20 08:18:57,696 basehttp 55753 6246232064 "GET /media/places/IMG_7966_WdKJdOx.jpeg HTTP/1.1" 200 104852
+INFO 2025-03-20 08:18:57,697 basehttp 55753 6229405696 "GET /media/places/IMG_7932_Sq63SBN.jpeg HTTP/1.1" 200 73494
+INFO 2025-03-20 08:18:57,697 basehttp 55753 6212579328 "GET /media/places/IMG_7927_NVzwyzZ.jpeg HTTP/1.1" 200 77887
+INFO 2025-03-20 08:18:57,699 basehttp 55753 6178353152 "GET /media/places/Screenshot_2025-02-03_at_4.55.48PM.png HTTP/1.1" 200 262378
+INFO 2025-03-20 08:18:57,711 basehttp 55753 6178353152 "GET /media/places/Screenshot_2025-03-17_at_2.39.26PM.png HTTP/1.1" 200 38573
+INFO 2025-03-20 08:18:57,717 basehttp 55753 6229405696 "GET /media/places/Screenshot_2025-03-17_at_2.45.48PM.png HTTP/1.1" 200 36562
+INFO 2025-03-20 08:18:57,718 basehttp 55753 6161526784 "GET /media/places/Screenshot_2025-03-17_at_2.39.45PM.png HTTP/1.1" 200 49814
+INFO 2025-03-20 08:18:57,728 basehttp 55753 6246232064 "GET /media/places/add-place-form-with-map_wRy8X90.png HTTP/1.1" 200 56502
+INFO 2025-03-20 08:18:57,758 basehttp 55753 6195752960 "GET /media/places/Screenshot_2025-03-18_at_5.45.55PM.png HTTP/1.1" 200 173592
+INFO 2025-03-20 08:18:57,763 basehttp 55753 6229405696 "GET /media/places/Screenshot_2025-03-17_at_2_CSSuHnn.39.26PM.png HTTP/1.1" 200 38573
+INFO 2025-03-20 08:18:57,769 basehttp 55753 6178353152 "GET /media/places/IMG_2994_M0zmYeg.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 08:18:57,775 basehttp 55753 6161526784 "GET /media/places/add-place-form.png HTTP/1.1" 200 67591
+INFO 2025-03-20 08:18:57,778 basehttp 55753 6195752960 "GET /media/places/Screenshot_2025-03-04_at_10.04.29AM.png HTTP/1.1" 200 42624
+INFO 2025-03-20 08:18:57,778 basehttp 55753 6229405696 "GET /media/places/Desktop_-_2.png HTTP/1.1" 200 39472
+INFO 2025-03-20 08:18:57,780 basehttp 55753 6178353152 "GET /media/places/Screenshot_2025-01-31_at_2.05.08PM.png HTTP/1.1" 200 154579
+INFO 2025-03-20 08:18:57,797 basehttp 55753 6212579328 "GET /media/places/Screenshot_2025-03-02_at_10_mj5b2p7.57.18PM.png HTTP/1.1" 200 1110223
+INFO 2025-03-20 08:18:57,873 basehttp 55753 6195752960 "GET /media/places/Screenshot_2025-03-02_at_11.01.27PM.png HTTP/1.1" 200 502499
+WARNING 2025-03-20 08:18:57,880 log 55753 6263058432 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-20 08:18:57,880 basehttp 55753 6263058432 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-20 08:18:57,914 basehttp 55753 6246232064 "GET /media/places/Screenshot_2025-03-02_at_11.51.33PM.png HTTP/1.1" 200 1801646
+INFO 2025-03-20 08:18:57,944 basehttp 55753 6161526784 "GET /media/places/Screenshot_2025-03-02_at_11.39.46PM.png HTTP/1.1" 200 839378
+INFO 2025-03-20 08:18:57,946 basehttp 55753 6195752960 "GET /media/places/IMG_2994_fn6KLJ3.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 08:18:57,947 basehttp 55753 6246232064 "GET /media/places/IMG_2994_IhEDEdm.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 08:18:57,953 basehttp 55753 6195752960 "GET /media/places/Screenshot_2025-03-14_at_11.30.36AM.png HTTP/1.1" 200 10554
+INFO 2025-03-20 08:18:57,968 basehttp 55753 6178353152 "GET /media/places/Screenshot_2025-03-02_at_11.13.19PM.png HTTP/1.1" 200 1064722
+INFO 2025-03-20 08:18:57,973 basehttp 55753 6161526784 "GET /media/places/IMG_7927_eOPlhbN.jpeg HTTP/1.1" 200 77887
+INFO 2025-03-20 08:18:57,979 basehttp 55753 6246232064 "GET /media/places/IMG_7932_QmSoDkk.jpeg HTTP/1.1" 200 73494
+INFO 2025-03-20 08:18:57,980 basehttp 55753 6195752960 "GET /media/places/IMG_7966_XIw1wHg.jpeg HTTP/1.1" 200 104852
+INFO 2025-03-20 08:18:57,983 basehttp 55753 6229405696 "GET /media/places/Screenshot_2025-03-02_at_11.29.35PM.png HTTP/1.1" 200 1160603
+INFO 2025-03-20 08:18:57,983 basehttp 55753 6212579328 "GET /media/places/Screenshot_2025-03-02_at_11.44.19PM.png HTTP/1.1" 200 1803919
+INFO 2025-03-20 08:19:50,307 basehttp 55753 6161526784 "GET /api/places/ HTTP/1.1" 200 7762
+WARNING 2025-03-20 08:20:36,823 log 55753 6161526784 Not Found: /api/users/sergeyfrolov/
+INFO 2025-03-20 08:20:36,826 basehttp 55753 6178353152 "GET /api/places/ HTTP/1.1" 200 7762
+WARNING 2025-03-20 08:20:36,830 basehttp 55753 6161526784 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+WARNING 2025-03-20 08:23:09,948 log 55753 6178353152 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-20 08:23:09,952 basehttp 55753 6178353152 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-20 08:23:09,952 basehttp 55753 6161526784 "GET /api/places/ HTTP/1.1" 200 7762
+INFO 2025-03-20 08:23:14,071 basehttp 55753 6161526784 "GET /api/places/fyva-b778ee/ HTTP/1.1" 200 163
+INFO 2025-03-20 08:23:21,805 views 55753 6161526784 Обновление места 33: {'name': 'фыва', 'location': 'Москва', 'review': '', 'rating': 5}
+INFO 2025-03-20 08:23:21,810 views 55753 6161526784 Место успешно обновлено: {'id': 33, 'images': [], 'dates': '', 'name': 'фыва', 'location': 'Москва', 'rating': 5, 'review': '', 'created_at': '2025-03-20T08:18:47.979710Z', 'slug': 'fyva-b778ee'}
+INFO 2025-03-20 08:23:21,811 basehttp 55753 6161526784 "PUT /api/places/fyva-b778ee/ HTTP/1.1" 200 163
+INFO 2025-03-20 08:23:21,840 basehttp 55753 6161526784 "GET /api/places/ HTTP/1.1" 200 7762
+INFO 2025-03-20 08:23:21,845 basehttp 55753 6178353152 "GET /api/places/fyva-b778ee/ HTTP/1.1" 200 163
+WARNING 2025-03-20 08:26:33,698 log 55753 6178353152 Not Found: /api/users/sergeyfrolov/
+INFO 2025-03-20 08:26:33,702 basehttp 55753 6161526784 "GET /api/places/ HTTP/1.1" 200 7762
+WARNING 2025-03-20 08:26:33,702 basehttp 55753 6178353152 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-20 08:26:39,769 basehttp 55753 6161526784 "GET /api/places/bez-nazvanija-42586f/ HTTP/1.1" 200 172
+INFO 2025-03-20 08:26:41,868 basehttp 55753 6161526784 "GET /api/places/ HTTP/1.1" 200 7762
+INFO 2025-03-20 08:26:41,868 basehttp 55753 6178353152 "GET /api/places/bez-nazvanija-42586f/ HTTP/1.1" 200 172
+WARNING 2025-03-20 08:26:43,243 log 55753 6161526784 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-20 08:26:43,244 basehttp 55753 6161526784 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+WARNING 2025-03-20 08:26:45,878 log 55753 6178353152 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-20 08:26:45,878 basehttp 55753 6178353152 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-20 08:26:45,881 basehttp 55753 6161526784 "GET /api/places/ HTTP/1.1" 200 7762
+WARNING 2025-03-20 08:27:03,956 log 55753 6178353152 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-20 08:27:03,957 basehttp 55753 6178353152 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-20 08:27:03,962 basehttp 55753 6161526784 "GET /api/places/ HTTP/1.1" 200 7762
+INFO 2025-03-20 08:27:07,633 basehttp 55753 6161526784 "GET /api/places/mesto-bez-dat/ HTTP/1.1" 200 181
+INFO 2025-03-20 08:27:13,331 basehttp 55753 6161526784 "GET /api/places/fyva-b778ee/ HTTP/1.1" 200 163
+INFO 2025-03-20 08:29:22,190 basehttp 55753 6161526784 "GET /api/places/ HTTP/1.1" 200 7762
+WARNING 2025-03-20 08:30:42,481 log 55753 6178353152 Not Found: /api/users/sergeyfrolov/
+INFO 2025-03-20 08:30:42,484 basehttp 55753 6161526784 "GET /api/places/ HTTP/1.1" 200 7762
+WARNING 2025-03-20 08:30:42,484 basehttp 55753 6178353152 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-20 08:30:49,317 basehttp 55753 6161526784 "GET /api/places/bez-nazvanija/ HTTP/1.1" 200 512
+INFO 2025-03-20 08:34:18,035 views 55753 6161526784 Создание нового места: {'name': 'Место без указания дат', 'location': '', 'review': '', 'dates': ''}
+ERROR 2025-03-20 08:34:18,039 views 55753 6161526784 Непредвиденная ошибка при создании места: {'location': [ErrorDetail(string='This field may not be blank.', code='blank')], 'rating': [ErrorDetail(string='This field is required.', code='required')]}
+ERROR 2025-03-20 08:34:18,040 log 55753 6161526784 Internal Server Error: /api/places/
+ERROR 2025-03-20 08:34:18,041 basehttp 55753 6161526784 "POST /api/places/ HTTP/1.1" 500 134
+INFO 2025-03-20 08:34:32,153 views 55753 6161526784 Создание нового места: {'name': 'Место без указания дат', 'location': 'фыва', 'review': '', 'dates': ''}
+ERROR 2025-03-20 08:34:32,155 views 55753 6161526784 Непредвиденная ошибка при создании места: {'rating': [ErrorDetail(string='This field is required.', code='required')]}
+ERROR 2025-03-20 08:34:32,155 log 55753 6161526784 Internal Server Error: /api/places/
+ERROR 2025-03-20 08:34:32,156 basehttp 55753 6161526784 "POST /api/places/ HTTP/1.1" 500 134
+INFO 2025-03-20 08:37:11,224 basehttp 55753 6161526784 "GET /api/places/ HTTP/1.1" 200 7762
+WARNING 2025-03-20 08:37:48,758 log 55753 6178353152 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-20 08:37:48,761 basehttp 55753 6178353152 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-20 08:37:48,761 basehttp 55753 6161526784 "GET /api/places/ HTTP/1.1" 200 7762
+INFO 2025-03-20 08:37:48,829 basehttp 55753 6195752960 "GET /media/places/IMG_2994_uKlOM1A.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 08:37:48,832 basehttp 55753 6178353152 "GET /media/places/Screenshot_2025-02-05_at_8_8xPR0eX.46.35PM.png HTTP/1.1" 200 87996
+INFO 2025-03-20 08:37:48,836 basehttp 55753 6212579328 "GET /media/places/IMG_7927_NVzwyzZ.jpeg HTTP/1.1" 200 77887
+INFO 2025-03-20 08:37:48,837 basehttp 55753 6229405696 "GET /media/places/IMG_7932_Sq63SBN.jpeg HTTP/1.1" 200 73494
+INFO 2025-03-20 08:37:48,846 basehttp 55753 6246232064 "GET /media/places/IMG_7966_WdKJdOx.jpeg HTTP/1.1" 200 104852
+INFO 2025-03-20 08:37:48,848 basehttp 55753 6161526784 "GET /media/places/Screenshot_2025-02-03_at_4.55.48PM.png HTTP/1.1" 200 262378
+INFO 2025-03-20 08:37:48,862 basehttp 55753 6178353152 "GET /media/places/add-place-form-with-map_wRy8X90.png HTTP/1.1" 200 56502
+INFO 2025-03-20 08:37:48,865 basehttp 55753 6229405696 "GET /media/places/Screenshot_2025-03-17_at_2.45.48PM.png HTTP/1.1" 200 36562
+INFO 2025-03-20 08:37:48,871 basehttp 55753 6195752960 "GET /media/places/IMG_2994_M0zmYeg.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 08:37:48,892 basehttp 55753 6246232064 "GET /media/places/Screenshot_2025-03-17_at_2.39.45PM.png HTTP/1.1" 200 49814
+INFO 2025-03-20 08:37:48,923 basehttp 55753 6195752960 "GET /media/places/Screenshot_2025-03-17_at_2_CSSuHnn.39.26PM.png HTTP/1.1" 200 38573
+INFO 2025-03-20 08:37:48,929 basehttp 55753 6161526784 "GET /media/places/add-place-form.png HTTP/1.1" 200 67591
+INFO 2025-03-20 08:37:48,941 basehttp 55753 6246232064 "GET /media/places/Desktop_-_2.png HTTP/1.1" 200 39472
+INFO 2025-03-20 08:37:48,952 basehttp 55753 6195752960 "GET /media/places/Screenshot_2025-03-17_at_2.39.26PM.png HTTP/1.1" 200 38573
+INFO 2025-03-20 08:37:48,955 basehttp 55753 6178353152 "GET /media/places/Screenshot_2025-03-18_at_5.45.55PM.png HTTP/1.1" 200 173592
+INFO 2025-03-20 08:37:48,958 basehttp 55753 6161526784 "GET /media/places/Screenshot_2025-03-04_at_10.04.29AM.png HTTP/1.1" 200 42624
+INFO 2025-03-20 08:37:48,961 basehttp 55753 6246232064 "GET /media/places/Screenshot_2025-01-31_at_2.05.08PM.png HTTP/1.1" 200 154579
+INFO 2025-03-20 08:37:48,969 basehttp 55753 6195752960 "GET /media/places/Screenshot_2025-03-02_at_11.01.27PM.png HTTP/1.1" 200 502499
+INFO 2025-03-20 08:37:48,972 basehttp 55753 6229405696 "GET /media/places/Screenshot_2025-03-02_at_10_mj5b2p7.57.18PM.png HTTP/1.1" 200 1110223
+INFO 2025-03-20 08:37:48,974 basehttp 55753 6212579328 "GET /media/places/Screenshot_2025-03-02_at_11.51.33PM.png HTTP/1.1" 200 1801646
+INFO 2025-03-20 08:37:49,012 basehttp 55753 6178353152 "GET /media/places/IMG_2994_IhEDEdm.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 08:37:49,017 basehttp 55753 6246232064 "GET /media/places/IMG_2994_fn6KLJ3.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 08:37:49,020 basehttp 55753 6178353152 "GET /media/places/Screenshot_2025-03-14_at_11.30.36AM.png HTTP/1.1" 200 10554
+INFO 2025-03-20 08:37:49,035 basehttp 55753 6178353152 "GET /media/places/IMG_7932_QmSoDkk.jpeg HTTP/1.1" 200 73494
+INFO 2025-03-20 08:37:49,041 basehttp 55753 6246232064 "GET /media/places/IMG_7927_eOPlhbN.jpeg HTTP/1.1" 200 77887
+INFO 2025-03-20 08:37:49,053 basehttp 55753 6246232064 "GET /media/places/IMG_7966_XIw1wHg.jpeg HTTP/1.1" 200 104852
+INFO 2025-03-20 08:37:49,067 basehttp 55753 6229405696 "GET /media/places/Screenshot_2025-03-02_at_11.39.46PM.png HTTP/1.1" 200 839378
+INFO 2025-03-20 08:37:49,072 basehttp 55753 6195752960 "GET /media/places/Screenshot_2025-03-02_at_11.13.19PM.png HTTP/1.1" 200 1064722
+INFO 2025-03-20 08:37:49,074 basehttp 55753 6212579328 "GET /media/places/Screenshot_2025-03-02_at_11.29.35PM.png HTTP/1.1" 200 1160603
+INFO 2025-03-20 08:37:49,076 basehttp 55753 6161526784 "GET /media/places/Screenshot_2025-03-02_at_11.44.19PM.png HTTP/1.1" 200 1803919
+INFO 2025-03-20 08:37:53,480 views 55753 6161526784 Создание нового места: {'name': 'Место без указания дат', 'location': 'фыва', 'review': ''}
+ERROR 2025-03-20 08:37:53,481 views 55753 6161526784 Непредвиденная ошибка при создании места: {'rating': [ErrorDetail(string='This field is required.', code='required')]}
+ERROR 2025-03-20 08:37:53,482 log 55753 6161526784 Internal Server Error: /api/places/
+ERROR 2025-03-20 08:37:53,482 basehttp 55753 6161526784 "POST /api/places/ HTTP/1.1" 500 134
+INFO 2025-03-20 08:39:05,474 views 55753 6161526784 Создание нового места: {'name': 'Место без указания дат', 'location': '', 'review': ''}
+ERROR 2025-03-20 08:39:05,478 views 55753 6161526784 Непредвиденная ошибка при создании места: {'location': [ErrorDetail(string='This field may not be blank.', code='blank')], 'rating': [ErrorDetail(string='This field is required.', code='required')]}
+ERROR 2025-03-20 08:39:05,478 log 55753 6161526784 Internal Server Error: /api/places/
+ERROR 2025-03-20 08:39:05,478 basehttp 55753 6161526784 "POST /api/places/ HTTP/1.1" 500 134
+WARNING 2025-03-20 08:39:08,562 log 55753 6178353152 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-20 08:39:08,562 basehttp 55753 6178353152 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-20 08:39:08,571 basehttp 55753 6161526784 "GET /api/places/ HTTP/1.1" 200 7762
+INFO 2025-03-20 08:39:08,636 basehttp 55753 6178353152 "GET /media/places/Screenshot_2025-02-05_at_8_8xPR0eX.46.35PM.png HTTP/1.1" 200 87996
+INFO 2025-03-20 08:39:08,639 basehttp 55753 6195752960 "GET /media/places/IMG_7932_Sq63SBN.jpeg HTTP/1.1" 200 73494
+INFO 2025-03-20 08:39:08,640 basehttp 55753 6212579328 "GET /media/places/IMG_2994_uKlOM1A.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 08:39:08,641 basehttp 55753 6229405696 "GET /media/places/IMG_7927_NVzwyzZ.jpeg HTTP/1.1" 200 77887
+INFO 2025-03-20 08:39:08,677 basehttp 55753 6178353152 "GET /media/places/add-place-form-with-map_wRy8X90.png HTTP/1.1" 200 56502
+INFO 2025-03-20 08:39:08,721 basehttp 55753 6212579328 "GET /media/places/Desktop_-_2.png HTTP/1.1" 200 39472
+INFO 2025-03-20 08:39:08,722 basehttp 55753 6161526784 "GET /media/places/Screenshot_2025-02-03_at_4.55.48PM.png HTTP/1.1" 200 262378
+INFO 2025-03-20 08:39:08,767 basehttp 55753 6195752960 "GET /media/places/add-place-form.png HTTP/1.1" 200 67591
+INFO 2025-03-20 08:39:08,787 basehttp 55753 6246232064 "GET /media/places/IMG_7966_WdKJdOx.jpeg HTTP/1.1" 200 104852
+INFO 2025-03-20 08:39:08,789 basehttp 55753 6229405696 "GET /media/places/IMG_2994_M0zmYeg.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 08:39:08,800 basehttp 55753 6246232064 "GET /media/places/Screenshot_2025-03-17_at_2_CSSuHnn.39.26PM.png HTTP/1.1" 200 38573
+INFO 2025-03-20 08:39:08,803 basehttp 55753 6229405696 "GET /media/places/Screenshot_2025-03-17_at_2.45.48PM.png HTTP/1.1" 200 36562
+INFO 2025-03-20 08:39:08,814 basehttp 55753 6161526784 "GET /media/places/Screenshot_2025-03-17_at_2.39.45PM.png HTTP/1.1" 200 49814
+INFO 2025-03-20 08:39:08,828 basehttp 55753 6178353152 "GET /media/places/Screenshot_2025-03-18_at_5.45.55PM.png HTTP/1.1" 200 173592
+INFO 2025-03-20 08:39:08,831 basehttp 55753 6229405696 "GET /media/places/Screenshot_2025-03-04_at_10.04.29AM.png HTTP/1.1" 200 42624
+INFO 2025-03-20 08:39:08,831 basehttp 55753 6246232064 "GET /media/places/Screenshot_2025-03-17_at_2.39.26PM.png HTTP/1.1" 200 38573
+INFO 2025-03-20 08:39:08,835 basehttp 55753 6161526784 "GET /media/places/Screenshot_2025-01-31_at_2.05.08PM.png HTTP/1.1" 200 154579
+INFO 2025-03-20 08:39:08,846 basehttp 55753 6195752960 "GET /media/places/Screenshot_2025-03-02_at_10_mj5b2p7.57.18PM.png HTTP/1.1" 200 1110223
+INFO 2025-03-20 08:39:08,851 basehttp 55753 6212579328 "GET /media/places/Screenshot_2025-03-02_at_11.51.33PM.png HTTP/1.1" 200 1801646
+INFO 2025-03-20 08:39:08,877 basehttp 55753 6229405696 "GET /media/places/IMG_2994_fn6KLJ3.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 08:39:08,888 basehttp 55753 6229405696 "GET /media/places/IMG_2994_IhEDEdm.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 08:39:08,894 basehttp 55753 6229405696 "GET /media/places/Screenshot_2025-03-14_at_11.30.36AM.png HTTP/1.1" 200 10554
+INFO 2025-03-20 08:39:08,917 basehttp 55753 6229405696 "GET /media/places/IMG_7927_eOPlhbN.jpeg HTTP/1.1" 200 77887
+INFO 2025-03-20 08:39:08,920 basehttp 55753 6161526784 "GET /media/places/Screenshot_2025-03-02_at_11.01.27PM.png HTTP/1.1" 200 502499
+INFO 2025-03-20 08:39:08,934 basehttp 55753 6246232064 "GET /media/places/Screenshot_2025-03-02_at_11.39.46PM.png HTTP/1.1" 200 839378
+INFO 2025-03-20 08:39:08,936 basehttp 55753 6229405696 "GET /media/places/IMG_7932_QmSoDkk.jpeg HTTP/1.1" 200 73494
+INFO 2025-03-20 08:39:08,936 basehttp 55753 6161526784 "GET /media/places/IMG_7966_XIw1wHg.jpeg HTTP/1.1" 200 104852
+INFO 2025-03-20 08:39:08,943 basehttp 55753 6212579328 "GET /media/places/Screenshot_2025-03-02_at_11.13.19PM.png HTTP/1.1" 200 1064722
+INFO 2025-03-20 08:39:08,947 basehttp 55753 6195752960 "GET /media/places/Screenshot_2025-03-02_at_11.29.35PM.png HTTP/1.1" 200 1160603
+INFO 2025-03-20 08:39:08,950 basehttp 55753 6178353152 "GET /media/places/Screenshot_2025-03-02_at_11.44.19PM.png HTTP/1.1" 200 1803919
+INFO 2025-03-20 08:39:11,897 views 55753 6161526784 Создание нового места: {'name': 'Место без указания дат', 'location': '', 'review': ''}
+ERROR 2025-03-20 08:39:11,899 views 55753 6161526784 Непредвиденная ошибка при создании места: {'location': [ErrorDetail(string='This field may not be blank.', code='blank')], 'rating': [ErrorDetail(string='This field is required.', code='required')]}
+ERROR 2025-03-20 08:39:11,899 log 55753 6161526784 Internal Server Error: /api/places/
+ERROR 2025-03-20 08:39:11,900 basehttp 55753 6161526784 "POST /api/places/ HTTP/1.1" 500 134
+WARNING 2025-03-20 08:40:06,454 log 55753 6178353152 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-20 08:40:06,458 basehttp 55753 6178353152 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-20 08:40:06,458 basehttp 55753 6161526784 "GET /api/places/ HTTP/1.1" 200 7762
+INFO 2025-03-20 08:40:06,525 basehttp 55753 6195752960 "GET /media/places/IMG_7927_NVzwyzZ.jpeg HTTP/1.1" 200 77887
+INFO 2025-03-20 08:40:06,536 basehttp 55753 6212579328 "GET /media/places/IMG_7932_Sq63SBN.jpeg HTTP/1.1" 200 73494
+INFO 2025-03-20 08:40:06,537 basehttp 55753 6229405696 "GET /media/places/IMG_7966_WdKJdOx.jpeg HTTP/1.1" 200 104852
+INFO 2025-03-20 08:40:06,558 basehttp 55753 6178353152 "GET /media/places/Screenshot_2025-02-05_at_8_8xPR0eX.46.35PM.png HTTP/1.1" 200 87996
+INFO 2025-03-20 08:40:06,566 basehttp 55753 6246232064 "GET /media/places/IMG_2994_uKlOM1A.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 08:40:06,570 basehttp 55753 6229405696 "GET /media/places/add-place-form-with-map_wRy8X90.png HTTP/1.1" 200 56502
+INFO 2025-03-20 08:40:06,571 basehttp 55753 6161526784 "GET /media/places/Screenshot_2025-02-03_at_4.55.48PM.png HTTP/1.1" 200 262378
+INFO 2025-03-20 08:40:06,575 basehttp 55753 6212579328 "GET /media/places/add-place-form.png HTTP/1.1" 200 67591
+INFO 2025-03-20 08:40:06,575 basehttp 55753 6178353152 "GET /media/places/Screenshot_2025-03-17_at_2.45.48PM.png HTTP/1.1" 200 36562
+INFO 2025-03-20 08:40:06,612 basehttp 55753 6246232064 "GET /media/places/Screenshot_2025-03-18_at_5.45.55PM.png HTTP/1.1" 200 173592
+INFO 2025-03-20 08:40:06,615 basehttp 55753 6178353152 "GET /media/places/IMG_2994_M0zmYeg.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 08:40:06,624 basehttp 55753 6161526784 "GET /media/places/Screenshot_2025-03-17_at_2_CSSuHnn.39.26PM.png HTTP/1.1" 200 38573
+INFO 2025-03-20 08:40:06,626 basehttp 55753 6229405696 "GET /media/places/Screenshot_2025-03-17_at_2.39.45PM.png HTTP/1.1" 200 49814
+INFO 2025-03-20 08:40:06,633 basehttp 55753 6178353152 "GET /media/places/Desktop_-_2.png HTTP/1.1" 200 39472
+INFO 2025-03-20 08:40:06,646 basehttp 55753 6229405696 "GET /media/places/Screenshot_2025-03-04_at_10.04.29AM.png HTTP/1.1" 200 42624
+INFO 2025-03-20 08:40:06,660 basehttp 55753 6246232064 "GET /media/places/Screenshot_2025-03-17_at_2.39.26PM.png HTTP/1.1" 200 38573
+INFO 2025-03-20 08:40:06,662 basehttp 55753 6161526784 "GET /media/places/Screenshot_2025-01-31_at_2.05.08PM.png HTTP/1.1" 200 154579
+INFO 2025-03-20 08:40:06,673 basehttp 55753 6178353152 "GET /media/places/Screenshot_2025-03-02_at_11.01.27PM.png HTTP/1.1" 200 502499
+INFO 2025-03-20 08:40:06,686 basehttp 55753 6212579328 "GET /media/places/Screenshot_2025-03-02_at_10_mj5b2p7.57.18PM.png HTTP/1.1" 200 1110223
+INFO 2025-03-20 08:40:06,688 basehttp 55753 6195752960 "GET /media/places/Screenshot_2025-03-02_at_11.51.33PM.png HTTP/1.1" 200 1801646
+INFO 2025-03-20 08:40:06,720 basehttp 55753 6246232064 "GET /media/places/IMG_2994_IhEDEdm.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 08:40:06,723 basehttp 55753 6212579328 "GET /media/places/IMG_2994_fn6KLJ3.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 08:40:06,725 basehttp 55753 6246232064 "GET /media/places/Screenshot_2025-03-14_at_11.30.36AM.png HTTP/1.1" 200 10554
+INFO 2025-03-20 08:40:06,735 basehttp 55753 6212579328 "GET /media/places/IMG_7932_QmSoDkk.jpeg HTTP/1.1" 200 73494
+INFO 2025-03-20 08:40:06,736 basehttp 55753 6246232064 "GET /media/places/IMG_7927_eOPlhbN.jpeg HTTP/1.1" 200 77887
+INFO 2025-03-20 08:40:06,743 basehttp 55753 6161526784 "GET /media/places/Screenshot_2025-03-02_at_11.29.35PM.png HTTP/1.1" 200 1160603
+INFO 2025-03-20 08:40:06,755 basehttp 55753 6229405696 "GET /media/places/Screenshot_2025-03-02_at_11.13.19PM.png HTTP/1.1" 200 1064722
+INFO 2025-03-20 08:40:06,758 basehttp 55753 6246232064 "GET /media/places/IMG_7966_XIw1wHg.jpeg HTTP/1.1" 200 104852
+INFO 2025-03-20 08:40:06,764 basehttp 55753 6195752960 "GET /media/places/Screenshot_2025-03-02_at_11.39.46PM.png HTTP/1.1" 200 839378
+INFO 2025-03-20 08:40:06,767 basehttp 55753 6178353152 "GET /media/places/Screenshot_2025-03-02_at_11.44.19PM.png HTTP/1.1" 200 1803919
+INFO 2025-03-20 08:40:08,940 views 55753 6263058432 Создание нового места: {'name': 'Место без указания дат', 'location': 'Без адреса'}
+ERROR 2025-03-20 08:40:08,942 views 55753 6263058432 Непредвиденная ошибка при создании места: {'rating': [ErrorDetail(string='This field is required.', code='required')]}
+ERROR 2025-03-20 08:40:08,942 log 55753 6263058432 Internal Server Error: /api/places/
+ERROR 2025-03-20 08:40:08,942 basehttp 55753 6263058432 "POST /api/places/ HTTP/1.1" 500 134
+WARNING 2025-03-20 08:41:34,261 log 55753 6178353152 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-20 08:41:34,262 basehttp 55753 6178353152 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-20 08:41:34,267 basehttp 55753 6161526784 "GET /api/places/ HTTP/1.1" 200 7762
+INFO 2025-03-20 08:41:38,758 views 55753 6161526784 Создание нового места: {'name': 'Место без указания дат', 'location': 'Без адреса'}
+ERROR 2025-03-20 08:41:38,760 views 55753 6161526784 Непредвиденная ошибка при создании места: {'rating': [ErrorDetail(string='This field is required.', code='required')]}
+ERROR 2025-03-20 08:41:38,760 log 55753 6161526784 Internal Server Error: /api/places/
+ERROR 2025-03-20 08:41:38,760 basehttp 55753 6161526784 "POST /api/places/ HTTP/1.1" 500 134
+INFO 2025-03-20 08:42:39,946 basehttp 55753 6161526784 "GET /api/places/ HTTP/1.1" 200 7762
+WARNING 2025-03-20 08:42:40,971 log 55753 6178353152 Not Found: /api/users/sergeyfrolov/
+INFO 2025-03-20 08:42:40,977 basehttp 55753 6161526784 "GET /api/places/ HTTP/1.1" 200 7762
+WARNING 2025-03-20 08:42:40,979 basehttp 55753 6178353152 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-20 08:42:41,050 basehttp 55753 6195752960 "GET /media/places/IMG_7927_NVzwyzZ.jpeg HTTP/1.1" 200 77887
+INFO 2025-03-20 08:42:41,051 basehttp 55753 6246232064 "GET /media/places/IMG_7932_Sq63SBN.jpeg HTTP/1.1" 200 73494
+INFO 2025-03-20 08:42:41,053 basehttp 55753 6178353152 "GET /media/places/IMG_2994_uKlOM1A.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 08:42:41,061 basehttp 55753 6161526784 "GET /media/places/Screenshot_2025-02-05_at_8_8xPR0eX.46.35PM.png HTTP/1.1" 200 87996
+INFO 2025-03-20 08:42:41,076 basehttp 55753 6212579328 "GET /media/places/IMG_7966_WdKJdOx.jpeg HTTP/1.1" 200 104852
+INFO 2025-03-20 08:42:41,081 basehttp 55753 6246232064 "GET /media/places/Desktop_-_2.png HTTP/1.1" 200 39472
+INFO 2025-03-20 08:42:41,085 basehttp 55753 6195752960 "GET /media/places/add-place-form-with-map_wRy8X90.png HTTP/1.1" 200 56502
+INFO 2025-03-20 08:42:41,089 basehttp 55753 6178353152 "GET /media/places/IMG_2994_M0zmYeg.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 08:42:41,103 basehttp 55753 6195752960 "GET /media/places/Screenshot_2025-03-17_at_2.39.45PM.png HTTP/1.1" 200 49814
+INFO 2025-03-20 08:42:41,114 basehttp 55753 6178353152 "GET /media/places/add-place-form.png HTTP/1.1" 200 67591
+INFO 2025-03-20 08:42:41,117 basehttp 55753 6161526784 "GET /media/places/Screenshot_2025-03-18_at_5.45.55PM.png HTTP/1.1" 200 173592
+INFO 2025-03-20 08:42:41,161 basehttp 55753 6195752960 "GET /media/places/Screenshot_2025-03-17_at_2_CSSuHnn.39.26PM.png HTTP/1.1" 200 38573
+INFO 2025-03-20 08:42:41,163 basehttp 55753 6229405696 "GET /media/places/Screenshot_2025-02-03_at_4.55.48PM.png HTTP/1.1" 200 262378
+INFO 2025-03-20 08:42:41,164 basehttp 55753 6178353152 "GET /media/places/Screenshot_2025-03-17_at_2.45.48PM.png HTTP/1.1" 200 36562
+INFO 2025-03-20 08:42:41,172 basehttp 55753 6161526784 "GET /media/places/Screenshot_2025-03-17_at_2.39.26PM.png HTTP/1.1" 200 38573
+INFO 2025-03-20 08:42:41,200 basehttp 55753 6161526784 "GET /media/places/Screenshot_2025-03-04_at_10.04.29AM.png HTTP/1.1" 200 42624
+INFO 2025-03-20 08:42:41,213 basehttp 55753 6229405696 "GET /media/places/Screenshot_2025-01-31_at_2.05.08PM.png HTTP/1.1" 200 154579
+INFO 2025-03-20 08:42:41,223 basehttp 55753 6195752960 "GET /media/places/Screenshot_2025-03-02_at_11.01.27PM.png HTTP/1.1" 200 502499
+INFO 2025-03-20 08:42:41,225 basehttp 55753 6212579328 "GET /media/places/Screenshot_2025-03-02_at_10_mj5b2p7.57.18PM.png HTTP/1.1" 200 1110223
+INFO 2025-03-20 08:42:41,234 basehttp 55753 6178353152 "GET /media/places/Screenshot_2025-03-02_at_11.13.19PM.png HTTP/1.1" 200 1064722
+INFO 2025-03-20 08:42:41,235 basehttp 55753 6246232064 "GET /media/places/Screenshot_2025-03-02_at_11.51.33PM.png HTTP/1.1" 200 1801646
+INFO 2025-03-20 08:42:41,236 basehttp 55753 6161526784 "GET /media/places/Screenshot_2025-03-02_at_11.29.35PM.png HTTP/1.1" 200 1160603
+INFO 2025-03-20 08:42:41,257 basehttp 55753 6178353152 "GET /media/places/Screenshot_2025-03-14_at_11.30.36AM.png HTTP/1.1" 200 10554
+INFO 2025-03-20 08:42:41,269 basehttp 55753 6246232064 "GET /media/places/IMG_2994_fn6KLJ3.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 08:42:41,271 basehttp 55753 6229405696 "GET /media/places/IMG_2994_IhEDEdm.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 08:42:41,272 basehttp 55753 6212579328 "GET /media/places/IMG_7927_eOPlhbN.jpeg HTTP/1.1" 200 77887
+INFO 2025-03-20 08:42:41,274 basehttp 55753 6178353152 "GET /media/places/IMG_7932_QmSoDkk.jpeg HTTP/1.1" 200 73494
+INFO 2025-03-20 08:42:41,281 basehttp 55753 6229405696 "GET /media/places/IMG_7966_XIw1wHg.jpeg HTTP/1.1" 200 104852
+INFO 2025-03-20 08:42:41,287 basehttp 55753 6161526784 "GET /media/places/Screenshot_2025-03-02_at_11.39.46PM.png HTTP/1.1" 200 839378
+INFO 2025-03-20 08:42:41,291 basehttp 55753 6195752960 "GET /media/places/Screenshot_2025-03-02_at_11.44.19PM.png HTTP/1.1" 200 1803919
+INFO 2025-03-20 08:42:43,537 views 55753 6263058432 Создание нового места: {'name': 'Место без указания дат'}
+ERROR 2025-03-20 08:42:43,538 views 55753 6263058432 Непредвиденная ошибка при создании места: {'location': [ErrorDetail(string='This field is required.', code='required')], 'rating': [ErrorDetail(string='This field is required.', code='required')]}
+ERROR 2025-03-20 08:42:43,539 log 55753 6263058432 Internal Server Error: /api/places/
+ERROR 2025-03-20 08:42:43,539 basehttp 55753 6263058432 "POST /api/places/ HTTP/1.1" 500 134
+WARNING 2025-03-20 08:45:52,539 log 55753 6178353152 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-20 08:45:52,543 basehttp 55753 6178353152 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-20 08:45:52,543 basehttp 55753 6161526784 "GET /api/places/ HTTP/1.1" 200 7762
+INFO 2025-03-20 08:45:52,608 basehttp 55753 6212579328 "GET /media/places/IMG_7927_NVzwyzZ.jpeg HTTP/1.1" 200 77887
+INFO 2025-03-20 08:45:52,611 basehttp 55753 6195752960 "GET /media/places/IMG_2994_uKlOM1A.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 08:45:52,616 basehttp 55753 6178353152 "GET /media/places/Screenshot_2025-02-05_at_8_8xPR0eX.46.35PM.png HTTP/1.1" 200 87996
+INFO 2025-03-20 08:45:52,617 basehttp 55753 6229405696 "GET /media/places/IMG_7932_Sq63SBN.jpeg HTTP/1.1" 200 73494
+INFO 2025-03-20 08:45:52,618 basehttp 55753 6246232064 "GET /media/places/IMG_7966_WdKJdOx.jpeg HTTP/1.1" 200 104852
+INFO 2025-03-20 08:45:52,620 basehttp 55753 6212579328 "GET /media/places/IMG_2994_M0zmYeg.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 08:45:52,635 basehttp 55753 6178353152 "GET /media/places/Desktop_-_2.png HTTP/1.1" 200 39472
+INFO 2025-03-20 08:45:52,635 basehttp 55753 6195752960 "GET /media/places/add-place-form-with-map_wRy8X90.png HTTP/1.1" 200 56502
+INFO 2025-03-20 08:45:52,645 basehttp 55753 6229405696 "GET /media/places/Screenshot_2025-03-17_at_2_CSSuHnn.39.26PM.png HTTP/1.1" 200 38573
+INFO 2025-03-20 08:45:52,656 basehttp 55753 6161526784 "GET /media/places/Screenshot_2025-02-03_at_4.55.48PM.png HTTP/1.1" 200 262378
+INFO 2025-03-20 08:45:52,659 basehttp 55753 6246232064 "GET /media/places/add-place-form.png HTTP/1.1" 200 67591
+INFO 2025-03-20 08:45:52,662 basehttp 55753 6178353152 "GET /media/places/Screenshot_2025-03-17_at_2.39.45PM.png HTTP/1.1" 200 49814
+INFO 2025-03-20 08:45:52,665 basehttp 55753 6195752960 "GET /media/places/Screenshot_2025-03-17_at_2.45.48PM.png HTTP/1.1" 200 36562
+INFO 2025-03-20 08:45:52,727 basehttp 55753 6212579328 "GET /media/places/Screenshot_2025-03-18_at_5.45.55PM.png HTTP/1.1" 200 173592
+INFO 2025-03-20 08:45:52,730 basehttp 55753 6195752960 "GET /media/places/Screenshot_2025-03-04_at_10.04.29AM.png HTTP/1.1" 200 42624
+INFO 2025-03-20 08:45:52,731 basehttp 55753 6178353152 "GET /media/places/Screenshot_2025-03-17_at_2.39.26PM.png HTTP/1.1" 200 38573
+INFO 2025-03-20 08:45:52,767 basehttp 55753 6246232064 "GET /media/places/Screenshot_2025-01-31_at_2.05.08PM.png HTTP/1.1" 200 154579
+INFO 2025-03-20 08:45:52,790 basehttp 55753 6212579328 "GET /media/places/Screenshot_2025-03-02_at_11.01.27PM.png HTTP/1.1" 200 502499
+INFO 2025-03-20 08:45:52,791 basehttp 55753 6161526784 "GET /media/places/Screenshot_2025-03-02_at_10_mj5b2p7.57.18PM.png HTTP/1.1" 200 1110223
+INFO 2025-03-20 08:45:52,794 basehttp 55753 6229405696 "GET /media/places/Screenshot_2025-03-02_at_11.51.33PM.png HTTP/1.1" 200 1801646
+INFO 2025-03-20 08:45:52,824 basehttp 55753 6246232064 "GET /media/places/IMG_2994_fn6KLJ3.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 08:45:52,827 basehttp 55753 6212579328 "GET /media/places/IMG_2994_IhEDEdm.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 08:45:52,833 basehttp 55753 6246232064 "GET /media/places/Screenshot_2025-03-14_at_11.30.36AM.png HTTP/1.1" 200 10554
+INFO 2025-03-20 08:45:52,852 basehttp 55753 6212579328 "GET /media/places/IMG_7927_eOPlhbN.jpeg HTTP/1.1" 200 77887
+INFO 2025-03-20 08:45:52,854 basehttp 55753 6246232064 "GET /media/places/IMG_7932_QmSoDkk.jpeg HTTP/1.1" 200 73494
+INFO 2025-03-20 08:45:52,858 basehttp 55753 6195752960 "GET /media/places/Screenshot_2025-03-02_at_11.13.19PM.png HTTP/1.1" 200 1064722
+INFO 2025-03-20 08:45:52,862 basehttp 55753 6178353152 "GET /media/places/Screenshot_2025-03-02_at_11.29.35PM.png HTTP/1.1" 200 1160603
+INFO 2025-03-20 08:45:52,866 basehttp 55753 6246232064 "GET /media/places/IMG_7966_XIw1wHg.jpeg HTTP/1.1" 200 104852
+INFO 2025-03-20 08:45:52,869 basehttp 55753 6229405696 "GET /media/places/Screenshot_2025-03-02_at_11.39.46PM.png HTTP/1.1" 200 839378
+INFO 2025-03-20 08:45:52,871 basehttp 55753 6161526784 "GET /media/places/Screenshot_2025-03-02_at_11.44.19PM.png HTTP/1.1" 200 1803919
+INFO 2025-03-20 08:45:57,445 views 55753 6161526784 Создание нового места: {'username': 'Sergey Frolov', 'createdAt': '2025-03-20T08:45:57.418Z', 'name': 'Место без указания дат'}
+ERROR 2025-03-20 08:45:57,447 views 55753 6161526784 Непредвиденная ошибка при создании места: {'location': [ErrorDetail(string='This field is required.', code='required')], 'rating': [ErrorDetail(string='This field is required.', code='required')]}
+ERROR 2025-03-20 08:45:57,448 log 55753 6161526784 Internal Server Error: /api/places/
+ERROR 2025-03-20 08:45:57,448 basehttp 55753 6161526784 "POST /api/places/ HTTP/1.1" 500 134
+WARNING 2025-03-20 08:46:37,172 log 55753 6178353152 Not Found: /api/users/sergeyfrolov/
+INFO 2025-03-20 08:46:37,177 basehttp 55753 6161526784 "GET /api/places/ HTTP/1.1" 200 7762
+WARNING 2025-03-20 08:46:37,177 basehttp 55753 6178353152 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-20 08:46:37,238 basehttp 55753 6229405696 "GET /media/places/IMG_7932_Sq63SBN.jpeg HTTP/1.1" 200 73494
+INFO 2025-03-20 08:46:37,238 basehttp 55753 6195752960 "GET /media/places/IMG_2994_uKlOM1A.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 08:46:37,238 basehttp 55753 6178353152 "GET /media/places/Screenshot_2025-02-05_at_8_8xPR0eX.46.35PM.png HTTP/1.1" 200 87996
+INFO 2025-03-20 08:46:37,241 basehttp 55753 6212579328 "GET /media/places/IMG_7927_NVzwyzZ.jpeg HTTP/1.1" 200 77887
+INFO 2025-03-20 08:46:37,243 basehttp 55753 6246232064 "GET /media/places/IMG_7966_WdKJdOx.jpeg HTTP/1.1" 200 104852
+INFO 2025-03-20 08:46:37,252 basehttp 55753 6161526784 "GET /media/places/Screenshot_2025-02-03_at_4.55.48PM.png HTTP/1.1" 200 262378
+INFO 2025-03-20 08:46:37,257 basehttp 55753 6195752960 "GET /media/places/Desktop_-_2.png HTTP/1.1" 200 39472
+INFO 2025-03-20 08:46:37,262 basehttp 55753 6212579328 "GET /media/places/add-place-form-with-map_wRy8X90.png HTTP/1.1" 200 56502
+INFO 2025-03-20 08:46:37,264 basehttp 55753 6178353152 "GET /media/places/add-place-form.png HTTP/1.1" 200 67591
+INFO 2025-03-20 08:46:37,264 basehttp 55753 6161526784 "GET /media/places/Screenshot_2025-03-17_at_2.45.48PM.png HTTP/1.1" 200 36562
+INFO 2025-03-20 08:46:37,269 basehttp 55753 6195752960 "GET /media/places/Screenshot_2025-03-17_at_2.39.45PM.png HTTP/1.1" 200 49814
+INFO 2025-03-20 08:46:37,278 basehttp 55753 6229405696 "GET /media/places/IMG_2994_M0zmYeg.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 08:46:37,292 basehttp 55753 6246232064 "GET /media/places/Screenshot_2025-03-18_at_5.45.55PM.png HTTP/1.1" 200 173592
+INFO 2025-03-20 08:46:37,293 basehttp 55753 6212579328 "GET /media/places/Screenshot_2025-03-17_at_2_CSSuHnn.39.26PM.png HTTP/1.1" 200 38573
+INFO 2025-03-20 08:46:37,294 basehttp 55753 6229405696 "GET /media/places/Screenshot_2025-03-04_at_10.04.29AM.png HTTP/1.1" 200 42624
+INFO 2025-03-20 08:46:37,295 basehttp 55753 6195752960 "GET /media/places/Screenshot_2025-03-17_at_2.39.26PM.png HTTP/1.1" 200 38573
+INFO 2025-03-20 08:46:37,388 basehttp 55753 6246232064 "GET /media/places/Screenshot_2025-01-31_at_2.05.08PM.png HTTP/1.1" 200 154579
+INFO 2025-03-20 08:46:37,414 basehttp 55753 6195752960 "GET /media/places/Screenshot_2025-03-02_at_11.01.27PM.png HTTP/1.1" 200 502499
+INFO 2025-03-20 08:46:37,422 basehttp 55753 6161526784 "GET /media/places/Screenshot_2025-03-02_at_10_mj5b2p7.57.18PM.png HTTP/1.1" 200 1110223
+INFO 2025-03-20 08:46:37,439 basehttp 55753 6161526784 "GET /media/places/IMG_2994_fn6KLJ3.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 08:46:37,462 basehttp 55753 6246232064 "GET /media/places/Screenshot_2025-03-02_at_11.39.46PM.png HTTP/1.1" 200 839378
+INFO 2025-03-20 08:46:37,472 basehttp 55753 6212579328 "GET /media/places/Screenshot_2025-03-02_at_11.29.35PM.png HTTP/1.1" 200 1160603
+INFO 2025-03-20 08:46:37,476 basehttp 55753 6229405696 "GET /media/places/Screenshot_2025-03-02_at_11.13.19PM.png HTTP/1.1" 200 1064722
+INFO 2025-03-20 08:46:37,480 basehttp 55753 6178353152 "GET /media/places/Screenshot_2025-03-02_at_11.51.33PM.png HTTP/1.1" 200 1801646
+INFO 2025-03-20 08:46:37,483 basehttp 55753 6195752960 "GET /media/places/Screenshot_2025-03-02_at_11.44.19PM.png HTTP/1.1" 200 1803919
+INFO 2025-03-20 08:46:37,493 basehttp 55753 6229405696 "GET /media/places/Screenshot_2025-03-14_at_11.30.36AM.png HTTP/1.1" 200 10554
+INFO 2025-03-20 08:46:37,495 basehttp 55753 6212579328 "GET /media/places/IMG_7932_QmSoDkk.jpeg HTTP/1.1" 200 73494
+INFO 2025-03-20 08:46:37,496 basehttp 55753 6246232064 "GET /media/places/IMG_7966_XIw1wHg.jpeg HTTP/1.1" 200 104852
+INFO 2025-03-20 08:46:37,497 basehttp 55753 6195752960 "GET /media/places/IMG_7927_eOPlhbN.jpeg HTTP/1.1" 200 77887
+INFO 2025-03-20 08:46:37,497 basehttp 55753 6178353152 "GET /media/places/IMG_2994_IhEDEdm.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 08:46:39,930 views 55753 6161526784 Создание нового места: {'username': 'Sergey Frolov', 'createdAt': '2025-03-20T08:46:39.913Z', 'name': 'Место без указания дат'}
+ERROR 2025-03-20 08:46:39,931 views 55753 6161526784 Непредвиденная ошибка при создании места: {'location': [ErrorDetail(string='This field is required.', code='required')], 'rating': [ErrorDetail(string='This field is required.', code='required')]}
+ERROR 2025-03-20 08:46:39,932 log 55753 6161526784 Internal Server Error: /api/places/
+ERROR 2025-03-20 08:46:39,932 basehttp 55753 6161526784 "POST /api/places/ HTTP/1.1" 500 134
+INFO 2025-03-20 08:48:06,357 autoreload 55753 8439777344 /Users/esploranto/roomtour/backend/backend/models.py changed, reloading.
+INFO 2025-03-20 08:48:06,714 autoreload 63032 8439777344 Watching for file changes with StatReloader
+INFO 2025-03-20 08:48:18,060 autoreload 63032 8439777344 /Users/esploranto/roomtour/backend/backend/serializers.py changed, reloading.
+INFO 2025-03-20 08:48:18,372 autoreload 63043 8439777344 Watching for file changes with StatReloader
+ERROR 2025-03-20 08:48:35,488 log 63043 6128414720 Internal Server Error: /api/places/
+Traceback (most recent call last):
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+psycopg2.errors.UndefinedColumn: column backend_place.user_id does not exist
+LINE 1: SELECT "backend_place"."id", "backend_place"."user_id", "bac...
+                                     ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/rest_framework/viewsets.py", line 124, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/rest_framework/mixins.py", line 46, in list
+    return Response(serializer.data)
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/rest_framework/serializers.py", line 795, in data
+    ret = super().data
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/rest_framework/serializers.py", line 249, in data
+    self._data = self.to_representation(self.instance)
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/rest_framework/serializers.py", line 713, in to_representation
+    return [
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/django/db/models/query.py", line 400, in __iter__
+    self._fetch_all()
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1574, in execute_sql
+    cursor.execute(sql, params)
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+django.db.utils.ProgrammingError: column backend_place.user_id does not exist
+LINE 1: SELECT "backend_place"."id", "backend_place"."user_id", "bac...
+                                     ^
+
+ERROR 2025-03-20 08:48:35,490 basehttp 63043 6128414720 "GET /api/places/ HTTP/1.1" 500 20752
+WARNING 2025-03-20 08:48:40,051 log 63043 6145241088 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-20 08:48:40,055 basehttp 63043 6145241088 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+ERROR 2025-03-20 08:48:40,075 log 63043 6128414720 Internal Server Error: /api/places/
+Traceback (most recent call last):
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+psycopg2.errors.UndefinedColumn: column backend_place.user_id does not exist
+LINE 1: SELECT "backend_place"."id", "backend_place"."user_id", "bac...
+                                     ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/rest_framework/viewsets.py", line 124, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/rest_framework/mixins.py", line 46, in list
+    return Response(serializer.data)
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/rest_framework/serializers.py", line 795, in data
+    ret = super().data
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/rest_framework/serializers.py", line 249, in data
+    self._data = self.to_representation(self.instance)
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/rest_framework/serializers.py", line 713, in to_representation
+    return [
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/django/db/models/query.py", line 400, in __iter__
+    self._fetch_all()
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1574, in execute_sql
+    cursor.execute(sql, params)
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/Users/esploranto/roomtour/env/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+django.db.utils.ProgrammingError: column backend_place.user_id does not exist
+LINE 1: SELECT "backend_place"."id", "backend_place"."user_id", "bac...
+                                     ^
+
+ERROR 2025-03-20 08:48:40,076 basehttp 63043 6128414720 "GET /api/places/ HTTP/1.1" 500 20679
+INFO 2025-03-20 08:48:45,105 basehttp 63043 6128414720 "GET /api/places/ HTTP/1.1" 200 8134
+INFO 2025-03-20 08:49:04,851 views 63043 6127841280 Создание нового места: {'username': 'Sergey Frolov', 'created_at': '2025-03-20T08:49:04.832Z', 'name': 'Место без указания дат'}
+ERROR 2025-03-20 08:49:04,854 views 63043 6127841280 Непредвиденная ошибка при создании места: {'location': [ErrorDetail(string='This field is required.', code='required')], 'rating': [ErrorDetail(string='This field is required.', code='required')]}
+ERROR 2025-03-20 08:49:04,855 log 63043 6127841280 Internal Server Error: /api/places/
+ERROR 2025-03-20 08:49:04,855 basehttp 63043 6127841280 "POST /api/places/ HTTP/1.1" 500 134
+INFO 2025-03-20 08:49:54,595 autoreload 63043 8439777344 /Users/esploranto/roomtour/backend/backend/models.py changed, reloading.
+INFO 2025-03-20 08:49:54,915 autoreload 63664 8439777344 Watching for file changes with StatReloader
+INFO 2025-03-20 08:50:24,626 autoreload 63664 8439777344 /Users/esploranto/roomtour/backend/backend/serializers.py changed, reloading.
+INFO 2025-03-20 08:50:24,909 autoreload 63713 8439777344 Watching for file changes with StatReloader
+INFO 2025-03-20 08:50:42,377 autoreload 63713 8439777344 /Users/esploranto/roomtour/backend/backend/views.py changed, reloading.
+INFO 2025-03-20 08:50:42,742 autoreload 63724 8439777344 Watching for file changes with StatReloader
+INFO 2025-03-20 08:50:53,070 autoreload 63724 8439777344 /Users/esploranto/roomtour/backend/backend/views.py changed, reloading.
+INFO 2025-03-20 08:50:53,381 autoreload 63736 8439777344 Watching for file changes with StatReloader
+WARNING 2025-03-20 08:53:54,882 log 63736 6193885184 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-20 08:53:54,891 basehttp 63736 6193885184 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-20 08:53:54,900 basehttp 63736 6210711552 "GET /api/places/ HTTP/1.1" 200 8134
+INFO 2025-03-20 08:53:54,965 basehttp 63736 6261190656 "GET /media/places/IMG_7932_Sq63SBN.jpeg HTTP/1.1" 200 73494
+INFO 2025-03-20 08:53:54,967 basehttp 63736 6227537920 "GET /media/places/IMG_2994_uKlOM1A.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 08:53:54,969 basehttp 63736 6244364288 "GET /media/places/IMG_7927_NVzwyzZ.jpeg HTTP/1.1" 200 77887
+INFO 2025-03-20 08:53:54,973 basehttp 63736 6278017024 "GET /media/places/IMG_7966_WdKJdOx.jpeg HTTP/1.1" 200 104852
+INFO 2025-03-20 08:53:54,979 basehttp 63736 6210711552 "GET /media/places/Screenshot_2025-02-05_at_8_8xPR0eX.46.35PM.png HTTP/1.1" 200 87996
+INFO 2025-03-20 08:53:54,981 basehttp 63736 6227537920 "GET /media/places/Desktop_-_2.png HTTP/1.1" 200 39472
+INFO 2025-03-20 08:53:54,981 basehttp 63736 6261190656 "GET /media/places/add-place-form-with-map_wRy8X90.png HTTP/1.1" 200 56502
+INFO 2025-03-20 08:53:54,982 basehttp 63736 6244364288 "GET /media/places/IMG_2994_M0zmYeg.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 08:53:54,987 basehttp 63736 6193885184 "GET /media/places/Screenshot_2025-02-03_at_4.55.48PM.png HTTP/1.1" 200 262378
+INFO 2025-03-20 08:53:55,002 basehttp 63736 6261190656 "GET /media/places/Screenshot_2025-03-17_at_2.45.48PM.png HTTP/1.1" 200 36562
+INFO 2025-03-20 08:53:55,013 basehttp 63736 6227537920 "GET /media/places/Screenshot_2025-03-17_at_2_CSSuHnn.39.26PM.png HTTP/1.1" 200 38573
+INFO 2025-03-20 08:53:55,014 basehttp 63736 6244364288 "GET /media/places/Screenshot_2025-03-17_at_2.39.45PM.png HTTP/1.1" 200 49814
+INFO 2025-03-20 08:53:55,042 basehttp 63736 6227537920 "GET /media/places/Screenshot_2025-03-17_at_2.39.26PM.png HTTP/1.1" 200 38573
+INFO 2025-03-20 08:53:55,049 basehttp 63736 6244364288 "GET /media/places/Screenshot_2025-03-04_at_10.04.29AM.png HTTP/1.1" 200 42624
+INFO 2025-03-20 08:53:55,065 basehttp 63736 6210711552 "GET /media/places/Screenshot_2025-03-18_at_5.45.55PM.png HTTP/1.1" 200 173592
+INFO 2025-03-20 08:53:55,066 basehttp 63736 6261190656 "GET /media/places/add-place-form.png HTTP/1.1" 200 67591
+INFO 2025-03-20 08:53:55,080 basehttp 63736 6227537920 "GET /media/places/Screenshot_2025-01-31_at_2.05.08PM.png HTTP/1.1" 200 154579
+INFO 2025-03-20 08:53:55,087 basehttp 63736 6193885184 "GET /media/places/Screenshot_2025-03-02_at_10_mj5b2p7.57.18PM.png HTTP/1.1" 200 1110223
+INFO 2025-03-20 08:53:55,132 basehttp 63736 6244364288 "GET /media/places/Screenshot_2025-03-02_at_11.01.27PM.png HTTP/1.1" 200 502499
+INFO 2025-03-20 08:53:55,144 basehttp 63736 6210711552 "GET /media/places/Screenshot_2025-03-02_at_11.13.19PM.png HTTP/1.1" 200 1064722
+INFO 2025-03-20 08:53:55,146 basehttp 63736 6278017024 "GET /media/places/Screenshot_2025-03-02_at_11.51.33PM.png HTTP/1.1" 200 1801646
+INFO 2025-03-20 08:53:55,149 basehttp 63736 6261190656 "GET /media/places/Screenshot_2025-03-02_at_11.29.35PM.png HTTP/1.1" 200 1160603
+INFO 2025-03-20 08:53:55,176 basehttp 63736 6210711552 "GET /media/places/Screenshot_2025-03-14_at_11.30.36AM.png HTTP/1.1" 200 10554
+INFO 2025-03-20 08:53:55,177 basehttp 63736 6227537920 "GET /media/places/Screenshot_2025-03-02_at_11.39.46PM.png HTTP/1.1" 200 839378
+INFO 2025-03-20 08:53:55,185 basehttp 63736 6261190656 "GET /media/places/IMG_2994_fn6KLJ3.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 08:53:55,187 basehttp 63736 6278017024 "GET /media/places/IMG_2994_IhEDEdm.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 08:53:55,188 basehttp 63736 6244364288 "GET /media/places/IMG_7927_eOPlhbN.jpeg HTTP/1.1" 200 77887
+INFO 2025-03-20 08:53:55,193 basehttp 63736 6227537920 "GET /media/places/IMG_7966_XIw1wHg.jpeg HTTP/1.1" 200 104852
+INFO 2025-03-20 08:53:55,194 basehttp 63736 6210711552 "GET /media/places/IMG_7932_QmSoDkk.jpeg HTTP/1.1" 200 73494
+INFO 2025-03-20 08:53:55,195 basehttp 63736 6193885184 "GET /media/places/Screenshot_2025-03-02_at_11.44.19PM.png HTTP/1.1" 200 1803919
+INFO 2025-03-20 08:53:58,667 views 63736 6294843392 Создание нового места: {'username': 'Sergey Frolov', 'created_at': '2025-03-20T08:53:58.651Z', 'name': 'Место без указания дат'}
+INFO 2025-03-20 08:53:58,702 views 63736 6294843392 Место успешно создано: {'id': 34, 'user_id': None, 'username': 'Sergey Frolov', 'name': 'Место без указания дат', 'location': None, 'rating': None, 'review': None, 'dates': '', 'images': [], 'slug': 'mesto-bez-ukazanija-dat', 'created_at': '2025-03-20T08:53:58.697525Z'}
+INFO 2025-03-20 08:53:58,703 basehttp 63736 6294843392 "POST /api/places/ HTTP/1.1" 201 245
+INFO 2025-03-20 08:53:58,746 basehttp 63736 6294843392 "GET /api/places/ HTTP/1.1" 200 8380
+INFO 2025-03-20 08:53:58,773 basehttp 63736 6294843392 "GET /api/places/ HTTP/1.1" 200 8380
+INFO 2025-03-20 08:53:59,145 basehttp 63736 6294843392 "GET /api/places/mesto-bez-ukazanija-dat/ HTTP/1.1" 200 245
+INFO 2025-03-20 08:53:59,146 basehttp 63736 6311669760 "GET /api/places/ HTTP/1.1" 200 8380
+WARNING 2025-03-20 08:54:04,357 log 63736 6193885184 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-20 08:54:04,357 basehttp 63736 6193885184 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+WARNING 2025-03-20 08:58:37,904 log 63736 6210711552 Not Found: /api/users/sergeyfrolov/
+INFO 2025-03-20 08:58:37,907 basehttp 63736 6193885184 "GET /api/places/ HTTP/1.1" 200 8380
+WARNING 2025-03-20 08:58:37,910 basehttp 63736 6210711552 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+WARNING 2025-03-20 08:59:20,935 log 63736 6210711552 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-20 08:59:20,936 basehttp 63736 6210711552 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-20 08:59:20,942 basehttp 63736 6193885184 "GET /api/places/ HTTP/1.1" 200 8380
+INFO 2025-03-20 08:59:24,625 views 63736 6193885184 Создание нового места: {'username': 'Sergey Frolov', 'created_at': '2025-03-20T08:59:24.613Z', 'location': 'фыва'}
+INFO 2025-03-20 08:59:24,646 views 63736 6193885184 Место успешно создано: {'id': 35, 'user_id': None, 'username': 'Sergey Frolov', 'name': 'Без названия', 'location': 'фыва', 'rating': None, 'review': None, 'dates': '', 'images': [], 'slug': 'bez-nazvanija-8555a7', 'created_at': '2025-03-20T08:59:24.638820Z'}
+INFO 2025-03-20 08:59:24,647 basehttp 63736 6193885184 "POST /api/places/ HTTP/1.1" 201 230
+INFO 2025-03-20 08:59:24,672 basehttp 63736 6193885184 "GET /api/places/ HTTP/1.1" 200 8611
+INFO 2025-03-20 08:59:24,693 basehttp 63736 6193885184 "GET /api/places/ HTTP/1.1" 200 8611
+INFO 2025-03-20 08:59:24,870 basehttp 63736 6210711552 "GET /api/places/bez-nazvanija-8555a7/ HTTP/1.1" 200 230
+INFO 2025-03-20 08:59:24,870 basehttp 63736 6193885184 "GET /api/places/ HTTP/1.1" 200 8611
+WARNING 2025-03-20 08:59:26,879 log 63736 6193885184 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-20 08:59:26,879 basehttp 63736 6193885184 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-20 09:01:25,038 basehttp 63736 6193885184 "GET /api/places/ HTTP/1.1" 200 8611
+INFO 2025-03-20 09:01:37,979 autoreload 63736 8439777344 /Users/esploranto/roomtour/backend/backend/serializers.py changed, reloading.
+INFO 2025-03-20 09:01:38,276 autoreload 65532 8439777344 Watching for file changes with StatReloader
+WARNING 2025-03-20 09:01:42,844 log 65532 6207762432 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-20 09:01:42,845 basehttp 65532 6207762432 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-20 09:01:42,850 basehttp 65532 6190936064 "GET /api/places/ HTTP/1.1" 200 8009
+INFO 2025-03-20 09:04:25,017 views 65532 6190936064 Создание нового места: {'username': 'Sergey Frolov', 'name': 'Выходные', 'dates': '7–9 мар 2025'}
+INFO 2025-03-20 09:04:25,059 views 65532 6190936064 Место успешно создано: {'id': 36, 'user_id': None, 'username': 'Sergey Frolov', 'name': 'Выходные', 'location': None, 'rating': None, 'review': None, 'dates': '7–9 мар 2025', 'images': [], 'slug': 'vyhodnye'}
+INFO 2025-03-20 09:04:25,060 basehttp 65532 6190936064 "POST /api/places/ HTTP/1.1" 201 179
+INFO 2025-03-20 09:04:25,082 basehttp 65532 6190936064 "GET /api/places/ HTTP/1.1" 200 8189
+INFO 2025-03-20 09:04:25,120 basehttp 65532 6190936064 "GET /api/places/ HTTP/1.1" 200 8189
+INFO 2025-03-20 09:04:25,331 basehttp 65532 6190936064 "GET /api/places/ HTTP/1.1" 200 8189
+INFO 2025-03-20 09:04:25,331 basehttp 65532 6207762432 "GET /api/places/vyhodnye/ HTTP/1.1" 200 179
+WARNING 2025-03-20 09:04:28,759 log 65532 6190936064 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-20 09:04:28,759 basehttp 65532 6190936064 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45

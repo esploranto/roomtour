@@ -68,11 +68,13 @@ def resize_image(image, max_size=(1200, 800), quality=85):
 
 class Place(models.Model):
     """Модель для логирования мест проживания во время путешествий."""
-    name = models.CharField(max_length=255, verbose_name="Название")
-    location = models.CharField(max_length=255, verbose_name="Локация")
-    rating = models.PositiveSmallIntegerField(verbose_name="Рейтинг (1-5)")
-    review = models.TextField(blank=True, verbose_name="Отзыв")
-    dates = models.CharField(max_length=255, blank=True, default='', verbose_name="Даты пребывания")
+    user_id = models.CharField(max_length=255, blank=True, null=True, verbose_name="ID пользователя")
+    username = models.CharField(max_length=255, blank=True, null=True, verbose_name="Имя пользователя")
+    name = models.CharField(max_length=255, default="Без названия", verbose_name="Название")
+    location = models.CharField(max_length=255, blank=True, null=True, verbose_name="Локация")
+    rating = models.PositiveSmallIntegerField(blank=True, null=True, verbose_name="Рейтинг (1-5)")
+    review = models.TextField(blank=True, null=True, verbose_name="Отзыв")
+    dates = models.CharField(max_length=255, blank=True, null=True, verbose_name="Даты пребывания")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата добавления")
     slug = models.SlugField(max_length=255, unique=True, blank=True, verbose_name="URL")
     

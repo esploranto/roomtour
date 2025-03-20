@@ -68,13 +68,19 @@ class PlaceViewSet(viewsets.ModelViewSet):
         try:
             logger.info(f"Создание нового места: {request.data}")
             
-            # Получаем даты из запроса
-            dates = request.data.get('dates', '')
-            
             # Создаем копию данных запроса
             data = request.data.copy()
-            data['dates'] = dates
             
+            # Устанавливаем значения по умолчанию для обязательных полей
+            if not data.get('name'):
+                data['name'] = "Без названия"
+                
+            if not data.get('location'):
+                data['location'] = None
+                
+            if not data.get('rating'):
+                data['rating'] = None
+                
             serializer = self.get_serializer(data=data)
             serializer.is_valid(raise_exception=True)
             self.perform_create(serializer)

@@ -306,7 +306,9 @@ export default function Place() {
       </Button>
 
       <div className="flex justify-between items-start mb-2">
-        <h1 className="text-3xl font-bold">{place.name}</h1>
+        {place.name && place.name !== 'Без названия' && (
+          <h1 className="text-3xl font-bold">{place.name}</h1>
+        )}
         
         {/* Кнопка с троеточием (отображается всегда) */}
         <DropdownMenu>
@@ -337,7 +339,9 @@ export default function Place() {
         </DropdownMenu>
       </div>
       
-      <p className="text-gray-600 mb-6">{place.location}</p>
+      {place.location && place.location !== 'Без адреса' && (
+        <p className="text-gray-600 mb-6">{place.location}</p>
+      )}
 
       {/* Даты */}
       {place.dates && (
