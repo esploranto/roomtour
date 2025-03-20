@@ -3,16 +3,22 @@ const path = require('path');
 const crypto = require('crypto');
 const { promisify } = require('util');
 const FileType = require('file-type');
+const fs = require('fs');
 
-// Загружаем переменные окружения
+// Загружаем переменные окружения с значениями по умолчанию
 const {
-  UPLOAD_MAX_SIZE,
-  ALLOWED_FILE_TYPES,
-  UPLOAD_PATH
+  UPLOAD_MAX_SIZE = '5242880', // 5MB по умолчанию
+  ALLOWED_FILE_TYPES = 'jpeg,jpg,png,webp', // Разрешенные типы по умолчанию
+  UPLOAD_PATH = path.join(__dirname, '../../uploads') // Путь для загрузки по умолчанию
 } = process.env;
 
 // Конвертируем строку разрешенных типов файлов в массив
 const allowedMimeTypes = ALLOWED_FILE_TYPES.split(',').map(type => `image/${type}`);
+
+// Создаем директорию для загрузки, если она не существует
+if (!fs.existsSync(UPLOAD_PATH)) {
+  fs.mkdirSync(UPLOAD_PATH, { recursive: true });
+}
 
 // Настройка хранилища
 const storage = multer.diskStorage({

@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState, useContext } from "react";
 import { Button } from "@/components/ui/button.tsx";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
 import {
   Carousel,
   CarouselContent,
@@ -23,9 +23,13 @@ import {
 } from "@/components/ui/dropdown-menu.tsx";
 import AddPlacePopup from "@/components/AddPlacePopup/AddPlacePopup";
 import ConfirmDialog from "@/components/ui/confirm-dialog";
+import { triggerNewPlaceConfetti, triggerEditPlaceConfetti } from "@/components/ui/confetti";
 
 export default function Place() {
   const { username, placeId } = useParams();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const isNew = searchParams.get('isNew') === 'true';
   const carouselRef = useRef(null);
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
@@ -51,14 +55,45 @@ export default function Place() {
     
     const fetchPlace = async () => {
       try {
+        console.log('Place - начало загрузки места с ID:', placeId);
         const data = await placesService.getPlace(placeId);
-        console.log('Place - получены данные места:', data);
+        console.log('Place - сырые данные с сервера:', data);
+        
+        if (!data) {
+          console.error('Place - данные отсутствуют');
+          setError({ status: 404, message: 'Место не найдено' });
+          showError('Место не найдено');
+          return;
+        }
+
+        // Преобразуем числовое значение в строку, если оно есть
+        if (typeof data.name === 'number') {
+          data.name = String(data.name);
+        }
+        
         setPlace(data);
+        console.log('Place - место успешно установлено в состояние:', data);
         setError(null);
+        
+        // Проверяем, пришли ли мы с формы добавления места
+        const fromAddPlace = sessionStorage.getItem('fromAddPlace');
+        if (fromAddPlace === 'true') {
+          try {
+            console.log('Place - запуск конфетти для нового места');
+            triggerNewPlaceConfetti();
+          } catch (confettiError) {
+            console.error('Ошибка при запуске конфетти:', confettiError);
+          }
+          sessionStorage.removeItem('fromAddPlace');
+        }
       } catch (err) {
         console.error('Ошибка при загрузке места:', err);
-        setError(err);
-        showError('Не удалось загрузить данные места');
+        const errorMessage = err.message || 'Не удалось загрузить данные места';
+        setError({ 
+          status: err.response?.status || 500,
+          message: errorMessage
+        });
+        showError(errorMessage);
       } finally {
         setIsLoading(false);
       }
@@ -66,6 +101,15 @@ export default function Place() {
     
     fetchPlace();
   }, [placeId, showError]);
+
+  useEffect(() => {
+    if (isNew) {
+      triggerNewPlaceConfetti();
+      // Удаляем параметр isNew из URL
+      searchParams.delete('isNew');
+      navigate({ search: searchParams.toString() }, { replace: true });
+    }
+  }, []);
 
   // Устанавливаем фокус на карусель после загрузки компонента
   useEffect(() => {
@@ -146,6 +190,7 @@ export default function Place() {
     setPlace(updatedPlace);
     console.log('Place - состояние обновлено:', updatedPlace);
     setIsEditPopupOpen(false);
+    triggerEditPlaceConfetti();
   };
 
   // Обработчик для открытия диалога подтверждения удаления
@@ -240,25 +285,28 @@ export default function Place() {
 
   if (error) {
     return (
-      <div className="container mx-auto py-8 px-4">
-        <Button variant="outline" asChild className="mb-4">
-          <Link to={`/${username}`}>
-            <ArrowLeft size={16} className="mr-2" />
-            Назад к профилю
-          </Link>
-        </Button>
-        <div className="p-8">
-          <div className="p-4 bg-red-100 text-red-700 rounded mb-4">
-            Не удалось загрузить данные места. Пожалуйста, попробуйте позже.
-          </div>
-          
-          {/* Отладочная информация (только в режиме разработки) */}
-          {process.env.NODE_ENV === 'development' && (
-            <div className="mt-4 p-4 bg-gray-100 rounded">
-              <h3 className="font-bold mb-2">Отладочная информация:</h3>
-              <pre className="text-xs overflow-auto">{JSON.stringify(error, null, 2)}</pre>
-            </div>
-          )}
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex items-center mb-6">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => navigate(-1)}
+            className="mr-2"
+          >
+            <ArrowLeft className="h-6 w-6" />
+          </Button>
+          <h1 className="text-2xl font-bold">Ошибка</h1>
+        </div>
+        <div className="text-center py-8">
+          <h2 className="text-xl font-semibold mb-4">
+            {error.status === 404 ? 'Место не найдено' : 'Произошла ошибка'}
+          </h2>
+          <p className="text-gray-600 mb-6">
+            {error.message || 'Попробуйте обновить страницу или вернуться позже'}
+          </p>
+          <Button onClick={() => navigate(-1)}>
+            Вернуться назад
+          </Button>
         </div>
       </div>
     );
@@ -308,8 +356,8 @@ export default function Place() {
       <div className="mb-8">
         <div className="flex justify-between items-start">
           <div>
-            {place.name && place.name !== 'Без названия' && (
-              <h1 className="text-3xl font-medium mb-2">{place.name}</h1>
+            {(place.name !== undefined && place.name !== null && place.name !== 'Без названия') && (
+              <h1 className="text-3xl font-medium mb-2">{String(place.name)}</h1>
             )}
             {place.location && place.location !== 'Без адреса' && (
               <p className="text-gray-500 dark:text-gray-400">{place.location}</p>

@@ -20,6 +20,11 @@ export default function Header({ onPlaceAdded, onDialogStateChange }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
+  // Функция для форматирования имени пользователя в URL
+  const formatUsernameForUrl = (username) => {
+    return username.toLowerCase().replace(/\s+/g, '-');
+  };
+
   useEffect(() => {
     if (onDialogStateChange) {
       onDialogStateChange(loginPopupOpen || addPlacePopupOpen);
@@ -41,7 +46,7 @@ export default function Header({ onPlaceAdded, onDialogStateChange }) {
 
   return (
     <>
-      <header className="header">
+      <header className="header relative">
         <div className="container mx-auto p-4 pb-0">
           <div className="flex justify-between items-center h-20">
             {/* Логотип */}
@@ -68,7 +73,7 @@ export default function Header({ onPlaceAdded, onDialogStateChange }) {
               )}
 
               {isLoggedIn && (
-                <Link to={`/${user.username.toLowerCase().replace(/\s+/g, '')}`}>
+                <Link to={`/${formatUsernameForUrl(user.username)}`}>
                   <Avatar className="w-9 h-9 cursor-pointer">
                     {user.avatarUrl ? (
                       <AvatarImage src={user.avatarUrl} alt={user.username} />
@@ -83,6 +88,7 @@ export default function Header({ onPlaceAdded, onDialogStateChange }) {
               <button
                 onClick={toggleTheme}
                 className="p-2 rounded-full bg-gray-200 dark:bg-gray-700"
+                aria-label={theme === "light" ? "Включить темную тему" : "Включить светлую тему"}
               >
                 {theme === "light" ? <Moon size={20} /> : <Sun size={20} />}
               </button>

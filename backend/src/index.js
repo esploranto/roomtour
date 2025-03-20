@@ -4,20 +4,26 @@ const helmet = require('helmet');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const { upload, handleUploadError } = require('./middleware/fileUpload');
+const path = require('path');
 
 const app = express();
 
 // Основные настройки безопасности
 app.use(helmet()); // Устанавливает различные HTTP заголовки для безопасности
-app.use(cors({
-  origin: process.env.CORS_ORIGINS.split(','),
-  credentials: true
-}));
+
+// Настройка CORS с значениями по умолчанию
+const corsOptions = {
+  origin: (process.env.CORS_ORIGINS || 'http://localhost:5173,http://localhost:5174,http://localhost:5175').split(','),
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 
 // Настройка rate limiting
 const limiter = rateLimit({
-  windowMs: parseInt(process.env.RATE_LIMIT_WINDOW, 10),
-  max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS, 10),
+  windowMs: parseInt(process.env.RATE_LIMIT_WINDOW || '900000', 10), // 15 минут по умолчанию
+  max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || '100', 10), // 100 запросов по умолчанию
   message: 'Слишком много запросов с этого IP, пожалуйста, попробуйте позже'
 });
 
@@ -40,6 +46,13 @@ app.post('/api/upload', upload, handleUploadError, (req, res) => {
     path: `${process.env.CDN_URL}/${req.file.filename}`
   });
 });
+
+// Подключаем маршруты
+const usersRouter = require('./routes/users');
+const placesRouter = require('./routes/places');
+
+app.use('/api/users', usersRouter);
+app.use('/api/places', placesRouter);
 
 // Обработка ошибок
 app.use((err, req, res, next) => {

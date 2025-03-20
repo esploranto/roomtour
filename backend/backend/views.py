@@ -10,6 +10,7 @@ import logging
 import os
 from .models import Place, PlaceImage
 from .serializers import PlaceSerializer, PlaceImageSerializer, UserSerializer
+from django.http import Http404
 
 # Настройка логирования
 logger = logging.getLogger(__name__)
@@ -19,6 +20,28 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     lookup_field = 'username'
+
+    def get_object(self):
+        """
+        Переопределяем метод для поддержки поиска пользователей
+        как по оригинальному имени, так и по отформатированному URL.
+        """
+        queryset = self.filter_queryset(self.get_queryset())
+        lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
+        lookup_value = self.kwargs[lookup_url_kwarg]
+
+        # Пробуем найти по точному совпадению
+        try:
+            obj = queryset.get(username=lookup_value)
+            return obj
+        except User.DoesNotExist:
+            # Если не нашли, пробуем найти по отформатированному имени
+            formatted_username = lookup_value.replace('-', ' ')
+            try:
+                obj = queryset.get(username__iexact=formatted_username)
+                return obj
+            except User.DoesNotExist:
+                raise Http404("Пользователь не найден")
 
 class PlaceViewSet(viewsets.ModelViewSet):
     """ViewSet для мест проживания."""
@@ -38,7 +61,7 @@ class PlaceViewSet(viewsets.ModelViewSet):
     def get_object(self):
         """
         Переопределяем метод для поддержки как slug, так и id.
-        Если в URL передан числовой ID, используем его, иначе используем slug.
+        Сначала пытаемся найти по slug, затем по id.
         """
         try:
             queryset = self.filter_queryset(self.get_queryset())
@@ -47,13 +70,16 @@ class PlaceViewSet(viewsets.ModelViewSet):
             # Получаем значение из URL
             lookup_value = self.kwargs[lookup_url_kwarg]
             
-            # Проверяем, является ли значение числовым ID
-            if lookup_value.isdigit():
-                # Если да, ищем по ID
-                obj = get_object_or_404(queryset, id=lookup_value)
-            else:
-                # Иначе ищем по slug
+            # Сначала пытаемся найти по slug
+            try:
                 obj = get_object_or_404(queryset, slug=lookup_value)
+            except:
+                # Если не нашли по slug, пробуем найти по id
+                if lookup_value.isdigit():
+                    # Если значение числовое, ищем место с таким slug
+                    obj = get_object_or_404(queryset, slug=lookup_value)
+                else:
+                    raise
                 
             # Проверяем разрешения
             self.check_object_permissions(self.request, obj)

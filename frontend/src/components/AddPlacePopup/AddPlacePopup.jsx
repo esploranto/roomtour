@@ -15,8 +15,9 @@ import { useDragAndDrop } from '@/context/DragAndDropContext';
 import { isValidDate, parseDate, parseDateRange, formatDateRange } from '@/lib/utils.ts';
 import PhotoUploadArea from './PhotoUploadArea';
 import PlaceForm from './PlaceForm';
+import { triggerNewPlaceConfetti } from "@/components/ui/confetti";
 
-export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, place }) {
+export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUpdated, place }) {
   console.log('AddPlacePopup рендерится с пропсами:', { isOpen, place });
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -242,231 +243,106 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, place }) 
     
     if (loading) return;
     
-    // Проверяем состояние авторизации
-    console.log('=== Проверка авторизации ===');
-    console.log('1. Текущий пользователь:', user);
-    console.log('2. Состояние авторизации:', !!user);
-    
-    // Проверяем, что хотя бы одно поле заполнено
-    const hasName = name.trim() !== "";
-    const hasLocation = address.trim() !== "";
-    const hasComment = comment.trim() !== "";
-    const hasRating = rating > 0;
-    const hasPhotos = photos.length > 0;
-    const hasDates = startDate !== null || endDate !== null;
-
-    console.log('Состояние полей формы:', {
-      hasName,
-      hasLocation,
-      hasComment,
-      hasRating,
-      hasPhotos,
-      hasDates,
-      name,
-      address,
-      comment,
-      rating,
-      startDate,
-      endDate
-    });
-
-    const isFormValid = hasName || hasLocation || hasComment || hasRating || hasPhotos || hasDates;
-
-    if (!isFormValid) {
-      showError('Заполните хотя бы одно поле');
-      return;
-    }
-    
     setLoading(true);
     setError(null);
-    setUploadProgress(0);
-
-    const placeData = {
-      user_id: user?.id,
-      username: user?.username
-    };
     
-    // Добавляем поля только если они действительно заполнены
-    if (name.trim()) {
-      placeData.name = name.trim();
-    }
-    
-    if (address.trim()) {
-      placeData.location = address.trim();
-    }
-    
-    if (comment.trim()) {
-      placeData.review = comment.trim();
-    }
-
-    // Добавляем рейтинг только если он был установлен
-    if (rating > 0) {
-      placeData.rating = rating;
-    }
-
-    // Добавляем даты только если они были установлены
-    if (startDate || endDate) {
-      placeData.dates = formatDateRange(startDate, endDate);
-    }
-
-    console.log('Данные для отправки на сервер:', placeData);
-
     try {
-      let updatedPlace;
-      
-      // Логируем данные перед отправкой
-      console.log('=== Отправка данных на сервер ===');
-      console.log('1. Тип операции:', isEditMode ? 'Обновление' : 'Создание');
-      console.log('2. Данные для отправки:', {
-        ...placeData,
-        _rawName: name,
-        _rawLocation: address,
-        _rawReview: comment
-      });
-      console.log('3. Состояние формы:', {
-        isFormValid,
-        hasName: name.trim() !== "",
-        hasLocation: address.trim() !== "",
-        hasComment: comment.trim() !== "",
-        hasRating: rating > 0,
-        hasPhotos: photos.length > 0,
-        hasDates: startDate !== null || endDate !== null
-      });
-      
-      if (isEditMode) {
-        const identifier = place.slug || place.id;
-        console.log('4. Идентификатор места для обновления:', identifier);
-        updatedPlace = await placesService.updatePlace(identifier, placeData);
-      } else {
-        console.log('4. Создание нового места');
-        updatedPlace = await placesService.createPlace(placeData);
-      }
-      
-      console.log('5. Ответ от сервера:', updatedPlace);
-      setUploadProgress(30);
-      
-      // Загружаем новые фото, если они есть
-      const activePhotos = photos.filter((_, index) => !disabledPhotos[index]);
-      
-      if (activePhotos.length > 0) {
-        const formData = new FormData();
-        activePhotos.forEach(photo => {
-          formData.append('images', photo.file);
-        });
-        
-        const identifier = updatedPlace.slug || updatedPlace.id;
-        
-        try {
-          const uploadedImages = await placesService.uploadImages(identifier, formData);
-          setUploadProgress(100);
-          updatedPlace.images = [...(updatedPlace.images || []), ...uploadedImages];
-        } catch (uploadError) {
-          console.error("Ошибка при загрузке изображений:", uploadError);
-          showError("Не удалось загрузить некоторые изображения, но место было сохранено");
-        }
-      }
-      
-      // Добавляем существующие неудаленные фото к обновленному месту
-      if (existingPhotos && existingPhotos.length > 0) {
-        console.log('Существующие фото для обновления:', existingPhotos);
-        // Убедимся, что у нас нет дубликатов
-        const existingPhotoIds = existingPhotos.map(photo => photo.id);
-        const filteredImages = updatedPlace.images?.filter(img => !existingPhotoIds.includes(img.id)) || [];
-        updatedPlace.images = [...filteredImages, ...existingPhotos];
-      }
-      
-      // Подготавливаем полные данные для UI
-      console.log('AddPlacePopup - Значения перед формированием placeForUI:', {
-        originalRating: place?.rating,
-        formRating: rating,
-        originalDates: place?.dates,
-        formattedDates: placeData.dates,
-        startDate,
-        endDate
-      });
-
-      const placeForUI = {
-        ...(place || {}),
-        ...updatedPlace,
-        title: placeData.name || '',
-        name: placeData.name || '',
-        location: placeData.location || '',
-        review: placeData.review || '',
-        id: updatedPlace.id || place?.id,
-        slug: updatedPlace.slug || place?.slug,
-        images: updatedPlace.images || [],
-        dates: placeData.dates || ''
+      // Подготавливаем данные места
+      const placeData = {
+        name: name.trim() || "Без названия",
+        location: address.trim() || "Без адреса",
+        review: comment.trim(),
+        rating: rating || null
       };
 
-      // Добавляем рейтинг только если он был установлен
-      if (rating > 0) {
-        placeForUI.rating = rating;
+      // Если есть даты, форматируем их
+      if (startDate && endDate) {
+        placeData.dates = `${format(startDate, 'dd.MM.yyyy')} – ${format(endDate, 'dd.MM.yyyy')}`;
       }
-      
-      console.log('Обновленные данные места для UI:', placeForUI);
-      
-      showSuccess(isEditMode ? 'Место успешно обновлено!' : 'Место успешно добавлено!');
-      mutate(); // Обновляем общий список мест
-      
-      console.log('AddPlacePopup - вызов onPlaceAdded с данными:', placeForUI);
-      if (onPlaceAdded) {
-        onPlaceAdded(placeForUI);
-      }
-      
-      resetForm();
-      onClose();
 
-      if (!isEditMode && user && user.username && placeForUI) {
-        const placeIdentifier = placeForUI.slug || placeForUI.id;
-        const targetUrl = `/${user.username.toLowerCase().replace(/\s+/g, '')}/${placeIdentifier}`;
-        setTimeout(() => {
-          window.location.href = targetUrl;
-        }, 100);
-      }
-    } catch (err) {
-      console.error('=== Ошибка при отправке данных ===');
-      console.error('1. Тип ошибки:', err.name);
-      console.error('2. Сообщение ошибки:', err.message);
-      console.error('3. Данные ошибки:', err);
-      console.error('4. Состояние сети:', navigator.onLine ? 'Онлайн' : 'Офлайн');
-      console.error('5. Последние отправленные данные:', placeData);
+      let updatedPlace;
       
-      if (!navigator.onLine) {
-        console.log("Нет подключения к интернету, добавляем в очередь");
+      if (isEditMode) {
+        console.log('Обновляем существующее место:', place.id);
+        // Добавляем ID удаленных фотографий
+        if (deletedPhotos.length > 0) {
+          placeData.deleted_image_ids = deletedPhotos;
+        }
         
-        const photoFiles = photos
-          .filter((_, index) => !disabledPhotos[index])
-          .map(photo => photo.file);
+        // Обновляем место
+        updatedPlace = await placesService.updatePlace(place.slug || place.id, placeData);
+        console.log('Место успешно обновлено:', updatedPlace);
         
-        try {
-          await queueService.addToQueue({
-            type: isEditMode ? 'updatePlace' : 'createPlace',
-            data: placeData,
-            files: photoFiles,
-            ...(isEditMode && { identifier: place.slug || place.id })
-          });
+        // Загружаем новые фотографии, если они есть
+        const activePhotos = photos.filter((_, index) => !disabledPhotos[index]);
+        if (activePhotos.length > 0) {
+          console.log('Загружаем новые фотографии:', activePhotos.length);
+          const formData = new FormData();
+          activePhotos.forEach(photo => formData.append('images', photo.file));
           
-          showSuccess(isEditMode 
-            ? 'Место будет обновлено автоматически, как только появится интернет'
-            : 'Место будет добавлено автоматически, как только появится интернет'
-          );
-          resetForm();
-          onClose();
-        } catch (queueError) {
-          console.error("Ошибка при добавлении в очередь:", queueError);
-          showError(isEditMode 
-            ? "Не удалось сохранить изменения для последующей отправки"
-            : "Не удалось сохранить место для последующей отправки"
-          );
+          const uploadedImages = await placesService.uploadImages(place.slug || place.id, formData);
+          console.log('Фотографии успешно загружены:', uploadedImages);
+          
+          // Обновляем место с новыми фотографиями
+          updatedPlace = {
+            ...updatedPlace,
+            images: [...updatedPlace.images, ...uploadedImages]
+          };
+        }
+        
+        // Вызываем колбэк обновления
+        if (onPlaceUpdated) {
+          console.log('Вызываем onPlaceUpdated с обновленными данными:', updatedPlace);
+          onPlaceUpdated(updatedPlace);
         }
       } else {
-        const errorMessage = err.error 
-          ? (typeof err.error === 'string' ? err.error : JSON.stringify(err.error)) 
-          : 'Произошла ошибка при отправке данных. Пожалуйста, попробуйте позже.';
+        // Создаем новое место
+        updatedPlace = await placesService.createPlace(placeData);
+        console.log('Новое место создано:', updatedPlace);
         
-        console.error("Детали ошибки:", errorMessage);
-        showError(errorMessage);
+        // Загружаем фотографии для нового места
+        const activePhotos = photos.filter((_, index) => !disabledPhotos[index]);
+        if (activePhotos.length > 0) {
+          console.log('Загружаем фотографии для нового места:', activePhotos.length);
+          const formData = new FormData();
+          activePhotos.forEach(photo => formData.append('images', photo.file));
+          
+          const uploadedImages = await placesService.uploadImages(updatedPlace.slug || updatedPlace.id, formData);
+          console.log('Фотографии успешно загружены:', uploadedImages);
+          
+          // Обновляем место с новыми фотографиями
+          updatedPlace = {
+            ...updatedPlace,
+            images: uploadedImages
+          };
+        }
+        
+        // Вызываем колбэк создания
+        if (onPlaceAdded) {
+          console.log('Вызываем onPlaceAdded с данными нового места:', updatedPlace);
+          onPlaceAdded(updatedPlace);
+        }
       }
+
+      // Обновляем кэш SWR
+      mutate();
+      
+      // Показываем уведомление об успехе
+      showSuccess(isEditMode ? 'Место успешно обновлено' : 'Место успешно добавлено');
+      
+      // Сбрасываем форму и закрываем попап
+      resetForm();
+      onClose();
+      
+      // Если это новое место, перенаправляем на его страницу
+      if (!isEditMode && updatedPlace) {
+        sessionStorage.setItem('fromAddPlace', 'true');
+        navigate(`/${user.username}/${updatedPlace.slug || updatedPlace.id}?isNew=true`);
+      }
+    } catch (err) {
+      console.error('Ошибка при сохранении места:', err);
+      setError(err.message || 'Произошла ошибка при сохранении места');
+      showError(err.message || 'Произошла ошибка при сохранении места');
     } finally {
       setLoading(false);
     }
