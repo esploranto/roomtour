@@ -9,8 +9,8 @@ import AddPlacePopup from "./AddPlacePopup/AddPlacePopup";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar.tsx";
 import { getInitials } from "@/lib/utils.ts";
 import { useTranslation } from "react-i18next";
-import LogoLightMode from "@/images/logo-light-mode.svg";
-import LogoDarkMode from "@/images/logo-dark-mode.svg";
+import LogoLightMode from "@/assets/logo/logo-light-mode.svg";
+import LogoDarkMode from "@/assets/logo/logo-dark-mode.svg";
 
 export default function Header({ onPlaceAdded, onDialogStateChange }) {
   const { theme, toggleTheme } = useContext(ThemeContext);
