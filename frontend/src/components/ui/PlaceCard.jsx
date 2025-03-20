@@ -1,6 +1,6 @@
 import React, { useState, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { Home } from "lucide-react";
+import { Home, Star } from "lucide-react";
 import { parseDateRange, formatDateRange, getCurrentLocale } from "@/lib/utils.ts";
 import SwiperCarousel from "./SwiperCarousel";
 import { format } from "date-fns";
@@ -121,15 +121,15 @@ export default function PlaceCard({ to, title, dates, rating, icon: Icon, imageU
           <div className="flex-grow flex flex-col justify-between h-full min-w-0"> 
             <div className="min-w-0">
               {title && title !== 'Без названия' && (
-                <h2 className="text-xl font-medium text-gray-900 dark:text-white mb-1 truncate">{title}</h2>
+                <h2 className="font-medium text-gray-900 dark:text-white mb-1 truncate">{title}</h2>
               )}
               {location && location !== 'Без адреса' && (
-                <p className="text-gray-900 dark:text-gray-300 mb-1 truncate">{location}</p>
+                <p className="font-light text-gray-900 dark:text-white mb-1 truncate">{location}</p>
               )}
             </div>
             {/* Даты */}
             {dates && dates.trim() !== '' && dates !== 'null' && (
-              <p className="text-gray-500 dark:text-gray-300 mt-auto truncate">
+              <p className="font-light text-gray-500 dark:text-gray-400 mt-auto truncate">
                 {(() => {
                   console.log('PlaceCard - Обработка дат:', {
                     rawDates: dates,
@@ -166,7 +166,8 @@ export default function PlaceCard({ to, title, dates, rating, icon: Icon, imageU
           </div>
           {/* Отображаем рейтинг только если он больше 0 */}
           {rating > 0 && (
-            <div className="text-3xl font-light text-gray-900 dark:text-white flex-shrink-0 ml-2">
+            <div className="font-medium text-gray-900 dark:text-white flex-shrink-0 ml-2 flex items-center gap-1">
+              <Star className="w-3 h-3 text-gray-900 dark:text-white" fill="currentColor" />
               {rating}
             </div>
           )}
