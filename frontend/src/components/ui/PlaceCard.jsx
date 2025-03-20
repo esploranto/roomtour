@@ -76,19 +76,19 @@ export default function PlaceCard({ to, title, dates, rating, icon: Icon, imageU
 
   const cardContent = (
     <div 
-      className="relative border dark:border-gray-700 rounded-xl shadow-sm bg-white dark:bg-gray-800 transition-all duration-200 hover:shadow-lg hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer overflow-hidden"
+      className="flex flex-col h-full w-full border dark:border-gray-700 rounded-xl shadow-sm bg-white dark:bg-gray-800 transition-all duration-200 hover:shadow-lg hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer overflow-hidden"
       onClick={handleCardClick}
     >
       {/* Изображение или карусель */}
       <div 
         ref={containerRef}
-        className="relative group"
+        className="relative group h-64 w-full flex-shrink-0"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
         {/* Если только одно изображение, показываем его напрямую */}
         {hasImages && !multipleImages ? (
-          <div className="relative h-64 w-full">
+          <div className="relative h-full w-full">
             <img
               src={allImages[0].image_url}
               alt={title}
@@ -109,25 +109,27 @@ export default function PlaceCard({ to, title, dates, rating, icon: Icon, imageU
 
         {/* Если нет изображений, показываем плейсхолдер */}
         {!hasImages && (
-          <div className="h-64 bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+          <div className="h-full w-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
             <PlaceIcon size={64} className="text-gray-400 dark:text-gray-500" />
           </div>
         )}
       </div>
 
       {/* Информация о месте */}
-      <div className="p-4">
-        <div className="flex justify-between items-start gap-10">
-          <div className="flex-grow"> 
-            {title && title !== 'Без названия' && (
-              <h2 className="text-xl font-medium text-gray-900 dark:text-white mb-1">{title}</h2>
-            )}
-            {location && location !== 'Без адреса' && (
-              <p className="text-gray-900 dark:text-gray-300 mb-1">{location}</p>
-            )}
+      <div className="flex flex-col flex-grow w-full p-4">
+        <div className="flex justify-between items-start gap-4 h-full">
+          <div className="flex-grow flex flex-col justify-between h-full min-w-0"> 
+            <div className="min-w-0">
+              {title && title !== 'Без названия' && (
+                <h2 className="text-xl font-medium text-gray-900 dark:text-white mb-1 truncate">{title}</h2>
+              )}
+              {location && location !== 'Без адреса' && (
+                <p className="text-gray-900 dark:text-gray-300 mb-1 truncate">{location}</p>
+              )}
+            </div>
             {/* Даты */}
             {dates && dates.trim() !== '' && dates !== 'null' && (
-              <p className="text-gray-500 dark:text-gray-300">
+              <p className="text-gray-500 dark:text-gray-300 mt-auto truncate">
                 {(() => {
                   console.log('PlaceCard - Обработка дат:', {
                     rawDates: dates,
@@ -164,7 +166,7 @@ export default function PlaceCard({ to, title, dates, rating, icon: Icon, imageU
           </div>
           {/* Отображаем рейтинг только если он больше 0 */}
           {rating > 0 && (
-            <div className="text-3xl font-light text-gray-900 dark:text-white">
+            <div className="text-3xl font-light text-gray-900 dark:text-white flex-shrink-0 ml-2">
               {rating}
             </div>
           )}
@@ -177,7 +179,7 @@ export default function PlaceCard({ to, title, dates, rating, icon: Icon, imageU
     return (
       <Link 
         to={to} 
-        className="block h-full" 
+        className="block h-full w-full" 
         onClick={handleLinkClick}
       >
         {cardContent}

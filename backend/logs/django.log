@@ -5916,3 +5916,23 @@ INFO 2025-03-20 09:17:11,199 basehttp 65532 6275067904 "GET /media/places/Screen
 INFO 2025-03-20 09:17:11,203 basehttp 65532 6190936064 "GET /media/places/Screenshot_2025-03-02_at_10_mj5b2p7.57.18PM.png HTTP/1.1" 200 1110223
 INFO 2025-03-20 09:17:11,214 basehttp 65532 6241415168 "GET /media/places/Screenshot_2025-03-02_at_11.44.19PM.png HTTP/1.1" 200 1803919
 INFO 2025-03-20 09:17:11,217 basehttp 65532 6224588800 "GET /media/places/Screenshot_2025-03-02_at_11.51.33PM.png HTTP/1.1" 200 1801646
+INFO 2025-03-20 09:19:54,287 basehttp 65532 6190936064 "GET /api/places/ HTTP/1.1" 200 8809
+INFO 2025-03-20 09:25:24,302 basehttp 65532 6190936064 "GET /api/places/ HTTP/1.1" 200 8809
+INFO 2025-03-20 09:30:56,206 basehttp 65532 6190936064 "GET /api/places/ HTTP/1.1" 200 8809
+INFO 2025-03-20 10:15:18,016 basehttp 65532 6207762432 "GET /api/places/ HTTP/1.1" 200 8809
+INFO 2025-03-20 10:15:18,017 basehttp 65532 6190936064 "GET /api/places/mesto-bez-ukazanija-dat/ HTTP/1.1" 200 202
+INFO 2025-03-20 10:15:26,462 views 65532 6189789184 Обновление места 34: {'username': 'Sergey Frolov', 'name': 'Место без указания дат', 'rating': 3}
+INFO 2025-03-20 10:15:26,468 views 65532 6189789184 Место успешно обновлено: {'id': 34, 'user_id': None, 'username': 'Sergey Frolov', 'name': 'Место без указания дат', 'location': None, 'rating': 3, 'review': None, 'dates': '', 'images': [], 'slug': 'mesto-bez-ukazanija-dat'}
+INFO 2025-03-20 10:15:26,469 basehttp 65532 6189789184 "PUT /api/places/mesto-bez-ukazanija-dat/ HTTP/1.1" 200 199
+INFO 2025-03-20 10:15:26,502 basehttp 65532 6189789184 "GET /api/places/ HTTP/1.1" 200 8806
+INFO 2025-03-20 10:15:26,509 basehttp 65532 6206615552 "GET /api/places/mesto-bez-ukazanija-dat/ HTTP/1.1" 200 199
+WARNING 2025-03-20 10:15:28,479 log 65532 6189789184 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-20 10:15:28,480 basehttp 65532 6189789184 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-20 10:15:28,480 basehttp 65532 6206615552 "GET /media/places/Screenshot_2025-03-02_at_11.44.19PM.png HTTP/1.1" 200 1803919
+INFO 2025-03-20 10:15:28,480 basehttp 65532 6223441920 "GET /media/places/Screenshot_2025-03-02_at_11.51.33PM.png HTTP/1.1" 200 1801646
+INFO 2025-03-20 11:22:40,443 basehttp 65532 6189789184 "GET /api/places/proverka-sortirovki-kartochek/ HTTP/1.1" 200 221
+INFO 2025-03-20 11:22:40,443 basehttp 65532 6206615552 "GET /api/places/ HTTP/1.1" 200 8806
+WARNING 2025-03-20 11:22:41,993 log 65532 6189789184 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-20 11:22:41,993 basehttp 65532 6189789184 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-20 11:22:48,580 basehttp 65532 6189789184 "GET /api/places/testing-formy-257am/ HTTP/1.1" 200 842
+INFO 2025-03-20 11:25:02,207 basehttp 65532 6189789184 "GET /api/places/ HTTP/1.1" 200 8806

@@ -83,7 +83,7 @@ export default function PlaceCardFeed({ username, initialPlaces = null }) {
           : place.id;
           
         return (
-          <div key={place.id} className="h-full">
+          <div key={place.id} className="min-w-0">
             <PlaceCard
               to={`/${username}/${placeIdentifier}`}
               title={place.title}
