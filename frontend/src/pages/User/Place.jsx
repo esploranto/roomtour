@@ -298,56 +298,59 @@ export default function Place() {
   return (
     <div className="container mx-auto py-8 px-4">
       {/* Кнопка "Назад к профилю" */}
-      <Button variant="outline" asChild className="mb-4">
+      <Button variant="outline" asChild className="mb-6">
         <Link to={`/${username}`}>
           <ArrowLeft size={16} className="mr-2" />
           Назад к профилю
         </Link>
       </Button>
 
-      <div className="flex justify-between items-start mb-2">
-        {place.name && place.name !== 'Без названия' && (
-          <h1 className="text-3xl font-bold">{place.name}</h1>
-        )}
-        
-        {/* Кнопка с троеточием (отображается всегда) */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button 
-              variant="ghost" 
-              size="icon"
-              title="Дополнительные действия"
-              disabled={isDeleting}
-            >
-              <MoreVertical className="h-5 w-5" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-48 bg-white dark:bg-gray-800">
-            <DropdownMenuItem onClick={handleEditPlace}>
-              <Edit className="mr-2 h-4 w-4" />
-              Редактировать место
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem 
-              onClick={handleDeleteClick}
-              className="text-red-600 focus:text-red-600"
-            >
-              <Trash2 className="mr-2 h-4 w-4" />
-              Удалить
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+      <div className="mb-8">
+        <div className="flex justify-between items-start">
+          <div>
+            {place.name && place.name !== 'Без названия' && (
+              <h1 className="text-3xl font-medium mb-2">{place.name}</h1>
+            )}
+            {place.location && place.location !== 'Без адреса' && (
+              <p className="text-gray-500 dark:text-gray-400">{place.location}</p>
+            )}
+          </div>
+          
+          {/* Кнопка с троеточием (отображается всегда) */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button 
+                variant="ghost" 
+                size="icon"
+                title="Дополнительные действия"
+                disabled={isDeleting}
+              >
+                <MoreVertical className="h-5 w-5" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48 bg-white dark:bg-gray-800">
+              <DropdownMenuItem onClick={handleEditPlace}>
+                <Edit className="mr-2 h-4 w-4" />
+                Редактировать место
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem 
+                onClick={handleDeleteClick}
+                className="text-red-600 focus:text-red-600"
+              >
+                <Trash2 className="mr-2 h-4 w-4" />
+                Удалить
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
       
-      {place.location && place.location !== 'Без адреса' && (
-        <p className="text-gray-600 mb-6">{place.location}</p>
-      )}
-
       {/* Даты */}
       {place.dates && (
         <div className="mb-6">
-          <h2 className="text-xl font-semibold mb-2">Даты проживания</h2>
-          <p className="text-gray-700">
+          <h2 className="text-lg font-medium mb-1">Даты проживания</h2>
+          <p className="text-gray-500 dark:text-gray-400">
             {(() => {
               // Парсим и форматируем даты в нужном формате
               const [startDate, endDate] = parseDateRange(place.dates);
@@ -421,7 +424,7 @@ export default function Place() {
       {place.review && (
         <div className="mb-6">
           <h2 className="text-xl font-semibold mb-2">Отзыв</h2>
-          <p className="text-gray-700">{place.review}</p>
+          <p className="text-gray-500 dark:text-gray-400">{place.review}</p>
         </div>
       )}
       
