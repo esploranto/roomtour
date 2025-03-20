@@ -242,43 +242,108 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, place }) 
     
     if (loading) return;
     
+    // Проверяем состояние авторизации
+    console.log('=== Проверка авторизации ===');
+    console.log('1. Текущий пользователь:', user);
+    console.log('2. Состояние авторизации:', !!user);
+    
+    // Проверяем, что хотя бы одно поле заполнено
+    const hasName = name.trim() !== "";
+    const hasLocation = address.trim() !== "";
+    const hasComment = comment.trim() !== "";
+    const hasRating = rating > 0;
+    const hasPhotos = photos.length > 0;
+    const hasDates = startDate !== null || endDate !== null;
+
+    console.log('Состояние полей формы:', {
+      hasName,
+      hasLocation,
+      hasComment,
+      hasRating,
+      hasPhotos,
+      hasDates,
+      name,
+      address,
+      comment,
+      rating,
+      startDate,
+      endDate
+    });
+
+    const isFormValid = hasName || hasLocation || hasComment || hasRating || hasPhotos || hasDates;
+
+    if (!isFormValid) {
+      showError('Заполните хотя бы одно поле');
+      return;
+    }
+    
     setLoading(true);
     setError(null);
     setUploadProgress(0);
 
-    const formattedDates = formatDateRange(startDate, endDate);
-    console.log('AddPlacePopup - форматированные даты для отправки:', formattedDates);
-    
     const placeData = {
-      name: name.trim() || 'Без названия',
-      location: address.trim() || 'Без адреса',
-      rating: rating || 0,
-      review: comment.trim(),
-      dates: formattedDates
+      user_id: user?.id,
+      username: user?.username
     };
-    console.log('AddPlacePopup - данные для отправки:', placeData);
+    
+    // Добавляем поля только если они действительно заполнены
+    if (name.trim()) {
+      placeData.name = name.trim();
+    }
+    
+    if (address.trim()) {
+      placeData.location = address.trim();
+    }
+    
+    if (comment.trim()) {
+      placeData.review = comment.trim();
+    }
+
+    // Добавляем рейтинг только если он был установлен
+    if (rating > 0) {
+      placeData.rating = rating;
+    }
+
+    // Добавляем даты только если они были установлены
+    if (startDate || endDate) {
+      placeData.dates = formatDateRange(startDate, endDate);
+    }
+
+    console.log('Данные для отправки на сервер:', placeData);
 
     try {
       let updatedPlace;
       
+      // Логируем данные перед отправкой
+      console.log('=== Отправка данных на сервер ===');
+      console.log('1. Тип операции:', isEditMode ? 'Обновление' : 'Создание');
+      console.log('2. Данные для отправки:', {
+        ...placeData,
+        _rawName: name,
+        _rawLocation: address,
+        _rawReview: comment
+      });
+      console.log('3. Состояние формы:', {
+        isFormValid,
+        hasName: name.trim() !== "",
+        hasLocation: address.trim() !== "",
+        hasComment: comment.trim() !== "",
+        hasRating: rating > 0,
+        hasPhotos: photos.length > 0,
+        hasDates: startDate !== null || endDate !== null
+      });
+      
       if (isEditMode) {
         const identifier = place.slug || place.id;
-        console.log('AddPlacePopup - отправка запроса на обновление места:', identifier);
+        console.log('4. Идентификатор места для обновления:', identifier);
         updatedPlace = await placesService.updatePlace(identifier, placeData);
-        console.log('AddPlacePopup - получен ответ от сервера:', updatedPlace);
-        setUploadProgress(30);
-        
-        // Удаляем фото, если есть удаленные
-        if (deletedPhotos.length > 0) {
-          console.log(`Удаление ${deletedPhotos.length} фото с сервера:`, deletedPhotos);
-          await Promise.all(deletedPhotos.map(photoId => 
-            placesService.deleteImage(identifier, photoId)
-          ));
-        }
       } else {
+        console.log('4. Создание нового места');
         updatedPlace = await placesService.createPlace(placeData);
-        setUploadProgress(30);
       }
+      
+      console.log('5. Ответ от сервера:', updatedPlace);
+      setUploadProgress(30);
       
       // Загружаем новые фото, если они есть
       const activePhotos = photos.filter((_, index) => !disabledPhotos[index]);
@@ -310,24 +375,34 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, place }) 
         updatedPlace.images = [...filteredImages, ...existingPhotos];
       }
       
-      // Подготавливаем полные данные для UI с правильным форматом дат
+      // Подготавливаем полные данные для UI
+      console.log('AddPlacePopup - Значения перед формированием placeForUI:', {
+        originalRating: place?.rating,
+        formRating: rating,
+        originalDates: place?.dates,
+        formattedDates: placeData.dates,
+        startDate,
+        endDate
+      });
+
       const placeForUI = {
-        ...(place || {}), // Начинаем с оригинальных данных
-        ...updatedPlace, // Добавляем обновленные данные с сервера
-        // Переопределяем самые важные поля из формы
-        title: name.trim() || 'Без названия',
-        name: name.trim() || 'Без названия',
-        location: address.trim() || 'Без адреса',
-        dates: formattedDates,
-        rating: rating,
-        review: comment.trim(),
-        // Гарантируем, что ID и slug правильные
+        ...(place || {}),
+        ...updatedPlace,
+        title: placeData.name || '',
+        name: placeData.name || '',
+        location: placeData.location || '',
+        review: placeData.review || '',
         id: updatedPlace.id || place?.id,
         slug: updatedPlace.slug || place?.slug,
-        // Изображения
-        images: updatedPlace.images || []
+        images: updatedPlace.images || [],
+        dates: placeData.dates || ''
       };
 
+      // Добавляем рейтинг только если он был установлен
+      if (rating > 0) {
+        placeForUI.rating = rating;
+      }
+      
       console.log('Обновленные данные места для UI:', placeForUI);
       
       showSuccess(isEditMode ? 'Место успешно обновлено!' : 'Место успешно добавлено!');
@@ -349,7 +424,12 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, place }) 
         }, 100);
       }
     } catch (err) {
-      console.error(isEditMode ? "Ошибка при обновлении места:" : "Ошибка при добавлении места:", err);
+      console.error('=== Ошибка при отправке данных ===');
+      console.error('1. Тип ошибки:', err.name);
+      console.error('2. Сообщение ошибки:', err.message);
+      console.error('3. Данные ошибки:', err);
+      console.error('4. Состояние сети:', navigator.onLine ? 'Онлайн' : 'Офлайн');
+      console.error('5. Последние отправленные данные:', placeData);
       
       if (!navigator.onLine) {
         console.log("Нет подключения к интернету, добавляем в очередь");
@@ -418,8 +498,9 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, place }) 
       console.log('AddPlacePopup: Редактирование места:', place);
       console.log('AddPlacePopup: Значение place.dates:', place.dates);
       
-      setName(place.name || "");
-      setAddress(place.location || "");
+      // Не загружаем заполнители в поля формы
+      setName(place.name === 'Без названия' ? "" : (place.name || ""));
+      setAddress(place.location === 'Без адреса' ? "" : (place.location || ""));
       setComment(place.review || "");
       setRating(place.rating || 0);
       
@@ -451,8 +532,8 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, place }) 
       }
       
       setInitialFormState({
-        name: place.name || "",
-        address: place.location || "",
+        name: place.name === 'Без названия' ? "" : (place.name || ""),
+        address: place.location === 'Без адреса' ? "" : (place.location || ""),
         comment: place.review || "",
         rating: place.rating || 0,
         startDate: parsedStartDate,

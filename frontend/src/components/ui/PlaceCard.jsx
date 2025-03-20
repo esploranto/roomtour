@@ -1,8 +1,9 @@
 import React, { useState, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { Home } from "lucide-react";
-import { parseDateRange, formatDateRange } from "@/lib/utils.ts";
+import { parseDateRange, formatDateRange, getCurrentLocale } from "@/lib/utils.ts";
 import SwiperCarousel from "./SwiperCarousel";
+import { format } from "date-fns";
 
 export default function PlaceCard({ to, title, dates, rating, icon: Icon, imageUrl, images = [], location }) {
   const PlaceIcon = Icon || Home;
@@ -117,25 +118,56 @@ export default function PlaceCard({ to, title, dates, rating, icon: Icon, imageU
       {/* Информация о месте */}
       <div className="p-4">
         <div className="flex justify-between items-start gap-10">
-          <div className="flex-grow">
-            <h2 className="text-xl font-medium text-gray-900 dark:text-white mb-1">{title}</h2>
-            {location && (
+          <div className="flex-grow"> 
+            {title && title !== 'Без названия' && (
+              <h2 className="text-xl font-medium text-gray-900 dark:text-white mb-1">{title}</h2>
+            )}
+            {location && location !== 'Без адреса' && (
               <p className="text-gray-900 dark:text-gray-300 mb-1">{location}</p>
             )}
-            <p className="text-gray-500 dark:text-gray-300">
-              {dates ? (() => {
-                // Парсим и форматируем даты в новом формате
-                const [startDate, endDate] = parseDateRange(dates);
-                if (startDate || endDate) {
-                  return formatDateRange(startDate, endDate);
-                }
-                return dates; // Fallback на исходный формат, если парсинг не удался
-              })() : ''}
-            </p>
+            {/* Даты */}
+            {dates && dates.trim() !== '' && dates !== 'null' && (
+              <p className="text-gray-500 dark:text-gray-300">
+                {(() => {
+                  console.log('PlaceCard - Обработка дат:', {
+                    rawDates: dates,
+                    trimmedDates: dates.trim()
+                  });
+                  
+                  // Если строка пустая или null - не показываем ничего
+                  if (!dates || dates.trim() === '' || dates === 'null') {
+                    console.log('PlaceCard - Пустая строка дат или null');
+                    return null;
+                  }
+                  
+                  const [startDate, endDate] = parseDateRange(dates);
+                  console.log('PlaceCard - Результат парсинга дат:', {
+                    startDate,
+                    endDate,
+                    hasStartDate: !!startDate,
+                    hasEndDate: !!endDate
+                  });
+                  
+                  // Если даты не удалось распарсить - не показываем ничего
+                  if (!startDate && !endDate) {
+                    console.log('PlaceCard - Не удалось распарсить даты');
+                    return null;
+                  }
+                  
+                  const formattedDates = formatDateRange(startDate, endDate);
+                  console.log('PlaceCard - Отформатированные даты:', formattedDates);
+                  
+                  return formattedDates;
+                })()}
+              </p>
+            )}
           </div>
-          <div className="text-3xl font-light text-gray-900 dark:text-white">
-            {rating}
-          </div>
+          {/* Отображаем рейтинг только если он больше 0 */}
+          {rating > 0 && (
+            <div className="text-3xl font-light text-gray-900 dark:text-white">
+              {rating}
+            </div>
+          )}
         </div>
       </div>
     </div>

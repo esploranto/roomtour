@@ -31,12 +31,18 @@ class PlaceImageSerializer(serializers.ModelSerializer):
 class PlaceSerializer(serializers.ModelSerializer):
     """Сериализатор для мест проживания."""
     images = PlaceImageSerializer(many=True, read_only=True)
-    dates = serializers.CharField(max_length=255, required=False, allow_blank=True)
+    dates = serializers.CharField(max_length=255, required=False, allow_blank=True, allow_null=True)
+    name = serializers.CharField(max_length=255, required=False, allow_blank=True)
+    location = serializers.CharField(max_length=255, required=False, allow_blank=True, allow_null=True)
+    rating = serializers.IntegerField(required=False, allow_null=True)
+    review = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    user_id = serializers.CharField(max_length=255, required=False, allow_blank=True, allow_null=True)
+    username = serializers.CharField(max_length=255, required=False, allow_blank=True, allow_null=True)
     
     class Meta:
         model = Place
-        fields = '__all__'
-        read_only_fields = ['slug']
+        fields = ['id', 'user_id', 'username', 'name', 'location', 'rating', 'review', 'dates', 'images', 'slug']
+        read_only_fields = ['id', 'slug', 'created_at']
         
     def _format_month_ru(self, month_number):
         """Возвращает название месяца на русском языке."""
