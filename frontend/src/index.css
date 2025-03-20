@@ -23,6 +23,14 @@ body {
     @apply bg-white text-black dark:bg-gray-900 dark:text-white;
   }
 
+/* Стили для хедера */
+.header {
+  @apply fixed top-0 left-0 w-full z-50;
+  @apply bg-white/95 dark:bg-gray-900/95;
+  @apply backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-gray-900/60;
+  @apply transition-all duration-300;
+}
+
 /* Футер */
 footer {
     @apply bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300;
