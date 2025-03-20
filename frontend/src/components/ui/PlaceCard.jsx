@@ -76,7 +76,7 @@ export default function PlaceCard({ to, title, dates, rating, icon: Icon, imageU
 
   const cardContent = (
     <div 
-      className="flex flex-col h-full w-full border dark:border-gray-700 rounded-xl shadow-sm bg-white dark:bg-gray-800 transition-all duration-200 hover:shadow-lg hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer overflow-hidden"
+      className="flex flex-col h-full w-full border dark:border-gray-700 rounded-xl shadow-sm bg-white dark:bg-gray-800 transition-all duration-200 hover:shadow-lg dark:hover:shadow-[rgb(255,255,255,0.12)] hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer overflow-hidden"
       onClick={handleCardClick}
     >
       {/* Изображение или карусель */}

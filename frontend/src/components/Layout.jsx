@@ -36,7 +36,7 @@ export default function Layout() {
       />
 
       {/* Основной контент (растягивается на всю высоту) */}
-      <main className="flex-1 overflow-auto">
+      <main className="flex-1 overflow-visible">
         <SyncStatus isDialogOpen={isDialogOpen} />
         <Outlet context={{ lastAddedPlace, onDialogStateChange: handleDialogStateChange }} />
       </main>

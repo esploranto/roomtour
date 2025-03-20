@@ -94,7 +94,7 @@ export default function Profile() {
   };
 
   return (
-    <div className="pt-12">
+    <div className="pt-12 overflow-visible">
 
       {/* Карточка профиля пользователя */}
       {(user || profile) && (
