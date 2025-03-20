@@ -5814,3 +5814,105 @@ INFO 2025-03-20 09:04:25,331 basehttp 65532 6190936064 "GET /api/places/ HTTP/1.
 INFO 2025-03-20 09:04:25,331 basehttp 65532 6207762432 "GET /api/places/vyhodnye/ HTTP/1.1" 200 179
 WARNING 2025-03-20 09:04:28,759 log 65532 6190936064 Not Found: /api/users/sergeyfrolov/
 WARNING 2025-03-20 09:04:28,759 basehttp 65532 6190936064 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-20 09:09:25,905 basehttp 65532 6190936064 "GET /api/places/ HTTP/1.1" 200 8189
+WARNING 2025-03-20 09:10:19,459 log 65532 6190936064 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-20 09:10:19,463 basehttp 65532 6190936064 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-20 09:10:19,463 basehttp 65532 6207762432 "GET /api/places/ HTTP/1.1" 200 8189
+INFO 2025-03-20 09:10:44,972 views 65532 6190936064 Создание нового места: {'username': 'Sergey Frolov', 'name': 'Проверка сортировки карточек'}
+INFO 2025-03-20 09:10:44,991 views 65532 6190936064 Место успешно создано: {'id': 37, 'user_id': None, 'username': 'Sergey Frolov', 'name': 'Проверка сортировки карточек', 'location': None, 'rating': None, 'review': None, 'dates': '', 'images': [], 'slug': 'proverka-sortirovki-kartochek'}
+INFO 2025-03-20 09:10:44,992 basehttp 65532 6190936064 "POST /api/places/ HTTP/1.1" 201 221
+INFO 2025-03-20 09:10:45,015 basehttp 65532 6190936064 "GET /api/places/ HTTP/1.1" 200 8411
+INFO 2025-03-20 09:10:45,044 basehttp 65532 6190936064 "GET /api/places/ HTTP/1.1" 200 8411
+INFO 2025-03-20 09:10:45,221 basehttp 65532 6190936064 "GET /api/places/ HTTP/1.1" 200 8411
+INFO 2025-03-20 09:10:45,221 basehttp 65532 6207762432 "GET /api/places/proverka-sortirovki-kartochek/ HTTP/1.1" 200 221
+WARNING 2025-03-20 09:10:47,150 log 65532 6190936064 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-20 09:10:47,150 basehttp 65532 6190936064 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-20 09:12:55,455 basehttp 65532 6190936064 "GET /api/places/ HTTP/1.1" 200 8411
+WARNING 2025-03-20 09:14:22,792 log 65532 6207762432 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-20 09:14:22,793 basehttp 65532 6207762432 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-20 09:14:22,799 basehttp 65532 6190936064 "GET /api/places/ HTTP/1.1" 200 8411
+WARNING 2025-03-20 09:14:24,618 log 65532 6207762432 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-20 09:14:24,618 basehttp 65532 6207762432 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-20 09:14:24,622 basehttp 65532 6190936064 "GET /api/places/ HTTP/1.1" 200 8411
+INFO 2025-03-20 09:14:54,304 views 65532 6190936064 Создание нового места: {'username': 'Sergey Frolov', 'name': 'Проверка сортировки 2'}
+INFO 2025-03-20 09:14:54,321 views 65532 6190936064 Место успешно создано: {'id': 38, 'user_id': None, 'username': 'Sergey Frolov', 'name': 'Проверка сортировки 2', 'location': None, 'rating': None, 'review': None, 'dates': '', 'images': [], 'slug': 'proverka-sortirovki-2'}
+INFO 2025-03-20 09:14:54,321 basehttp 65532 6190936064 "POST /api/places/ HTTP/1.1" 201 198
+INFO 2025-03-20 09:14:54,346 basehttp 65532 6190936064 "GET /api/places/ HTTP/1.1" 200 8610
+INFO 2025-03-20 09:14:54,370 basehttp 65532 6190936064 "GET /api/places/ HTTP/1.1" 200 8610
+INFO 2025-03-20 09:14:54,544 basehttp 65532 6207762432 "GET /api/places/proverka-sortirovki-2/ HTTP/1.1" 200 198
+INFO 2025-03-20 09:14:54,544 basehttp 65532 6190936064 "GET /api/places/ HTTP/1.1" 200 8610
+WARNING 2025-03-20 09:14:56,810 log 65532 6190936064 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-20 09:14:56,810 basehttp 65532 6190936064 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-20 09:16:16,046 basehttp 65532 6190936064 "GET /api/places/ HTTP/1.1" 200 8610
+WARNING 2025-03-20 09:16:58,607 log 65532 6207762432 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-20 09:16:58,610 basehttp 65532 6207762432 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-20 09:16:58,610 basehttp 65532 6190936064 "GET /api/places/ HTTP/1.1" 200 8610
+INFO 2025-03-20 09:16:58,685 basehttp 65532 6258241536 "GET /media/places/add-place-form-with-map_wRy8X90.png HTTP/1.1" 200 56502
+INFO 2025-03-20 09:16:58,688 basehttp 65532 6241415168 "GET /media/places/Screenshot_2025-03-17_at_2.45.48PM.png HTTP/1.1" 200 36562
+INFO 2025-03-20 09:16:58,689 basehttp 65532 6224588800 "GET /media/places/Screenshot_2025-03-17_at_2_CSSuHnn.39.26PM.png HTTP/1.1" 200 38573
+INFO 2025-03-20 09:16:58,693 basehttp 65532 6207762432 "GET /media/places/Screenshot_2025-03-17_at_2.39.45PM.png HTTP/1.1" 200 49814
+INFO 2025-03-20 09:16:58,697 basehttp 65532 6190936064 "GET /media/places/Screenshot_2025-03-18_at_5.45.55PM.png HTTP/1.1" 200 173592
+INFO 2025-03-20 09:16:58,697 basehttp 65532 6275067904 "GET /media/places/IMG_2994_M0zmYeg.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 09:16:58,704 basehttp 65532 6241415168 "GET /media/places/Desktop_-_2.png HTTP/1.1" 200 39472
+INFO 2025-03-20 09:16:58,705 basehttp 65532 6207762432 "GET /media/places/IMG_2994_IhEDEdm.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 09:16:58,705 basehttp 65532 6190936064 "GET /media/places/Screenshot_2025-03-14_at_11.30.36AM.png HTTP/1.1" 200 10554
+INFO 2025-03-20 09:16:58,706 basehttp 65532 6258241536 "GET /media/places/add-place-form.png HTTP/1.1" 200 67591
+INFO 2025-03-20 09:16:58,709 basehttp 65532 6224588800 "GET /media/places/IMG_2994_fn6KLJ3.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 09:16:58,722 basehttp 65532 6275067904 "GET /media/places/Screenshot_2025-02-03_at_4.55.48PM.png HTTP/1.1" 200 262378
+INFO 2025-03-20 09:16:58,723 basehttp 65532 6190936064 "GET /media/places/IMG_2994_uKlOM1A.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 09:16:58,725 basehttp 65532 6241415168 "GET /media/places/IMG_7927_eOPlhbN.jpeg HTTP/1.1" 200 77887
+INFO 2025-03-20 09:16:58,726 basehttp 65532 6224588800 "GET /media/places/IMG_7966_XIw1wHg.jpeg HTTP/1.1" 200 104852
+INFO 2025-03-20 09:16:58,726 basehttp 65532 6258241536 "GET /media/places/IMG_7932_QmSoDkk.jpeg HTTP/1.1" 200 73494
+INFO 2025-03-20 09:16:58,726 basehttp 65532 6207762432 "GET /media/places/Screenshot_2025-02-05_at_8_8xPR0eX.46.35PM.png HTTP/1.1" 200 87996
+INFO 2025-03-20 09:16:58,734 basehttp 65532 6190936064 "GET /media/places/Screenshot_2025-03-04_at_10.04.29AM.png HTTP/1.1" 200 42624
+INFO 2025-03-20 09:16:58,738 basehttp 65532 6275067904 "GET /media/places/Screenshot_2025-03-17_at_2.39.26PM.png HTTP/1.1" 200 38573
+INFO 2025-03-20 09:16:58,750 basehttp 65532 6224588800 "GET /media/places/IMG_7932_Sq63SBN.jpeg HTTP/1.1" 200 73494
+INFO 2025-03-20 09:16:58,751 basehttp 65532 6258241536 "GET /media/places/IMG_7966_WdKJdOx.jpeg HTTP/1.1" 200 104852
+INFO 2025-03-20 09:16:58,761 basehttp 65532 6207762432 "GET /media/places/IMG_7927_NVzwyzZ.jpeg HTTP/1.1" 200 77887
+INFO 2025-03-20 09:16:58,765 basehttp 65532 6190936064 "GET /media/places/Screenshot_2025-01-31_at_2.05.08PM.png HTTP/1.1" 200 154579
+INFO 2025-03-20 09:16:58,792 basehttp 65532 6275067904 "GET /media/places/Screenshot_2025-03-02_at_11.01.27PM.png HTTP/1.1" 200 502499
+INFO 2025-03-20 09:16:58,806 basehttp 65532 6241415168 "GET /media/places/Screenshot_2025-03-02_at_10_mj5b2p7.57.18PM.png HTTP/1.1" 200 1110223
+INFO 2025-03-20 09:16:58,812 basehttp 65532 6207762432 "GET /media/places/Screenshot_2025-03-02_at_11.39.46PM.png HTTP/1.1" 200 839378
+INFO 2025-03-20 09:16:58,823 basehttp 65532 6258241536 "GET /media/places/Screenshot_2025-03-02_at_11.13.19PM.png HTTP/1.1" 200 1064722
+INFO 2025-03-20 09:16:58,830 basehttp 65532 6224588800 "GET /media/places/Screenshot_2025-03-02_at_11.29.35PM.png HTTP/1.1" 200 1160603
+INFO 2025-03-20 09:16:58,838 basehttp 65532 6275067904 "GET /media/places/Screenshot_2025-03-02_at_11.51.33PM.png HTTP/1.1" 200 1801646
+INFO 2025-03-20 09:16:58,839 basehttp 65532 6190936064 "GET /media/places/Screenshot_2025-03-02_at_11.44.19PM.png HTTP/1.1" 200 1803919
+INFO 2025-03-20 09:17:08,771 views 65532 6190936064 Создание нового места: {'username': 'Sergey Frolov', 'name': 'Проверка сортировки 3'}
+INFO 2025-03-20 09:17:08,788 views 65532 6190936064 Место успешно создано: {'id': 39, 'user_id': None, 'username': 'Sergey Frolov', 'name': 'Проверка сортировки 3', 'location': None, 'rating': None, 'review': None, 'dates': '', 'images': [], 'slug': 'proverka-sortirovki-3'}
+INFO 2025-03-20 09:17:08,789 basehttp 65532 6190936064 "POST /api/places/ HTTP/1.1" 201 198
+INFO 2025-03-20 09:17:08,843 basehttp 65532 6190936064 "GET /api/places/ HTTP/1.1" 200 8809
+INFO 2025-03-20 09:17:08,872 basehttp 65532 6190936064 "GET /api/places/ HTTP/1.1" 200 8809
+INFO 2025-03-20 09:17:09,230 basehttp 65532 6207762432 "GET /api/places/proverka-sortirovki-3/ HTTP/1.1" 200 198
+INFO 2025-03-20 09:17:09,230 basehttp 65532 6190936064 "GET /api/places/ HTTP/1.1" 200 8809
+INFO 2025-03-20 09:17:11,028 basehttp 65532 6190936064 "GET /media/places/Screenshot_2025-03-17_at_2.39.45PM.png HTTP/1.1" 200 49814
+INFO 2025-03-20 09:17:11,030 basehttp 65532 6241415168 "GET /media/places/Screenshot_2025-03-17_at_2_CSSuHnn.39.26PM.png HTTP/1.1" 200 38573
+INFO 2025-03-20 09:17:11,032 basehttp 65532 6275067904 "GET /media/places/add-place-form-with-map_wRy8X90.png HTTP/1.1" 200 56502
+INFO 2025-03-20 09:17:11,034 basehttp 65532 6207762432 "GET /media/places/IMG_2994_M0zmYeg.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 09:17:11,040 basehttp 65532 6258241536 "GET /media/places/Screenshot_2025-03-17_at_2.45.48PM.png HTTP/1.1" 200 36562
+INFO 2025-03-20 09:17:11,041 basehttp 65532 6224588800 "GET /media/places/Screenshot_2025-03-18_at_5.45.55PM.png HTTP/1.1" 200 173592
+INFO 2025-03-20 09:17:11,060 basehttp 65532 6190936064 "GET /media/places/add-place-form.png HTTP/1.1" 200 67591
+INFO 2025-03-20 09:17:11,068 basehttp 65532 6258241536 "GET /media/places/Screenshot_2025-03-14_at_11.30.36AM.png HTTP/1.1" 200 10554
+INFO 2025-03-20 09:17:11,084 basehttp 65532 6241415168 "GET /media/places/Desktop_-_2.png HTTP/1.1" 200 39472
+INFO 2025-03-20 09:17:11,087 basehttp 65532 6275067904 "GET /media/places/IMG_2994_fn6KLJ3.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 09:17:11,088 basehttp 65532 6258241536 "GET /media/places/IMG_2994_uKlOM1A.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 09:17:11,089 basehttp 65532 6207762432 "GET /media/places/IMG_2994_IhEDEdm.jpeg HTTP/1.1" 200 70895
+INFO 2025-03-20 09:17:11,090 basehttp 65532 6190936064 "GET /media/places/Screenshot_2025-02-05_at_8_8xPR0eX.46.35PM.png HTTP/1.1" 200 87996
+INFO 2025-03-20 09:17:11,091 basehttp 65532 6224588800 "GET /media/places/Screenshot_2025-02-03_at_4.55.48PM.png HTTP/1.1" 200 262378
+WARNING 2025-03-20 09:17:11,103 log 65532 6291894272 Not Found: /api/users/sergeyfrolov/
+WARNING 2025-03-20 09:17:11,103 basehttp 65532 6291894272 "GET /api/users/sergeyfrolov/ HTTP/1.1" 404 45
+INFO 2025-03-20 09:17:11,123 basehttp 65532 6258241536 "GET /media/places/IMG_7932_Sq63SBN.jpeg HTTP/1.1" 200 73494
+INFO 2025-03-20 09:17:11,124 basehttp 65532 6190936064 "GET /media/places/IMG_7927_NVzwyzZ.jpeg HTTP/1.1" 200 77887
+INFO 2025-03-20 09:17:11,127 basehttp 65532 6224588800 "GET /media/places/IMG_7932_QmSoDkk.jpeg HTTP/1.1" 200 73494
+INFO 2025-03-20 09:17:11,131 basehttp 65532 6207762432 "GET /media/places/IMG_7927_eOPlhbN.jpeg HTTP/1.1" 200 77887
+INFO 2025-03-20 09:17:11,131 basehttp 65532 6241415168 "GET /media/places/IMG_7966_WdKJdOx.jpeg HTTP/1.1" 200 104852
+INFO 2025-03-20 09:17:11,133 basehttp 65532 6224588800 "GET /media/places/Screenshot_2025-03-04_at_10.04.29AM.png HTTP/1.1" 200 42624
+INFO 2025-03-20 09:17:11,134 basehttp 65532 6258241536 "GET /media/places/Screenshot_2025-03-17_at_2.39.26PM.png HTTP/1.1" 200 38573
+INFO 2025-03-20 09:17:11,135 basehttp 65532 6275067904 "GET /media/places/IMG_7966_XIw1wHg.jpeg HTTP/1.1" 200 104852
+INFO 2025-03-20 09:17:11,157 basehttp 65532 6241415168 "GET /media/places/Screenshot_2025-01-31_at_2.05.08PM.png HTTP/1.1" 200 154579
+INFO 2025-03-20 09:17:11,172 basehttp 65532 6224588800 "GET /media/places/Screenshot_2025-03-02_at_11.01.27PM.png HTTP/1.1" 200 502499
+INFO 2025-03-20 09:17:11,184 basehttp 65532 6258241536 "GET /media/places/Screenshot_2025-03-02_at_11.39.46PM.png HTTP/1.1" 200 839378
+INFO 2025-03-20 09:17:11,198 basehttp 65532 6207762432 "GET /media/places/Screenshot_2025-03-02_at_11.29.35PM.png HTTP/1.1" 200 1160603
+INFO 2025-03-20 09:17:11,199 basehttp 65532 6275067904 "GET /media/places/Screenshot_2025-03-02_at_11.13.19PM.png HTTP/1.1" 200 1064722
+INFO 2025-03-20 09:17:11,203 basehttp 65532 6190936064 "GET /media/places/Screenshot_2025-03-02_at_10_mj5b2p7.57.18PM.png HTTP/1.1" 200 1110223
+INFO 2025-03-20 09:17:11,214 basehttp 65532 6241415168 "GET /media/places/Screenshot_2025-03-02_at_11.44.19PM.png HTTP/1.1" 200 1803919
+INFO 2025-03-20 09:17:11,217 basehttp 65532 6224588800 "GET /media/places/Screenshot_2025-03-02_at_11.51.33PM.png HTTP/1.1" 200 1801646

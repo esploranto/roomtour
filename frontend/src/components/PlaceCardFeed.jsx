@@ -9,10 +9,45 @@ export default function PlaceCardFeed({ username, initialPlaces = null }) {
   // Используем initialPlaces, если они предоставлены, иначе используем данные из хука
   const places = initialPlaces || fetchedPlaces;
   
+  // Отладочный лог для проверки данных
+  console.log('Raw places data:', places?.map(p => ({
+    id: p.id,
+    title: p.title,
+    created_at: p.created_at,
+    updated_at: p.updated_at,
+    date_obj: p.created_at ? new Date(p.created_at) : 'No created_at'
+  })));
+  
   // Сортируем места по дате создания в обратном порядке
   const sortedPlaces = places ? [...places].sort((a, b) => {
-    return new Date(b.created_at) - new Date(a.created_at);
+    // Проверяем наличие дат создания
+    const aDate = a.created_at ? new Date(a.created_at).getTime() : 
+                 a.updated_at ? new Date(a.updated_at).getTime() : 0;
+    const bDate = b.created_at ? new Date(b.created_at).getTime() : 
+                 b.updated_at ? new Date(b.updated_at).getTime() : 0;
+                 
+    console.log(`Comparing dates for "${a.title}" (${aDate}) vs "${b.title}" (${bDate})`);
+    
+    // Если обе даты валидны, сравниваем их
+    if (aDate && bDate) {
+      return bDate - aDate;
+    }
+    
+    // Если только одна из дат валидна, ставим элемент с датой выше
+    if (aDate) return -1;
+    if (bDate) return 1;
+    
+    // Если нет дат, сравниваем по ID (чтобы сохранить стабильную сортировку)
+    return b.id - a.id;
   }) : [];
+  
+  // Отладочный лог для проверки сортировки
+  console.log('Sorted places:', sortedPlaces?.map(p => ({
+    id: p.id,
+    title: p.title,
+    created_at: p.created_at,
+    updated_at: p.updated_at
+  })));
   
   if (isLoading) {
     return (
@@ -40,7 +75,7 @@ export default function PlaceCardFeed({ username, initialPlaces = null }) {
   }
   
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 mb-10">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 mb-10 auto-rows-fr">
       {sortedPlaces.map((place, index) => {
         // Определяем идентификатор для URL
         const placeIdentifier = place.slug && place.slug.trim() !== '' 
