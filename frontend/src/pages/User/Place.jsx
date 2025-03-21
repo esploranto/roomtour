@@ -268,7 +268,7 @@ export default function Place() {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto py-8 px-4">
+      <div className="container mx-auto py-8">
         <Button variant="outline" asChild className="mb-4">
           <Link to={`/${username}`}>
             <ArrowLeft size={16} className="mr-2" />
@@ -285,7 +285,7 @@ export default function Place() {
 
   if (error) {
     return (
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto py-8">
         <div className="flex items-center mb-6">
           <Button
             variant="ghost"
@@ -314,7 +314,7 @@ export default function Place() {
 
   if (!place) {
     return (
-      <div className="container mx-auto py-8 px-4">
+      <div className="container mx-auto py-8">
         <Button variant="outline" asChild className="mb-4">
           <Link to={`/${username}`}>
             <ArrowLeft size={16} className="mr-2" />
@@ -344,7 +344,7 @@ export default function Place() {
   };
 
   return (
-    <div className="container mx-auto py-8 px-4">
+    <div className="container mx-auto py-8">
       {/* Кнопка "Назад к профилю" */}
       <Button variant="outline" asChild className="mb-6">
         <Link to={`/${username}`}>

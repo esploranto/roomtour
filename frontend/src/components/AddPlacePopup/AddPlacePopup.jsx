@@ -38,9 +38,7 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
   const [showMap, setShowMap] = useState(false);
   const [formChanged, setFormChanged] = useState(false);
   const [initialFormState, setInitialFormState] = useState({});
-  const [startDatePopoverOpen, setStartDatePopoverOpen] = useState(false);
-  const [endDatePopoverOpen, setEndDatePopoverOpen] = useState(false);
-  
+
   const { mutate } = usePlaces();
   
   const { showSuccess, showError } = useToast();
@@ -107,30 +105,6 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
       }
     }
   }, [name, address, comment, rating, photos, startDate, endDate, isOpen]);
-
-  const handleStartDateSelect = (date) => {
-    if (!date) return;
-    
-    setStartDate(date);
-    setStartDatePopoverOpen(false);
-    
-    // Если дата заезда позже даты выезда, сбрасываем дату выезда
-    if (endDate && date > endDate) {
-      setEndDate(null);
-    }
-  };
-
-  const handleEndDateSelect = (date) => {
-    if (!date) return;
-    
-    setEndDate(date);
-    setEndDatePopoverOpen(false);
-    
-    // Если дата выезда раньше даты заезда, сбрасываем дату заезда
-    if (startDate && date < startDate) {
-      setStartDate(null);
-    }
-  };
 
   const handleFiles = useCallback((files) => {
     console.log('Получены файлы:', files);
@@ -510,12 +484,6 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
                 setRating={setRating}
                 showMap={showMap}
                 setShowMap={setShowMap}
-                startDatePopoverOpen={startDatePopoverOpen}
-                setStartDatePopoverOpen={setStartDatePopoverOpen}
-                endDatePopoverOpen={endDatePopoverOpen}
-                setEndDatePopoverOpen={setEndDatePopoverOpen}
-                handleStartDateSelect={handleStartDateSelect}
-                handleEndDateSelect={handleEndDateSelect}
               />
             </div>
 

@@ -4,7 +4,7 @@ import { Textarea } from "@/components/ui/textarea.tsx";
 import { Label } from "@/components/ui/label.jsx";
 import { Button } from "@/components/ui/button.tsx";
 import { MapPin } from "lucide-react";
-import DatePicker from "@/components/ui/date-picker.jsx";
+import DateRangePicker from "@/components/ui/date-picker";
 
 const PlaceForm = ({
   name,
@@ -20,14 +20,28 @@ const PlaceForm = ({
   rating,
   setRating,
   showMap,
-  setShowMap,
-  startDatePopoverOpen,
-  setStartDatePopoverOpen,
-  endDatePopoverOpen,
-  setEndDatePopoverOpen,
-  handleStartDateSelect,
-  handleEndDateSelect
+  setShowMap
 }) => {
+  const dateRange = {
+    from: startDate,
+    to: endDate
+  };
+
+  const handleDateRangeChange = (range) => {
+    if (range) {
+      setStartDate(range.from || null);
+      setEndDate(range.to || null);
+    } else {
+      setStartDate(null);
+      setEndDate(null);
+    }
+  };
+
+  const handleDateRangeClear = () => {
+    setStartDate(null);
+    setEndDate(null);
+  };
+
   return (
     <div className="space-y-4">
       <div>
@@ -74,35 +88,16 @@ const PlaceForm = ({
         )}
       </div>
 
-      <div>
-        <Label className="block mb-2">Даты проживания</Label>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="relative z-[100]">
-            <DatePicker
-              value={startDate}
-              onChange={handleStartDateSelect}
-              onClear={() => {
-                setStartDate(null);
-                setEndDate(null);
-              }}
-              placeholder="Заезд"
-              popoverOpen={startDatePopoverOpen}
-              onPopoverOpenChange={setStartDatePopoverOpen}
-              maxDate={endDate}
-            />
-          </div>
-          <div className="relative z-[100]">
-            <DatePicker
-              value={endDate}
-              onChange={handleEndDateSelect}
-              onClear={() => setEndDate(null)}
-              placeholder="Выезд"
-              popoverOpen={endDatePopoverOpen}
-              onPopoverOpenChange={setEndDatePopoverOpen}
-              minDate={startDate}
-            />
-          </div>
-        </div>
+      <div className="space-y-2">
+        <Label>Даты проживания</Label>
+        <DateRangePicker
+          value={dateRange}
+          onChange={handleDateRangeChange}
+          onClear={handleDateRangeClear}
+          placeholder="Выберите даты проживания"
+          minDate={new Date(2000, 0, 1)}
+          maxDate={new Date(2100, 0, 1)}
+        />
       </div>
 
       <div>
