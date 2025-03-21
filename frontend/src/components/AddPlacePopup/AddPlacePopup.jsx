@@ -38,6 +38,8 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
   const [showMap, setShowMap] = useState(false);
   const [formChanged, setFormChanged] = useState(false);
   const [initialFormState, setInitialFormState] = useState({});
+  const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
+  const nameInputRef = React.useRef(null);
 
   const { mutate } = usePlaces();
   
@@ -45,10 +47,72 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
 
   const isEditMode = Boolean(place);
 
+  // Флаг для отслеживания первого рендера компонента
+  const isFirstRender = React.useRef(true);
+
+  // Устанавливаем фокус на поле "Название" только при первом рендере пустой формы
+  useEffect(() => {
+    if (isOpen && !isEditMode && isFirstRender.current) {
+      // Проверка на наличие данных в localStorage
+      const wasFormPreviouslyFilled = localStorage.getItem('addPlaceForm') !== null;
+      
+      // Проверка текущего состояния формы
+      const isFormCurrentlyEmpty = 
+        name === "" && 
+        address === "" && 
+        comment === "" && 
+        rating === 0 && 
+        photos.length === 0 &&
+        startDate === null &&
+        endDate === null &&
+        !hasAttemptedSubmit;
+      
+      // Устанавливаем фокус только если форма никогда не заполнялась И сейчас пуста
+      if (!wasFormPreviouslyFilled && isFormCurrentlyEmpty) {
+        console.log("Устанавливаю фокус на поле Название (первый рендер пустой формы)");
+        
+        // Используем большую задержку для гарантированной установки фокуса
+        setTimeout(() => {
+          if (nameInputRef.current) {
+            nameInputRef.current.focus();
+            console.log("Фокус установлен через ref");
+          } else {
+            // Запасной вариант через DOM API
+            const nameInput = document.getElementById('name');
+            if (nameInput) {
+              nameInput.focus();
+              console.log("Фокус установлен через DOM API");
+            } else {
+              console.log("Элемент инпута не найден ни через ref, ни через DOM API");
+            }
+          }
+        }, 500);
+      } else {
+        console.log("Форма была ранее заполнена или заполнена сейчас, фокус не устанавливается");
+        console.log("wasFormPreviouslyFilled:", wasFormPreviouslyFilled);
+        console.log("isFormCurrentlyEmpty:", isFormCurrentlyEmpty);
+        console.log("Текущее состояние формы:", { name, address, comment, rating, photos: photos.length, startDate, endDate, hasAttemptedSubmit });
+      }
+      
+      // Сбрасываем флаг первого рендера
+      isFirstRender.current = false;
+    }
+    
+    // При закрытии формы сбрасываем флаг первого рендера
+    if (!isOpen) {
+      isFirstRender.current = true;
+    }
+  }, [isOpen, isEditMode, name, address, comment, rating, photos, startDate, endDate, hasAttemptedSubmit]);
+
   useEffect(() => {
     if (isOpen) {
+      // Восстанавливаем форму из localStorage только если:
+      // 1. Это режим редактирования ИЛИ
+      // 2. Была попытка добавления и пользователь закрыл форму
       const savedForm = localStorage.getItem('addPlaceForm');
-      if (savedForm && !formChanged) {
+      const wasAttemptedSubmit = localStorage.getItem('addPlaceAttemptedSubmit') === 'true';
+      
+      if (savedForm && (isEditMode || wasAttemptedSubmit) && !formChanged) {
         try {
           const parsedForm = JSON.parse(savedForm);
           setName(parsedForm.name || "");
@@ -71,13 +135,16 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
             startDate: parsedForm.startDate ? new Date(parsedForm.startDate) : null,
             endDate: parsedForm.endDate ? new Date(parsedForm.endDate) : null,
           });
+          
+          setHasAttemptedSubmit(wasAttemptedSubmit);
         } catch (e) {
           console.error('Ошибка при восстановлении формы:', e);
           localStorage.removeItem('addPlaceForm');
+          localStorage.removeItem('addPlaceAttemptedSubmit');
         }
       }
     }
-  }, [isOpen]);
+  }, [isOpen, isEditMode]);
 
   useEffect(() => {
     if (isOpen) {
@@ -92,7 +159,8 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
       
       setFormChanged(hasChanges);
       
-      if (hasChanges) {
+      // Сохраняем в localStorage только если была попытка добавления места
+      if (hasChanges && hasAttemptedSubmit) {
         const formState = {
           name,
           address,
@@ -102,9 +170,10 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
           endDate: endDate ? endDate.toISOString() : null,
         };
         localStorage.setItem('addPlaceForm', JSON.stringify(formState));
+        localStorage.setItem('addPlaceAttemptedSubmit', 'true');
       }
     }
-  }, [name, address, comment, rating, photos, startDate, endDate, isOpen]);
+  }, [name, address, comment, rating, photos, startDate, endDate, isOpen, hasAttemptedSubmit]);
 
   const handleFiles = useCallback((files) => {
     console.log('Получены файлы:', files);
@@ -187,8 +256,13 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
     setDisabledPhotos({});
     setShowMap(false);
     setFormChanged(false);
+    setHasAttemptedSubmit(false);
     
-    localStorage.removeItem('addPlaceForm');
+    // Очищаем localStorage полностью только если не в режиме редактирования
+    if (!isEditMode) {
+      localStorage.removeItem('addPlaceForm');
+      localStorage.removeItem('addPlaceAttemptedSubmit');
+    }
   };
 
   const safelyCloseForm = () => {
@@ -219,6 +293,7 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
     
     setLoading(true);
     setError(null);
+    setHasAttemptedSubmit(true);
     
     try {
       // Подготавливаем данные места
@@ -423,7 +498,9 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
 
           onOpenAutoFocus={(e) => {
             console.log('DialogContent onOpenAutoFocus вызван');
+            // Предотвращаем стандартное поведение автофокуса
             e.preventDefault();
+            // Не устанавливаем фокус здесь, эта логика теперь в useEffect
           }}
           onCloseAutoFocus={(e) => {
             console.log('DialogContent onCloseAutoFocus вызван');
@@ -468,7 +545,7 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
         <form onSubmit={handleSubmit} className="flex-1 p-6 pt-2 flex flex-col overflow-auto max-h-[calc(100vh-10rem)]">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 flex-1">
             {/* Левая колонка - форма */}
-            <div className="md:sticky md:top-0 md:self-start md:max-h-[calc(90vh-14rem)]">
+            <div className="md:sticky md:top-2 md:self-start md:max-h-[calc(90vh-14rem)]">
               <PlaceForm 
                 name={name}
                 setName={setName}
@@ -484,6 +561,7 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
                 setRating={setRating}
                 showMap={showMap}
                 setShowMap={setShowMap}
+                nameInputRef={nameInputRef}
               />
             </div>
 

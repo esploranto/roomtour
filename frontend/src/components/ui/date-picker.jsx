@@ -222,6 +222,8 @@ function DateRangePicker({
                 width: var(--rdp-cell-size);
                 max-width: var(--rdp-cell-size);
                 height: var(--rdp-cell-size);
+                font-size: 0.875rem;
+                font-weight: 200;
               }
               
               .rdp-day_selected, 
@@ -252,7 +254,8 @@ function DateRangePicker({
               
               .rdp-caption_label {
                 font-size: 0.875rem;
-                font-weight: 500;
+                font-weight: 400;
+                text-transform: capitalize;
               }
               
               .rdp-nav {
@@ -265,7 +268,10 @@ function DateRangePicker({
               }
               
               .rdp-head_cell {
-                font-size: 0.75rem;
+                font-size: 0.7rem;
+                font-weight: 400;
+                letter-spacing: 0.07em;
+                opacity: 0.5;
               }
               
               .rdp {

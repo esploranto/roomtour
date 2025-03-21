@@ -20,7 +20,8 @@ const PlaceForm = ({
   rating,
   setRating,
   showMap,
-  setShowMap
+  setShowMap,
+  nameInputRef
 }) => {
   const dateRange = {
     from: startDate,
@@ -53,6 +54,12 @@ const PlaceForm = ({
           placeholder="Например «Выходные на майские»"
           autoComplete="off"
           aria-autocomplete="none"
+          ref={nameInputRef}
+          onFocus={(e) => {
+            console.log("Поле Название получило фокус", e.target);
+            const valueLength = e.target.value.length;
+            e.target.setSelectionRange(valueLength, valueLength);
+          }}
         />
       </div>
 
