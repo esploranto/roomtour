@@ -225,6 +225,60 @@ class PlaceViewSet(viewsets.ModelViewSet):
                 {"error": "Произошла ошибка при загрузке изображений. Пожалуйста, попробуйте позже."},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+    
+    @action(detail=True, methods=['post'])
+    def update_image_order(self, request, slug=None):
+        """Обновление порядка отображения изображений для места."""
+        try:
+            place = self.get_object()
+            image_ids = request.data.get('image_ids', [])
+            
+            if not image_ids:
+                logger.warning(f"Попытка обновления порядка без указания ID изображений для места {place.id}")
+                return Response(
+                    {'error': 'Не указаны ID изображений для обновления порядка.'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            
+            # Если это строка, пытаемся преобразовать в список
+            if isinstance(image_ids, str):
+                try:
+                    import json
+                    image_ids = json.loads(image_ids)
+                except json.JSONDecodeError:
+                    image_ids = [int(id) for id in image_ids.split(',') if id.strip().isdigit()]
+            
+            # Обновляем порядок изображений
+            for i, image_id in enumerate(image_ids):
+                try:
+                    image = PlaceImage.objects.get(id=image_id, place=place)
+                    image.order = i
+                    image.save(update_fields=['order'])
+                except PlaceImage.DoesNotExist:
+                    logger.warning(f"Изображение с ID {image_id} не найдено для места {place.id}")
+                    # Пропускаем несуществующие изображения
+                    continue
+            
+            # Получаем обновленные изображения и сериализуем их
+            updated_images = PlaceImage.objects.filter(place=place).order_by('order')
+            serializer = PlaceImageSerializer(
+                updated_images, 
+                many=True,
+                context={'request': request}
+            )
+            
+            logger.info(f"Успешно обновлен порядок изображений для места {place.id}")
+            
+            # Сериализуем место с обновленными изображениями
+            place_serializer = self.get_serializer(place)
+            
+            return Response(place_serializer.data)
+        except Exception as e:
+            logger.error(f"Ошибка при обновлении порядка изображений: {str(e)}")
+            return Response(
+                {"error": "Произошла ошибка при обновлении порядка изображений. Пожалуйста, попробуйте позже."},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 class PlaceImageViewSet(viewsets.ModelViewSet):
     """ViewSet для изображений мест."""

@@ -175,62 +175,95 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
     }
   }, [name, address, comment, rating, photos, startDate, endDate, isOpen, hasAttemptedSubmit]);
 
-  const handleFiles = useCallback((files) => {
-    console.log('Получены файлы:', files);
-    if (!files || !files.length) return;
-
-    // Преобразуем FileList в массив
-    const filesArray = Array.from(files);
-    console.log('Массив файлов:', filesArray);
-
-    // Фильтруем только изображения
-    const imageFiles = filesArray.filter(file => {
-      const isImage = file.type.startsWith('image/');
-      console.log('Файл:', file.name, 'тип:', file.type, 'является изображением:', isImage);
-      return isImage;
-    });
-
-    if (!imageFiles.length) {
-      console.log('Нет подходящих изображений');
+  // Обработчик добавления фотографий
+  const handleAddPhotos = (newFiles) => {
+    if (!newFiles || newFiles.length === 0) return;
+    
+    // Проверяем, не превышает ли общее количество фото максимальное число
+    if (photos.length + newFiles.length > 10) {
+      alert('Максимальное количество фотографий: 10');
       return;
     }
-
-    // Создаем превью для каждого файла
-    const newPhotos = imageFiles.map(file => ({
-      file,
-      preview: URL.createObjectURL(file)
-    }));
-
-    console.log('Подготовленные фото:', newPhotos);
-
-    // Обновляем состояние
-    setPhotos(prevPhotos => {
-      const updatedPhotos = [...prevPhotos, ...newPhotos];
-      console.log('Обновленный список фото:', updatedPhotos);
-      return updatedPhotos;
+    
+    // Фильтруем файлы, которые уже есть в списке (по имени и размеру)
+    const uniqueNewFiles = newFiles.filter(file => {
+      const isDuplicate = photos.some(photo => {
+        if (photo.file instanceof File) {
+          return photo.file.name === file.name && 
+                 photo.file.size === file.size;
+        }
+        return false;
+      });
+      return !isDuplicate;
     });
-  }, []);
-
-  const removePhoto = (photoId, isExisting = false) => {
-    if (isExisting) {
-      console.log(`Удаление существующего фото с ID: ${photoId}`);
-      setDeletedPhotos(prev => [...prev, photoId]);
-      setExistingPhotos(prev => prev.filter(photo => photo.id !== photoId));
-    } else {
-      console.log(`Удаление нового фото с индексом: ${photoId}`);
-      setDisabledPhotos(prev => ({
-        ...prev,
-        [photoId]: true
-      }));
+    
+    // Добавляем только новые файлы
+    if (uniqueNewFiles.length > 0) {
+      const newPhotos = uniqueNewFiles.map(file => {
+        const preview = URL.createObjectURL(file);
+        return {
+          id: Date.now() + '_' + Math.random().toString(36).substring(2, 9),
+          file,
+          preview,
+          isNew: true
+        };
+      });
+      
+      setPhotos(prevPhotos => [...prevPhotos, ...newPhotos]);
+      setFormChanged(true);
     }
   };
 
-  const restorePhoto = (index) => {
-    setDisabledPhotos(prev => {
-      const updated = { ...prev };
-      delete updated[index];
-      return updated;
+  // Обработчик удаления фотографии
+  const handleDeletePhoto = (photo, index) => {
+    // Если это существующее фото с сервера (имеет _id)
+    if (photo._id) {
+      setDeletedPhotos(prev => [...prev, photo]);
+      setPhotos(prev => prev.filter(p => p._id !== photo._id));
+    } 
+    // Если это новое фото (имеет id, но не _id)
+    else if (photo.id || photo.isNew) {
+      setPhotos(prev => prev.filter((_, i) => i !== index));
+    }
+    // Просто по индексу если ничего не подходит
+    else {
+      setPhotos(prev => {
+        const newPhotos = [...prev];
+        newPhotos.splice(index, 1);
+        return newPhotos;
+      });
+    }
+    
+    setFormChanged(true);
+  };
+
+  // Обработчик восстановления фотографии
+  const handleRestorePhoto = (photo, index) => {
+    if (!photo) return;
+    
+    // Добавляем фото обратно в основной список
+    setPhotos(prev => [...prev, photo]);
+    
+    // Удаляем из списка удаленных фото
+    setDeletedPhotos(prev => {
+      const newDeleted = [...prev];
+      newDeleted.splice(index, 1);
+      return newDeleted;
     });
+    
+    setFormChanged(true);
+  };
+
+  // Обработчик изменения порядка фотографий
+  const handleReorderPhotos = (fromIndex, toIndex) => {
+    setPhotos(prevPhotos => {
+      const result = [...prevPhotos];
+      const [removed] = result.splice(fromIndex, 1);
+      result.splice(toIndex, 0, removed);
+      return result;
+    });
+    
+    setFormChanged(true);
   };
 
   const isFormValid = 
@@ -313,9 +346,10 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
       
       if (isEditMode) {
         console.log('Обновляем существующее место:', place.id);
+        
         // Добавляем ID удаленных фотографий
         if (deletedPhotos.length > 0) {
-          placeData.deleted_image_ids = deletedPhotos;
+          placeData.deleted_image_ids = deletedPhotos.map(photo => photo.id).filter(Boolean);
         }
         
         // Обновляем место
@@ -323,11 +357,19 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
         console.log('Место успешно обновлено:', updatedPlace);
         
         // Загружаем новые фотографии, если они есть
-        const activePhotos = photos.filter((_, index) => !disabledPhotos[index]);
-        if (activePhotos.length > 0) {
-          console.log('Загружаем новые фотографии:', activePhotos.length);
+        const newPhotos = photos.filter(photo => !photo.id); // Фильтруем только новые фото (без id)
+        if (newPhotos.length > 0) {
+          console.log('Загружаем новые фотографии:', newPhotos.length);
           const formData = new FormData();
-          activePhotos.forEach(photo => formData.append('images', photo.file));
+          
+          newPhotos.forEach(photo => {
+            // Определяем, что именно добавлять в formData
+            if (photo.file instanceof File) {
+              formData.append('images', photo.file);
+            } else if (photo instanceof File) {
+              formData.append('images', photo);
+            }
+          });
           
           const uploadedImages = await placesService.uploadImages(place.slug || place.id, formData);
           console.log('Фотографии успешно загружены:', uploadedImages);
@@ -350,11 +392,18 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
         console.log('Новое место создано:', updatedPlace);
         
         // Загружаем фотографии для нового места
-        const activePhotos = photos.filter((_, index) => !disabledPhotos[index]);
-        if (activePhotos.length > 0) {
-          console.log('Загружаем фотографии для нового места:', activePhotos.length);
+        if (photos.length > 0) {
+          console.log('Загружаем фотографии для нового места:', photos.length);
           const formData = new FormData();
-          activePhotos.forEach(photo => formData.append('images', photo.file));
+          
+          photos.forEach(photo => {
+            // Определяем, что именно добавлять в formData
+            if (photo.file instanceof File) {
+              formData.append('images', photo.file);
+            } else if (photo instanceof File) {
+              formData.append('images', photo);
+            }
+          });
           
           const uploadedImages = await placesService.uploadImages(updatedPlace.slug || updatedPlace.id, formData);
           console.log('Фотографии успешно загружены:', uploadedImages);
@@ -397,26 +446,41 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
     }
   };
 
-  // Устанавливаем колбэк для обработки файлов
+  // Глобальный обработчик для drag-and-drop
   useEffect(() => {
-    console.log('Устанавливаем колбэк, isOpen:', isOpen);
+    if (!isOpen) return;
     
-    const callback = (files) => {
-      console.log('Колбэк вызван с файлами:', files);
-      handleFiles(files);
+    const handleDrop = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+        // Фильтруем только изображения
+        const imageFiles = Array.from(e.dataTransfer.files).filter(
+          file => file.type.startsWith('image/')
+        );
+        
+        if (imageFiles.length > 0) {
+          handleAddPhotos(imageFiles);
+        }
+      }
     };
-
-    if (isOpen) {
-      setOnDropCallback(() => callback);
-    } else {
-      setOnDropCallback(null);
-    }
-
+    
+    const handleDragOver = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+    };
+    
+    // Добавляем обработчики событий
+    document.addEventListener('drop', handleDrop);
+    document.addEventListener('dragover', handleDragOver);
+    
+    // Очищаем обработчики при закрытии или размонтировании
     return () => {
-      console.log('Очищаем колбэк');
-      setOnDropCallback(null);
+      document.removeEventListener('drop', handleDrop);
+      document.removeEventListener('dragover', handleDragOver);
     };
-  }, [isOpen]);
+  }, [isOpen, handleAddPhotos]); // Зависимость от isOpen для добавления/удаления обработчиков
 
   useEffect(() => {
     if (isOpen && isEditMode && place) {
@@ -453,7 +517,8 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
       }
       
       if (place.images && place.images.length > 0) {
-        setExistingPhotos(place.images);
+        // Переносим существующие изображения в photos
+        setPhotos(place.images);
       }
       
       setInitialFormState({
@@ -566,58 +631,17 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
             </div>
 
             {/* Правая колонка - фотографии */}
-            <div className="md:flex md:flex-col md:h-[calc(90vh-14rem)] md:overflow-y-auto">
-              <div className="bg-white dark:bg-gray-800">
+            <div className="md:flex md:flex-col md:min-h-[350px] md:max-h-[calc(80vh-10rem)]">
+              <div className="w-full h-full">
                 <PhotoUploadArea 
                   photos={photos}
-                  existingPhotos={existingPhotos}
-                  disabledPhotos={disabledPhotos}
-                  onFileSelect={handleFiles}
-                  onRemovePhoto={removePhoto}
+                  deletedPhotos={deletedPhotos}
+                  onAddPhotos={handleAddPhotos}
+                  onDeletePhoto={handleDeletePhoto}
+                  onRestorePhoto={handleRestorePhoto}
+                  onReorderPhotos={handleReorderPhotos}
+                  maxPhotos={10}
                 />
-              </div>
-              <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-                {existingPhotos.map((photo, index) => (
-                  <div key={`existing-${index}`} className="relative group">
-                    <div className="aspect-w-16 aspect-h-9 rounded-md overflow-hidden h-[120px]">
-                      <img 
-                        src={photo.url || photo.image_url} 
-                        alt={`Preview ${index}`} 
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => onRemovePhoto(photo.id, true)}
-                      className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                      title="Удалить фото"
-                    >
-                      <X size={14} />
-                    </button>
-                  </div>
-                ))}
-                
-                {photos.map((photo, index) => (
-                  !disabledPhotos[index] && (
-                    <div key={`new-${index}`} className="relative group">
-                      <div className="aspect-w-16 aspect-h-9 rounded-md overflow-hidden h-[120px]">
-                        <img 
-                          src={photo.preview} 
-                          alt={`Preview ${index}`} 
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => onRemovePhoto(index)}
-                        className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                        title="Удалить фото"
-                      >
-                        <X size={14} />
-                      </button>
-                    </div>
-                  )
-                ))}
               </div>
             </div>
           </div>

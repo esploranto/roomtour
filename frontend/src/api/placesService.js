@@ -78,6 +78,21 @@ const placesService = {
   },
 
   /**
+   * Обновить порядок отображения фотографий
+   * @param {string|number} identifier - Slug или ID места
+   * @param {Array} imageIds - Массив ID фотографий в новом порядке
+   * @returns {Promise<Object>} Обновленное место
+   */
+  updateImageOrder: async (identifier, imageIds) => {
+    const response = await api.post(`/places/${identifier}/update_image_order/`, {
+      image_ids: imageIds
+    });
+    // Очищаем кэш после обновления порядка
+    api.clearCacheFor(`/places/${identifier}/`);
+    return response.data;
+  },
+
+  /**
    * Обновить существующее место
    * @param {string|number} identifier - Slug или ID места
    * @param {Object} placeData - Данные для обновления
