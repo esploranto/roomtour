@@ -51,4 +51,5 @@ backup/
 # Файлы с отладочной информацией
 debug/
 *.debug
-debug.log
+debug.logeval "$(ssh-agent -s)"
+eval "$(ssh-agent -s)".pub
