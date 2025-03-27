@@ -1,266 +1,302 @@
+/* Основной контейнер */
 .photo-upload-container {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  border-radius: 0.5rem;
-  overflow: hidden;
-  background-color: #fff;
-}
-
-:global(.dark) .photo-upload-container {
-  background-color: #1f2937;
-}
-
-.upload-area-empty,
-.upload-area-with-photos {
-  flex: 1;
+  min-height: 250px;
   width: 100%;
-  height: 100%;
-  min-height: 320px;
-  overflow: hidden;
   position: relative;
-  border-radius: 0.5rem;
+}
+
+/* Пустое состояние */
+.upload-area-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 250px;
+  background-color: rgba(0, 0, 0, 0.03);
+  border-radius: 8px;
+  border: 2px dashed #ccc;
+  padding: 20px;
   transition: all 0.3s ease;
 }
 
-/* FilePond главный контейнер */
-:global(.filepond--root) {
-  height: 100%;
-  margin-bottom: 0;
+.upload-area-empty:hover {
+  border-color: #8a70d6;
+  background-color: #f5f2fe;
 }
 
-/* Когда нет фотографий */
-.filepond-empty :global(.filepond--panel-root) {
-  background-color: #f0f4f8;
-  border: 2px dashed #cbd5e1;
-  border-radius: 0.5rem;
-  transition: all 0.2s ease;
+/* Стили для состояния, когда происходит перетаскивание */
+.empty-upload-area.drag-over,
+.photo-upload-container.drag-over-global {
+  border-color: #8a70d6;
+  background-color: rgba(138, 112, 214, 0.05);
+  box-shadow: 0 0 0 2px rgba(138, 112, 214, 0.3);
 }
 
-/* Темная тема */
-:global(.dark) .filepond-empty :global(.filepond--panel-root) {
-  background-color: rgba(31, 41, 55, 0.6);
-  border: 2px dashed #4b5563;
+.upload-icon {
+  color: #8a70d6;
+  margin-bottom: 16px;
+  opacity: 0.7;
 }
 
-/* Эффект при наведении на панель FilePond */
-.filepond-empty :global(.filepond--panel-root:hover) {
-  background-color: #e2e8f0;
-  border-color: #94a3b8;
+.empty-upload-text {
+  color: #666;
+  margin-bottom: 16px;
+  text-align: center;
 }
 
-:global(.dark) .filepond-empty :global(.filepond--panel-root:hover) {
-  background-color: rgba(31, 41, 55, 0.8);
-  border-color: #6b7280;
+.select-photos-button {
+  background-color: #f3f4f6;
+  color: #1f2937;
+  border: 1px solid #d1d5db;
+  transition: all 0.2s;
 }
 
-/* Контейнер подсказки */
-:global(.filepond--drop-label) {
-  color: #475569 !important;
-  font-size: 0.95rem !important;
-  height: 100%;
-  display: flex !important;
+.select-photos-button:hover {
+  background-color: #e5e7eb;
+}
+
+/* Состояние с фотографиями */
+.upload-area-with-photos {
+  display: flex;
+  flex-direction: column;
+  min-height: 250px;
+  width: 100%;
+}
+
+.photo-upload-header {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  cursor: pointer;
+  margin-bottom: 12px;
 }
 
-:global(.dark) :global(.filepond--drop-label) {
-  color: #d1d5db !important;
+.add-more-photos-button {
+  font-size: 14px;
+  padding: 6px 12px;
 }
 
-/* Состояние с изображениями */
-.filepond-has-photos :global(.filepond--panel-root) {
-  background-color: #fff;
-  border-radius: 0.5rem;
+/* Сетка фотографий */
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 16px;
+  width: 100%;
 }
 
-:global(.dark) .filepond-has-photos :global(.filepond--panel-root) {
-  background-color: #1f2937;
-}
-
-/* Сетка для изображений */
-:global(.filepond--list) {
-  display: grid !important;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)) !important;
-  grid-gap: 12px !important;
-  padding: 12px !important;
-  align-items: flex-start !important;
-}
-
-/* Настройка прокрутки */
-.filepond-has-photos :global(.filepond--root) {
-  overflow-y: auto;
-  height: auto;
-  max-height: 100%;
-}
-
-/* Элементы списка */
-:global(.filepond--item) {
-  width: 100% !important;
-  margin: 0 !important;
-  position: relative !important;
-  transform: none !important;
-  transition: opacity 0.3s ease, transform 0.3s ease !important;
-}
-
-/* Контейнер с картинкой */
-:global(.filepond--file-wrapper) {
-  border-radius: 6px;
-  overflow: hidden;
-  background: #fff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-:global(.dark) :global(.filepond--file-wrapper) {
-  background: #374151;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-}
-
-/* Кнопка загрузки */
-:global(.filepond--label-action) {
-  text-decoration: none !important;
-  padding: 0.3rem 0.8rem;
-  background-color: #3b82f6;
-  color: white !important;
-  border-radius: 0.3rem;
-  margin-left: 0.5rem;
-  font-weight: 500;
-  text-underline-offset: 0;
-  transition: background-color 0.2s ease;
-}
-
-:global(.filepond--label-action:hover) {
-  background-color: #2563eb;
-  text-decoration: none !important;
-}
-
-:global(.dark) :global(.filepond--label-action) {
-  background-color: #4b5563;
-}
-
-:global(.dark) :global(.filepond--label-action:hover) {
-  background-color: #6b7280;
-}
-
-/* Медиа запросы для адаптивности */
-@media (max-width: 640px) {
-  .upload-area-empty,
-  .upload-area-with-photos {
-    min-height: 240px;
-  }
-  
-  :global(.filepond--list) {
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)) !important;
-    grid-gap: 10px !important;
-    padding: 10px !important;
-  }
-  
-  :global(.filepond--label-action) {
-    padding: 0.25rem 0.6rem;
-    font-size: 0.85rem;
-  }
-}
-
-/* Стили для перетаскивания */
-:global(.filepond--panel-root) {
-  border-radius: 0.5rem !important;
-}
-
-/* Улучшение отображения файлов в превью */
-:global(.filepond--image-preview-wrapper) {
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-:global(.filepond--image-preview) {
-  height: 100% !important;
-  background: #000;
-}
-
-/* Кнопки управления */
-:global(.filepond--file-action-button) {
-  cursor: pointer;
-  background-color: rgba(255, 255, 255, 0.9) !important;
-  color: #1f2937 !important;
-  border-radius: 50% !important;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) !important;
-  transition: transform 0.2s ease, background-color 0.2s ease !important;
-}
-
-:global(.filepond--file-action-button:hover) {
-  transform: scale(1.1) !important;
-  background-color: white !important;
-}
-
-:global(.dark) :global(.filepond--file-action-button) {
-  background-color: rgba(31, 41, 55, 0.8) !important;
-  color: #d1d5db !important;
-}
-
-:global(.dark) :global(.filepond--file-action-button:hover) {
-  background-color: rgba(31, 41, 55, 0.95) !important;
-}
-
-/* Кнопка восстановления */
-:global(.filepond--file.filepond--item[data-processing-restore]) :global(.filepond--file-action-button[data-align="left"]) {
-  background-color: rgba(59, 130, 246, 0.9) !important;
-  color: white !important;
-}
-
-:global(.filepond--file.filepond--item[data-processing-restore]) :global(.filepond--file-action-button[data-align="left"]:hover) {
-  background-color: rgba(59, 130, 246, 1) !important;
-  transform: scale(1.1) !important;
-}
-
-:global(.dark) :global(.filepond--file.filepond--item[data-processing-restore]) :global(.filepond--file-action-button[data-align="left"]) {
-  background-color: rgba(79, 70, 229, 0.9) !important;
-}
-
-:global(.dark) :global(.filepond--file.filepond--item[data-processing-restore]) :global(.filepond--file-action-button[data-align="left"]:hover) {
-  background-color: rgba(79, 70, 229, 1) !important;
-}
-
-/* Стили превью изображений */
-.filepond--image-preview-overlay {
-  display: none;
-}
-
-.filepond--image-preview-overlay-success {
-  display: none;
-}
-
-/* Обработчики ошибок */
-.filepond--item-panel[data-error] {
-  background-color: #fee2e2;
-}
-
-.filepond--file-info-sub {
-  display: none;
-}
-
-/* Курсор для перетаскивания */
-[draggable=true] {
+.photo-item {
+  position: relative;
+  aspect-ratio: 1;
   cursor: grab;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-[draggable=true]:active {
+.photo-item.dragging {
   cursor: grabbing;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
-/* Индикатор перетаскивания */
-.dragging-over {
-  border: 2px solid #3b82f6 !important;
+.photo-preview {
+  width: 100%;
+  height: 100%;
   position: relative;
 }
 
-.dragging-over::after {
-  content: '';
+.photo-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photo-controls {
   position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.5), transparent);
+  border-bottom-left-radius: 8px;
+  padding: 6px;
+  gap: 8px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.photo-item:hover .photo-controls {
+  opacity: 1;
+}
+
+.delete-photo, .drag-handle {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  transition: all 0.2s;
+}
+
+.delete-photo:hover {
+  background: rgba(255, 255, 255, 1);
+  color: #f43f5e;
+}
+
+.drag-handle {
+  cursor: grab;
+}
+
+.drag-handle:hover {
+  background: rgba(255, 255, 255, 1);
+  color: #333;
+}
+
+/* Удаленные фотографии */
+.deleted-photos-section {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+}
+
+.deleted-photos-section h4 {
+  margin-bottom: 12px;
+  color: #666;
+}
+
+.deleted-photos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 12px;
+}
+
+.deleted-photo-item {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  overflow: hidden;
+  opacity: 0.7;
+}
+
+.deleted-photo-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.restore-photo {
+  position: absolute;
+  bottom: 0;
   left: 0;
   right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s;
+}
+
+.restore-photo:hover {
+  background: rgba(0, 0, 0, 0.9);
+}
+
+/* Глобальный индикатор перетаскивания */
+.global-drop-indicator {
+  position: fixed;
   top: 0;
-  bottom: 0;
-  background-color: rgba(59, 130, 246, 0.1);
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
   pointer-events: none;
+}
+
+.drop-indicator-content {
+  background-color: white;
+  padding: 24px 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.drop-indicator-content span {
+  font-size: 20px;
+  font-weight: 500;
+  color: #333;
+}
+
+/* Темная тема */
+@media (prefers-color-scheme: dark) {
+  .upload-area-empty {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: #444;
+  }
+  
+  .empty-upload-text {
+    color: #aaa;
+  }
+  
+  .select-photos-button {
+    background-color: #374151;
+    color: #e5e7eb;
+    border-color: #4b5563;
+  }
+  
+  .select-photos-button:hover {
+    background-color: #4b5563;
+  }
+  
+  .drag-over {
+    border-color: #60a5fa;
+    background-color: rgba(59, 130, 246, 0.1);
+  }
+  
+  .drop-indicator-content {
+    background-color: #1f2937;
+  }
+  
+  .drop-indicator-content span {
+    color: #e5e7eb;
+  }
+  
+  .delete-photo, .drag-handle {
+    background: rgba(0, 0, 0, 0.8);
+    color: #ccc;
+  }
+  
+  .delete-photo:hover {
+    color: #f43f5e;
+    background: rgba(0, 0, 0, 1);
+  }
+  
+  .drag-handle:hover {
+    color: #ccc;
+    background: rgba(0, 0, 0, 1);
+  }
+  
+  .deleted-photos-section {
+    border-color: #333;
+  }
+  
+  .deleted-photos-section h4 {
+    color: #aaa;
+  }
 } 

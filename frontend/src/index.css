@@ -122,3 +122,68 @@ footer {
   font-size: 14px;
   color: white;
 }
+
+/* Стили для модалки добавления места */
+[role="dialog"] {
+  z-index: 1000;
+}
+
+/* Стили для области перетаскивания */
+body.drag-over::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 30;
+  pointer-events: none;
+}
+
+/* Стили для оверлея при перетаскивании файлов */
+.global-drop-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 150;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.global-drop-overlay__content {
+  background-color: white;
+  padding: 24px 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  text-align: center;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+@media (prefers-color-scheme: dark) {
+  .global-drop-overlay__content {
+    background-color: #1f2937;
+    color: #e5e7eb;
+  }
+}
+
+/* Гарантируем, что диалоговое окно всегда будет поверх оверлея */
+[role="dialog"] [role="dialog"] > [data-radix-portal] {
+  position: relative;
+  z-index: 9999 !important;
+}
+
+[data-radix-popper-content-wrapper] {
+  z-index: 9999 !important;
+}
+
+/* Принудительно устанавливаем z-index для модального окна */
+[role="dialog"] > div {
+  z-index: 9999 !important;
+}

@@ -18,9 +18,24 @@ export default defineConfig({
         ws: true,
         rewrite: (path) => path.replace(/^\/api/, '/api')
       }
+    },
+    hmr: {
+      overlay: false
     }
   },
   optimizeDeps: {
-    include: ['canvas-confetti']
+    include: [
+      'canvas-confetti', 
+      '@dnd-kit/core', 
+      '@dnd-kit/sortable', 
+      '@dnd-kit/utilities', 
+      'lucide-react', 
+      '@radix-ui/react-slot'
+    ]
+  },
+  build: {
+    target: 'esnext',
+    minify: false,
+    sourcemap: false
   }
 })

@@ -18,10 +18,9 @@ import PlaceForm from './PlaceForm';
 import { triggerNewPlaceConfetti } from "@/components/ui/confetti";
 
 export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUpdated, place }) {
-  console.log('AddPlacePopup рендерится с пропсами:', { isOpen, place });
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-  const { setOnDropCallback } = useDragAndDrop();
+  const { setOnDropCallback, setAcceptsFiles, setAcceptedFileTypes } = useDragAndDrop();
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [comment, setComment] = useState("");
@@ -69,29 +68,18 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
       
       // Устанавливаем фокус только если форма никогда не заполнялась И сейчас пуста
       if (!wasFormPreviouslyFilled && isFormCurrentlyEmpty) {
-        console.log("Устанавливаю фокус на поле Название (первый рендер пустой формы)");
-        
         // Используем большую задержку для гарантированной установки фокуса
         setTimeout(() => {
           if (nameInputRef.current) {
             nameInputRef.current.focus();
-            console.log("Фокус установлен через ref");
           } else {
             // Запасной вариант через DOM API
             const nameInput = document.getElementById('name');
             if (nameInput) {
               nameInput.focus();
-              console.log("Фокус установлен через DOM API");
-            } else {
-              console.log("Элемент инпута не найден ни через ref, ни через DOM API");
             }
           }
         }, 500);
-      } else {
-        console.log("Форма была ранее заполнена или заполнена сейчас, фокус не устанавливается");
-        console.log("wasFormPreviouslyFilled:", wasFormPreviouslyFilled);
-        console.log("isFormCurrentlyEmpty:", isFormCurrentlyEmpty);
-        console.log("Текущее состояние формы:", { name, address, comment, rating, photos: photos.length, startDate, endDate, hasAttemptedSubmit });
       }
       
       // Сбрасываем флаг первого рендера
@@ -104,6 +92,7 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
     }
   }, [isOpen, isEditMode, name, address, comment, rating, photos, startDate, endDate, hasAttemptedSubmit]);
 
+  // Восстанавливаем форму из localStorage, если нужно
   useEffect(() => {
     if (isOpen) {
       // Восстанавливаем форму из localStorage только если:
@@ -146,6 +135,7 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
     }
   }, [isOpen, isEditMode]);
 
+  // Сохраняем форму в localStorage при изменениях
   useEffect(() => {
     if (isOpen) {
       const hasChanges = 
@@ -175,17 +165,37 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
     }
   }, [name, address, comment, rating, photos, startDate, endDate, isOpen, hasAttemptedSubmit]);
 
+  // Настраиваем глобальное перетаскивание файлов
+  useEffect(() => {
+    if (isOpen) {
+      // Включаем прием файлов при открытии формы
+      setAcceptsFiles(true);
+      // Устанавливаем принимаемые типы файлов (только изображения)
+      setAcceptedFileTypes(['image/*']);
+      // Устанавливаем колбэк для обработки перетаскиваемых файлов
+      setOnDropCallback(handleAddPhotos);
+    } else {
+      // Отключаем перетаскивание при закрытии формы
+      setOnDropCallback(null);
+    }
+    
+    return () => {
+      // Очищаем колбэк при размонтировании
+      setOnDropCallback(null);
+    };
+  }, [isOpen, setOnDropCallback, setAcceptsFiles, setAcceptedFileTypes]);
+
   // Обработчик добавления фотографий
-  const handleAddPhotos = (newFiles) => {
+  const handleAddPhotos = useCallback((newFiles) => {
     if (!newFiles || newFiles.length === 0) return;
     
-    // Проверяем, не превышает ли общее количество фото максимальное число
+    // Проверяем, не превышает ли общее количество фото максимальное число (10)
     if (photos.length + newFiles.length > 10) {
-      alert('Максимальное количество фотографий: 10');
+      showError('Максимальное количество фотографий: 10');
       return;
     }
     
-    // Фильтруем файлы, которые уже есть в списке (по имени и размеру)
+    // Фильтруем файлы, которые уже есть в списке
     const uniqueNewFiles = newFiles.filter(file => {
       const isDuplicate = photos.some(photo => {
         if (photo.file instanceof File) {
@@ -199,37 +209,36 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
     
     // Добавляем только новые файлы
     if (uniqueNewFiles.length > 0) {
-      const newPhotos = uniqueNewFiles.map(file => {
-        const preview = URL.createObjectURL(file);
-        return {
-          id: Date.now() + '_' + Math.random().toString(36).substring(2, 9),
-          file,
-          preview,
-          isNew: true
-        };
-      });
+      const newPhotos = uniqueNewFiles.map(file => ({
+        id: Date.now() + '_' + Math.random().toString(36).substring(2, 9),
+        file,
+        preview: URL.createObjectURL(file),
+        isNew: true
+      }));
       
       setPhotos(prevPhotos => [...prevPhotos, ...newPhotos]);
       setFormChanged(true);
     }
-  };
+  }, [photos, showError]);
 
   // Обработчик удаления фотографии
   const handleDeletePhoto = (photo, index) => {
-    // Если это существующее фото с сервера (имеет _id)
-    if (photo._id) {
-      setDeletedPhotos(prev => [...prev, photo]);
-      setPhotos(prev => prev.filter(p => p._id !== photo._id));
+    // Если это существующее фото с сервера
+    if (photo._id || photo.id) {
+      const photoToDelete = photos[index];
+      if (photoToDelete) {
+        setDeletedPhotos(prev => [...prev, photoToDelete]);
+        setPhotos(prev => prev.filter((_, i) => i !== index));
+      }
     } 
-    // Если это новое фото (имеет id, но не _id)
-    else if (photo.id || photo.isNew) {
-      setPhotos(prev => prev.filter((_, i) => i !== index));
-    }
-    // Просто по индексу если ничего не подходит
+    // Если это новое фото
     else {
       setPhotos(prev => {
         const newPhotos = [...prev];
-        newPhotos.splice(index, 1);
+        const deletedPhoto = newPhotos.splice(index, 1)[0];
+        if (deletedPhoto.preview) {
+          URL.revokeObjectURL(deletedPhoto.preview);
+        }
         return newPhotos;
       });
     }
@@ -241,15 +250,17 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
   const handleRestorePhoto = (photo, index) => {
     if (!photo) return;
     
+    // Проверяем, не превышает ли общее количество фото максимальное число
+    if (photos.length >= 10) {
+      showError('Максимальное количество фотографий: 10');
+      return;
+    }
+    
     // Добавляем фото обратно в основной список
     setPhotos(prev => [...prev, photo]);
     
     // Удаляем из списка удаленных фото
-    setDeletedPhotos(prev => {
-      const newDeleted = [...prev];
-      newDeleted.splice(index, 1);
-      return newDeleted;
-    });
+    setDeletedPhotos(prev => prev.filter((_, i) => i !== index));
     
     setFormChanged(true);
   };
@@ -345,8 +356,6 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
       let updatedPlace;
       
       if (isEditMode) {
-        console.log('Обновляем существующее место:', place.id);
-        
         // Добавляем ID удаленных фотографий
         if (deletedPhotos.length > 0) {
           placeData.deleted_image_ids = deletedPhotos.map(photo => photo.id).filter(Boolean);
@@ -354,12 +363,10 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
         
         // Обновляем место
         updatedPlace = await placesService.updatePlace(place.slug || place.id, placeData);
-        console.log('Место успешно обновлено:', updatedPlace);
         
         // Загружаем новые фотографии, если они есть
         const newPhotos = photos.filter(photo => !photo.id); // Фильтруем только новые фото (без id)
         if (newPhotos.length > 0) {
-          console.log('Загружаем новые фотографии:', newPhotos.length);
           const formData = new FormData();
           
           newPhotos.forEach(photo => {
@@ -372,7 +379,6 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
           });
           
           const uploadedImages = await placesService.uploadImages(place.slug || place.id, formData);
-          console.log('Фотографии успешно загружены:', uploadedImages);
           
           // Обновляем место с новыми фотографиями
           updatedPlace = {
@@ -383,17 +389,14 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
         
         // Вызываем колбэк обновления
         if (onPlaceUpdated) {
-          console.log('Вызываем onPlaceUpdated с обновленными данными:', updatedPlace);
           onPlaceUpdated(updatedPlace);
         }
       } else {
         // Создаем новое место
         updatedPlace = await placesService.createPlace(placeData);
-        console.log('Новое место создано:', updatedPlace);
         
         // Загружаем фотографии для нового места
         if (photos.length > 0) {
-          console.log('Загружаем фотографии для нового места:', photos.length);
           const formData = new FormData();
           
           photos.forEach(photo => {
@@ -406,7 +409,6 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
           });
           
           const uploadedImages = await placesService.uploadImages(updatedPlace.slug || updatedPlace.id, formData);
-          console.log('Фотографии успешно загружены:', uploadedImages);
           
           // Обновляем место с новыми фотографиями
           updatedPlace = {
@@ -417,7 +419,6 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
         
         // Вызываем колбэк создания
         if (onPlaceAdded) {
-          console.log('Вызываем onPlaceAdded с данными нового места:', updatedPlace);
           onPlaceAdded(updatedPlace);
         }
       }
@@ -446,47 +447,8 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
     }
   };
 
-  // Глобальный обработчик для drag-and-drop
-  useEffect(() => {
-    if (!isOpen) return;
-    
-    const handleDrop = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      
-      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-        // Фильтруем только изображения
-        const imageFiles = Array.from(e.dataTransfer.files).filter(
-          file => file.type.startsWith('image/')
-        );
-        
-        if (imageFiles.length > 0) {
-          handleAddPhotos(imageFiles);
-        }
-      }
-    };
-    
-    const handleDragOver = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-    };
-    
-    // Добавляем обработчики событий
-    document.addEventListener('drop', handleDrop);
-    document.addEventListener('dragover', handleDragOver);
-    
-    // Очищаем обработчики при закрытии или размонтировании
-    return () => {
-      document.removeEventListener('drop', handleDrop);
-      document.removeEventListener('dragover', handleDragOver);
-    };
-  }, [isOpen, handleAddPhotos]); // Зависимость от isOpen для добавления/удаления обработчиков
-
   useEffect(() => {
     if (isOpen && isEditMode && place) {
-      console.log('AddPlacePopup: Редактирование места:', place);
-      console.log('AddPlacePopup: Значение place.dates:', place.dates);
-      
       // Не загружаем заполнители в поля формы
       setName(place.name === 'Без названия' ? "" : (place.name || ""));
       setAddress(place.location === 'Без адреса' ? "" : (place.location || ""));
@@ -497,28 +459,27 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
       let parsedEndDate = null;
       
       if (place.dates) {
-        console.log('AddPlacePopup: Начинаем парсинг dates:', place.dates);
         [parsedStartDate, parsedEndDate] = parseDateRange(place.dates);
-        console.log('AddPlacePopup: Результат парсинга:', {
-          parsedStartDate,
-          parsedEndDate,
-          rawDates: place.dates
-        });
         
         setStartDate(parsedStartDate);
         setEndDate(parsedEndDate);
-        
-        console.log('AddPlacePopup: Установлены даты в состояние:', {
-          startDate: parsedStartDate,
-          endDate: parsedEndDate
-        });
-      } else {
-        console.log('AddPlacePopup: place.dates отсутствует');
       }
       
       if (place.images && place.images.length > 0) {
-        // Переносим существующие изображения в photos
-        setPhotos(place.images);
+        // Преобразуем существующие изображения в нужный формат
+        const formattedImages = place.images.map(image => ({
+          id: image.id || image._id,
+          image_url: image.url || image.image_url,
+          url: image.url || image.image_url,
+          source: image.url || image.image_url,
+          options: {
+            type: 'local',
+            metadata: {
+              photoId: image.id || image._id
+            }
+          }
+        }));
+        setPhotos(formattedImages);
       }
       
       setInitialFormState({
@@ -529,110 +490,69 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
         startDate: parsedStartDate,
         endDate: parsedEndDate
       });
-      
-      console.log('AddPlacePopup: Установлен initialFormState:', {
-        startDate: parsedStartDate,
-        endDate: parsedEndDate
-      });
     }
   }, [isOpen, isEditMode, place]);
 
-  // Добавляем логи для отслеживания изменений состояния дат
-  useEffect(() => {
-    if (isEditMode) {
-      console.log('AddPlacePopup: Изменение состояния дат:', {
-        startDate,
-        endDate
-      });
-    }
-  }, [startDate, endDate, isEditMode]);
-
   return (
     <Dialog.Root open={isOpen} onOpenChange={(open) => {
-        console.log('Dialog onOpenChange вызван с:', open);
         if (!open) {
           onClose();
         }
       }}>
       <Dialog.Portal>
         <Dialog.Overlay 
-          className="fixed inset-0 bg-black/50 z-[100] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" 
+          className="fixed inset-0 bg-black/50 z-[900] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" 
         />
         <Dialog.Content 
-          className="fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] bg-white dark:bg-gray-800 rounded-xl sm:max-w-5xl max-h-[90vh] w-[90vw] flex flex-col overflow-hidden shadow-xl z-[101] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]"
-
-          onOpenAutoFocus={(e) => {
-            console.log('DialogContent onOpenAutoFocus вызван');
-            // Предотвращаем стандартное поведение автофокуса
-            e.preventDefault();
-            // Не устанавливаем фокус здесь, эта логика теперь в useEffect
+          className="fixed top-[50%] left-[50%] max-h-[90vh] w-[90vw] max-w-[1200px] translate-x-[-50%] translate-y-[-50%] bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden flex flex-col z-[1000]"
+          onInteractOutside={(e) => {
+            if (formChanged) {
+              e.preventDefault();
+            }
           }}
-          onCloseAutoFocus={(e) => {
-            console.log('DialogContent onCloseAutoFocus вызван');
-            e.preventDefault();
+          onEscapeKeyDown={(e) => {
+            if (formChanged) {
+              e.preventDefault();
+            }
           }}
         >
-        <div className="p-6 pb-4 sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
-          <Dialog.Title className="text-xl font-semibold">
-            {isEditMode ? 'Редактирование места' : 'Новое место'}
+          <Dialog.Title className="text-xl font-bold p-6 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center sticky top-0 bg-white dark:bg-gray-800 z-30">
+            {isEditMode ? "Редактирование места" : "Добавление нового места"}
+            <Dialog.Close asChild>
+              <button 
+                className="rounded-full p-2 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
+                onClick={safelyCloseForm}
+              >
+                <X className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+              </button>
+            </Dialog.Close>
           </Dialog.Title>
-          <Dialog.Close asChild>
-            <button
-              className="rounded-full p-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-              onClick={() => onClose()}
-            >
-              <X className="h-5 w-5 text-gray-500" />
-              <span className="sr-only">Закрыть</span>
-            </button>
-          </Dialog.Close>
-        </div>
-        
-        {error && (
-          <div className="bg-red-100 text-red-700 p-3 rounded-md mx-6 mb-4">
-            {error}
-          </div>
-        )}
-        
-        {loading && uploadProgress > 0 && (
-          <div className="flex-1 overflow-y-auto p-6 pt-2 pb-20">
-            <div className="w-full bg-gray-200 rounded-full h-2.5">
-              <div 
-                className="bg-blue-600 h-2.5 rounded-full" 
-                style={{ width: `${uploadProgress}%` }}
-              ></div>
-            </div>
-            <p className="text-sm text-center mt-1">
-              {uploadProgress < 100 ? 'Загрузка...' : 'Загрузка завершена!'}
-            </p>
-          </div>
-        )}
-        
-        <form onSubmit={handleSubmit} className="flex-1 p-6 pt-2 flex flex-col overflow-auto max-h-[calc(100vh-10rem)]">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 flex-1">
-            {/* Левая колонка - форма */}
-            <div className="md:sticky md:top-2 md:self-start md:max-h-[calc(90vh-14rem)]">
-              <PlaceForm 
-                name={name}
-                setName={setName}
-                address={address}
-                setAddress={setAddress}
-                comment={comment}
-                setComment={setComment}
-                startDate={startDate}
-                setStartDate={setStartDate}
-                endDate={endDate}
-                setEndDate={setEndDate}
-                rating={rating}
-                setRating={setRating}
-                showMap={showMap}
-                setShowMap={setShowMap}
-                nameInputRef={nameInputRef}
-              />
-            </div>
 
-            {/* Правая колонка - фотографии */}
-            <div className="md:flex md:flex-col md:min-h-[350px] md:max-h-[calc(80vh-10rem)]">
-              <div className="w-full h-full">
+          <form className="flex-grow overflow-hidden h-full flex flex-col">
+            <div className="flex-grow overflow-auto p-6 flex flex-col md:flex-row gap-6">
+              {/* Левая колонка - форма */}
+              <div className="md:h-full overflow-y-auto">
+                <PlaceForm 
+                  name={name}
+                  setName={setName}
+                  address={address}
+                  setAddress={setAddress}
+                  comment={comment}
+                  setComment={setComment}
+                  startDate={startDate}
+                  setStartDate={setStartDate}
+                  endDate={endDate}
+                  setEndDate={setEndDate}
+                  rating={rating}
+                  setRating={setRating}
+                  showMap={showMap}
+                  setShowMap={setShowMap}
+                  nameInputRef={nameInputRef}
+                />
+              </div>
+
+              {/* Правая колонка - фотографии */}
+              <div className="md:h-full overflow-y-auto flex-grow relative z-20">
                 <PhotoUploadArea 
                   photos={photos}
                   deletedPhotos={deletedPhotos}
@@ -640,41 +560,40 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
                   onDeletePhoto={handleDeletePhoto}
                   onRestorePhoto={handleRestorePhoto}
                   onReorderPhotos={handleReorderPhotos}
-                  maxPhotos={10}
+                  maxPhotos={100}
                 />
               </div>
             </div>
-          </div>
-        </form>
+          </form>
 
-        <div className="sticky bottom-0 bg-white dark:bg-gray-800 p-6 border-t border-gray-200 dark:border-gray-700">
-          <div className="flex justify-end space-x-4">
-          <Dialog.Close asChild>
+          <div className="sticky bottom-0 bg-white dark:bg-gray-800 p-6 border-t border-gray-200 dark:border-gray-700">
+            <div className="flex justify-end space-x-4">
+            <Dialog.Close asChild>
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={handleCancel}
+                  disabled={loading}
+                >
+                  Отмена
+                </Button>
+              </Dialog.Close>
               <Button 
-                type="button" 
-                variant="outline" 
-                onClick={handleCancel}
-                disabled={loading}
+                onClick={handleSubmit} 
+                disabled={loading || !isFormValid}
+                className="bg-blue-600 text-white hover:bg-blue-700"
               >
-                Отмена
+                {loading ? (
+                  <>
+                    <div className="mr-2 h-4 w-4 animate-spin rounded-full border-b-2 border-white"></div>
+                    {isEditMode ? "Сохранение..." : "Добавление..."}
+                  </>
+                ) : (
+                  isEditMode ? "Сохранить" : "Добавить место"
+                )}
               </Button>
-            </Dialog.Close>
-            <Button 
-              onClick={handleSubmit} 
-              disabled={loading || !isFormValid}
-              className="bg-blue-600 text-white hover:bg-blue-700"
-            >
-              {loading ? (
-                <>
-                  <div className="mr-2 h-4 w-4 animate-spin rounded-full border-b-2 border-white"></div>
-                  {isEditMode ? "Сохранение..." : "Добавление..."}
-                </>
-              ) : (
-                isEditMode ? "Сохранить" : "Добавить место"
-              )}
-            </Button>
+            </div>
           </div>
-        </div>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>

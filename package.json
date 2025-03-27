@@ -5,11 +5,10 @@
   "scripts": {
     "frontend:dev": "cd frontend && npm run dev",
     "frontend:build": "cd frontend && npm run build",
-    "backend:dev": "cd backend && npm run dev",
-    "backend:start": "cd backend && npm start",
+    "backend:dev": "cd backend && python manage.py runserver",
     "dev": "concurrently \"npm run frontend:dev\" \"npm run backend:dev\"",
-    "start": "concurrently \"npm run frontend:build\" \"npm run backend:start\"",
-    "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install"
+    "start": "npm run frontend:build && cd backend && python manage.py runserver",
+    "install:all": "npm install && cd frontend && npm install"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"

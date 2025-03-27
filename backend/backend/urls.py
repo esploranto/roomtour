@@ -20,6 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
 from .views import PlaceViewSet, PlaceImageViewSet, UserViewSet
+from django.views.generic import RedirectView
 
 router = DefaultRouter()
 router.register(r'places', PlaceViewSet)
@@ -27,6 +28,7 @@ router.register(r'place-images', PlaceImageViewSet)
 router.register(r'users', UserViewSet)
 
 urlpatterns = [
+    path('', RedirectView.as_view(url='/api/', permanent=False)),  # Перенаправление с корневого URL на /api/
     path('admin/', admin.site.urls),  # <-- Админка Django
     path('api/', include(router.urls)),  # <-- API для фронтенда
 ]
