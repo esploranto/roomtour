@@ -44,7 +44,7 @@ const PlaceForm = ({
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 w-full">
       <div>
         <Label htmlFor="name" className="block mb-2">Название</Label>
         <Input
@@ -55,6 +55,7 @@ const PlaceForm = ({
           autoComplete="off"
           aria-autocomplete="none"
           ref={nameInputRef}
+          className="w-full"
           onFocus={(e) => {
             console.log("Поле Название получило фокус", e.target);
             const valueLength = e.target.value.length;
@@ -65,20 +66,20 @@ const PlaceForm = ({
 
       <div>
         <Label htmlFor="address" className="block mb-2">Адрес</Label>
-        <div className="flex">
+        <div className="flex w-full">
           <Input
             id="address"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
             placeholder="Укажите адрес"
-            className="flex-grow rounded-r-none"
+            className="flex-1 rounded-r-none"
             autoComplete="off"
             aria-autocomplete="none"
           />
           <Button 
             type="button" 
             variant="outline" 
-            className="rounded-l-none border-l-0"
+            className="rounded-l-none border-l-0 whitespace-nowrap"
             onClick={() => setShowMap(!showMap)}
           >
             Карта

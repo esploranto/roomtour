@@ -30,7 +30,8 @@ export default defineConfig({
       '@dnd-kit/sortable', 
       '@dnd-kit/utilities', 
       'lucide-react', 
-      '@radix-ui/react-slot'
+      '@radix-ui/react-slot',
+      '@hello-pangea/dnd'
     ]
   },
   build: {

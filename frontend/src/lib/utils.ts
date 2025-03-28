@@ -132,6 +132,29 @@ export function parseDateRange(dateString: string): [Date | null, Date | null] {
 
   console.log('parseDateRange - входная строка:', dateString);
 
+  // Проверяем, является ли строка форматом с полными датами (DD.MM.YYYY – DD.MM.YYYY)
+  const fullDatesPattern = /(\d{2})\.(\d{2})\.(\d{4})\s*[-–—]\s*(\d{2})\.(\d{2})\.(\d{4})/;
+  const match = dateString.match(fullDatesPattern);
+  
+  if (match) {
+    // Извлекаем компоненты дат
+    const startDay = parseInt(match[1]);
+    const startMonth = parseInt(match[2]) - 1; // JS месяцы начинаются с 0
+    const startYear = parseInt(match[3]);
+    
+    const endDay = parseInt(match[4]);
+    const endMonth = parseInt(match[5]) - 1;
+    const endYear = parseInt(match[6]);
+    
+    const startDate = new Date(startYear, startMonth, startDay);
+    const endDate = new Date(endYear, endMonth, endDay);
+    
+    if (isValid(startDate) && isValid(endDate)) {
+      console.log('parseDateRange - распознаны полные даты:', { startDate, endDate });
+      return [startDate, endDate];
+    }
+  }
+
   // Объект для преобразования русских месяцев в числа
   const monthsRu: { [key: string]: number } = {
     'янв': 0, 'фев': 1, 'мар': 2, 'апр': 3, 'май': 4, 'июн': 5,
@@ -169,16 +192,41 @@ export function parseDateRange(dateString: string): [Date | null, Date | null] {
       if (parts.length === 2) {
         // Получаем месяц и год из второй части (они всегда там есть)
         const endParts = parts[1].trim().split(' ');
+        
+        // Если вторая часть содержит полную дату (день, месяц, год)
         if (endParts.length === 3) {
-          const [_, month, year] = endParts;
+          const [_, endMonth, endYear] = endParts;
           
-          // Парсим начальную дату (может быть только число или полная дата)
-          const startDate = parseRussianDate(parts[0], month, year);
           // Парсим конечную дату (всегда полная)
           const endDate = parseRussianDate(parts[1]);
-
-          console.log('parseDateRange - результат парсинга диапазона:', { startDate, endDate });
-          return [startDate, endDate];
+          
+          // Проверяем первую часть
+          const startParts = parts[0].trim().split(' ');
+          
+          // Если первая часть содержит только день
+          if (startParts.length === 1) {
+            // Создаем дату с тем же месяцем и годом
+            const startDate = parseRussianDate(parts[0], endMonth, endYear);
+            console.log('parseDateRange - короткий формат:', { startDate, endDate });
+            return [startDate, endDate];
+          }
+          // Если первая часть содержит день и месяц
+          else if (startParts.length === 2) {
+            // Создаем дату с тем же годом
+            const [startDay, startMonth] = startParts;
+            const monthNum = monthsRu[startMonth.toLowerCase()];
+            if (monthNum !== undefined) {
+              const startDate = new Date(parseInt(endYear), monthNum, parseInt(startDay));
+              console.log('parseDateRange - средний формат:', { startDate, endDate });
+              return [startDate, endDate];
+            }
+          }
+          // Иначе парсим как полную дату
+          else {
+            const startDate = parseRussianDate(parts[0]);
+            console.log('parseDateRange - полный формат:', { startDate, endDate });
+            return [startDate, endDate];
+          }
         }
       }
     } else {

@@ -66,6 +66,42 @@ export default function Place() {
           return;
         }
 
+        // Проверяем, есть ли изображения
+        if (!data.images || !Array.isArray(data.images)) {
+          console.warn('Place - изображения отсутствуют или не в формате массива:', data.images);
+          data.images = []; // Устанавливаем пустой массив, если изображений нет
+        } else {
+          console.log('Place - загружено изображений:', data.images.length);
+          data.images.forEach((img, idx) => {
+            console.log(`Изображение ${idx}:`, img);
+          });
+          
+          // Проверяем корректность каждого изображения
+          data.images = data.images.filter(image => {
+            if (!image || (!image.image_url && !image.url)) {
+              console.warn('Place - некорректное изображение в массиве:', image);
+              return false;
+            }
+            // Нормализуем структуру - обеспечиваем наличие image_url
+            if (!image.image_url && image.url) {
+              image.image_url = image.url;
+            }
+            return true;
+          });
+          
+          // Сортируем изображения по порядку, если есть поле order
+          if (data.images.length > 0 && data.images[0].order !== undefined) {
+            console.log('Place - сортируем изображения по order');
+            data.images.sort((a, b) => {
+              return (a.order ?? 999) - (b.order ?? 999);
+            });
+          } else {
+            console.log('Place - порядок изображений не определен, оставляем как есть');
+          }
+          
+          console.log('Place - после обработки изображений:', data.images.length);
+        }
+
         // Преобразуем числовое значение в строку, если оно есть
         if (typeof data.name === 'number') {
           data.name = String(data.name);
