@@ -3,6 +3,36 @@ import { Plus, X, RotateCcw, GripVertical } from 'lucide-react';
 import './PhotoUploadArea.css';
 import { useDragAndDrop } from '@/context/DragAndDropContext';
 
+// Хук для определения размера экрана
+function useWindowSize() {
+  const [windowSize, setWindowSize] = useState({
+    width: typeof window !== 'undefined' ? window.innerWidth : 0,
+    height: typeof window !== 'undefined' ? window.innerHeight : 0,
+  });
+  
+  useEffect(() => {
+    // Обработчик изменения размера окна
+    function handleResize() {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    }
+    
+    if (typeof window !== 'undefined') {
+      window.addEventListener('resize', handleResize);
+      
+      // Вызываем обработчик сразу, чтобы установить начальное значение
+      handleResize();
+      
+      // Очистка событий при размонтировании
+      return () => window.removeEventListener('resize', handleResize);
+    }
+  }, []);
+  
+  return windowSize;
+}
+
 export default function PhotoUploadArea({
   photos = [],
   deletedPhotos = [],
@@ -16,6 +46,8 @@ export default function PhotoUploadArea({
   const fileInputRef = useRef(null);
   const [draggedItem, setDraggedItem] = useState(null);
   const [dragOverItem, setDragOverItem] = useState(null);
+  const { width } = useWindowSize();
+  const isMobile = width < 768;
   
   const { 
     isDraggingFile,
@@ -136,7 +168,7 @@ export default function PhotoUploadArea({
 
   return (
     <div 
-      className={`photo-upload-area ${isDragOver || isDraggingFile ? 'drag-over' : ''} ${isEmpty ? 'empty' : ''}`}
+      className={`photo-upload-area ${isDragOver || isDraggingFile ? 'drag-over' : ''} ${isEmpty ? 'empty' : ''} ${isMobile ? 'mobile' : ''}`}
       onClick={(e) => {
         // Предотвращаем всплытие клика только если клик на контейнер, а не на дочерние элементы
         if (e.target.classList.contains('photo-upload-area') || 
@@ -163,6 +195,8 @@ export default function PhotoUploadArea({
           maxPhotos={maxPhotos} 
           onClick={handleButtonClick}
           isDragging={isDragOver || isDraggingFile}
+          isMobile={isMobile}
+          photosCount={photos.length}
         />
       ) : (
         <PhotoGrid 
@@ -177,16 +211,17 @@ export default function PhotoUploadArea({
           onDragEnd={handlePhotoOnDragEnd}
           draggedItem={draggedItem}
           dragOverItem={dragOverItem}
+          isMobile={isMobile}
         />
       )}
     </div>
   );
 }
 
-function EmptyState({ canAddMorePhotos, maxPhotos, onClick, isDragging }) {
+function EmptyState({ canAddMorePhotos, maxPhotos, onClick, isDragging, isMobile, photosCount = 0 }) {
   return (
     <div 
-      className={`photo-upload-area-empty ${isDragging ? 'dragging' : ''}`}
+      className={`photo-upload-area-empty ${isDragging ? 'dragging' : ''} ${isMobile ? 'mobile' : ''}`}
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -198,17 +233,21 @@ function EmptyState({ canAddMorePhotos, maxPhotos, onClick, isDragging }) {
       {canAddMorePhotos ? (
         <>
           <div className="upload-icon">
-            <Plus className="w-8 h-8" />
+            <Plus className="h-6 w-6" />
           </div>
           <div className="upload-text">
-            <p className="main-text">Добавьте фото</p>
-            <p className="sub-text">Нажмите здесь или перетащите фото</p>
+            <span className="main-text">Добавить фотографии</span>
+            <span className="sub-text">
+              {photosCount > 0 
+                ? `Добавлено ${photosCount} из ${maxPhotos}` 
+                : `Перетащите изображения сюда или нажмите для выбора`}
+            </span>
           </div>
         </>
       ) : (
         <div className="upload-text">
-          <p className="main-text">Максимум {maxPhotos} фото</p>
-          <p className="sub-text">Удалите существующие фото, чтобы добавить новые</p>
+          <span className="main-text">Максимальное количество фотографий: {maxPhotos}</span>
+          <span className="sub-text">Вы больше не можете добавлять фотографии</span>
         </div>
       )}
     </div>
@@ -226,82 +265,83 @@ function PhotoGrid({
   onDragEnter,
   onDragEnd,
   draggedItem,
-  dragOverItem
+  dragOverItem,
+  isMobile
 }) {
+  console.log('[DEBUG] PhotoGrid: photos =', photos.length, 'deletedPhotos =', deletedPhotos.length);
+  
   return (
-    <div className="photo-grid-container">
+    <div className={`photo-grid-container ${isMobile ? 'mobile' : ''}`}>
       <div className="photo-grid">
         {photos.map((photo, index) => (
-          <div
-            key={photo.id || `photo-${index}`}
+          <div 
+            key={photo.id || index}
             className={`photo-item ${draggedItem === index ? 'dragging' : ''} ${dragOverItem === index ? 'drag-over-item' : ''}`}
             draggable
             onDragStart={() => onDragStart(index)}
             onDragEnter={() => onDragEnter(index)}
-            onDragOver={(e) => e.preventDefault()}
             onDragEnd={onDragEnd}
           >
             <div className="photo-preview">
               <img 
-                src={photo.preview || photo.url || photo.image_url || photo.source} 
+                src={photo.preview || photo.image_url || photo.url || photo.source} 
                 alt={`Фото ${index + 1}`} 
                 className="img-preview"
               />
+              <div className="photo-index">{index + 1}</div>
               <button 
+                type="button"
                 className="delete-btn"
                 onClick={(e) => {
-                  e.preventDefault();
                   e.stopPropagation();
-                  onDeletePhoto(photo, index);
+                  console.log('[DEBUG] Нажата кнопка удаления для фото:', index);
+                  onDeletePhoto(index);
                 }}
-                title="Удалить фото"
               >
-                <X className="w-4 h-4" />
+                <X className="h-4 w-4" />
               </button>
               <div className="drag-handle">
-                <GripVertical className="w-4 h-4" />
+                <GripVertical className="h-4 w-4" />
               </div>
-              <div className="photo-index">{index + 1}</div>
             </div>
           </div>
         ))}
-
+        
         {canAddMorePhotos && (
           <div 
-            className="add-photo-btn" 
+            className="add-photo-btn"
             onClick={(e) => {
-              e.preventDefault();
               e.stopPropagation();
               onClick(e);
             }}
           >
-            <Plus className="w-6 h-6" />
+            <Plus className="h-6 w-6" />
           </div>
         )}
       </div>
 
       {deletedPhotos.length > 0 && (
         <div className="deleted-photos-container">
-          <h3 className="deleted-photos-title">Удаленные фото</h3>
+          <h4 className="deleted-photos-title">Удаленные фотографии</h4>
           <div className="deleted-photos-grid">
             {deletedPhotos.map((photo, index) => (
-              <div className="deleted-photo-item" key={`deleted-${photo.id || index}`}>
+              <div key={photo.id || index} className="deleted-photo-item">
                 <div className="photo-preview deleted">
                   <img 
-                    src={photo.preview || photo.url || photo.image_url || photo.source} 
+                    src={photo.preview || photo.image_url || photo.url || photo.source} 
                     alt={`Удаленное фото ${index + 1}`} 
                     className="img-preview"
                   />
                   <button 
+                    type="button"
                     className="restore-btn"
                     onClick={(e) => {
-                      e.preventDefault();
                       e.stopPropagation();
-                      onRestorePhoto(photo, index);
+                      console.log('[DEBUG] Нажата кнопка восстановления для фото:', index);
+                      onRestorePhoto(index);
                     }}
-                    title="Восстановить фото"
                   >
-                    <RotateCcw className="w-4 h-4" />
+                    <RotateCcw className="h-4 w-4" />
                   </button>
                 </div>
               </div>

@@ -13,6 +13,36 @@ import { parseDateRange } from '@/lib/utils.ts';
 import PhotoUploadArea from './PhotoUploadArea';
 import PlaceForm from './PlaceForm';
 
+// Хук для определения размера экрана
+function useWindowSize() {
+  const [windowSize, setWindowSize] = useState({
+    width: typeof window !== 'undefined' ? window.innerWidth : 0,
+    height: typeof window !== 'undefined' ? window.innerHeight : 0,
+  });
+  
+  useEffect(() => {
+    // Обработчик изменения размера окна
+    function handleResize() {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    }
+    
+    if (typeof window !== 'undefined') {
+      window.addEventListener('resize', handleResize);
+      
+      // Вызывем обработчик сразу, чтобы установить начальное значение
+      handleResize();
+      
+      // Очистка событий при размонтировании
+      return () => window.removeEventListener('resize', handleResize);
+    }
+  }, []);
+  
+  return windowSize;
+}
+
 export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUpdated, place }) {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -36,6 +66,8 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
   const { mutate } = usePlaces();
   const isEditMode = Boolean(place);
   const isFirstRender = useRef(true);
+  const { width } = useWindowSize();
+  const isMobile = width < 768;
   
   // Обработчик добавления фотографий - определяем как функцию, а не useCallback
   function processAddPhotos(newFiles) {
@@ -236,24 +268,27 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
   }, [name, address, comment, rating, photos, startDate, endDate, isOpen, hasAttemptedSubmit]);
 
   // Обработчик удаления фотографии
-  const handleDeletePhoto = (photo, index) => {
+  const handleDeletePhoto = (index) => {
+    // Получаем фото, которое нужно удалить
+    const photoToDelete = photos[index];
+    if (!photoToDelete) return;
+    
+    console.log('[DEBUG] Удаление фото:', index, photoToDelete);
+    
     // Если это существующее фото с сервера (имеет числовой ID или строковый без подчеркивания)
-    const isExistingServerPhoto = photo._id || 
-      (photo.id && (typeof photo.id === 'number' || (typeof photo.id === 'string' && !photo.id.includes('_'))));
+    const isExistingServerPhoto = photoToDelete._id || 
+      (photoToDelete.id && (typeof photoToDelete.id === 'number' || (typeof photoToDelete.id === 'string' && !photoToDelete.id.includes('_'))));
       
     if (isExistingServerPhoto) {
-      const photoToDelete = photos[index];
-      if (photoToDelete) {
-        setDeletedPhotos(prev => [...prev, photoToDelete]);
-        setPhotos(prev => prev.filter((_, i) => i !== index));
-      }
+      setDeletedPhotos(prev => [...prev, photoToDelete]);
+      setPhotos(prev => prev.filter((_, i) => i !== index));
     } 
     // Если это новое фото
     else {
       setPhotos(prev => {
         const newPhotos = [...prev];
         const deletedPhoto = newPhotos.splice(index, 1)[0];
-        if (deletedPhoto.preview) {
+        if (deletedPhoto && deletedPhoto.preview) {
           URL.revokeObjectURL(deletedPhoto.preview);
         }
         return newPhotos;
@@ -264,8 +299,12 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
   };
 
   // Обработчик восстановления фотографии
-  const handleRestorePhoto = (photo, index) => {
-    if (!photo) return;
+  const handleRestorePhoto = (index) => {
+    // Получаем фото, которое нужно восстановить
+    const photoToRestore = deletedPhotos[index];
+    if (!photoToRestore) return;
+    
+    console.log('[DEBUG] Восстановление фото:', index, photoToRestore);
     
     // Проверяем, не превышает ли общее количество фото максимальное число
     if (photos.length >= 50) {
@@ -274,7 +313,7 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
     }
     
     // Добавляем фото обратно в основной список
-    setPhotos(prev => [...prev, photo]);
+    setPhotos(prev => [...prev, photoToRestore]);
     
     // Удаляем из списка удаленных фото
     setDeletedPhotos(prev => prev.filter((_, i) => i !== index));
@@ -584,7 +623,12 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
               e.preventDefault();
             }
           }}
-          style={{ height: '90vh' }}
+          style={{ 
+            height: isMobile ? 'auto' : '90vh',
+            maxHeight: 'calc(100vh - 40px)',
+            display: 'flex',
+            flexDirection: 'column'
+          }}
         >
           <Dialog.Title className="text-xl font-bold p-6 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center sticky top-0 bg-white dark:bg-gray-800 z-30">
             {isEditMode ? "Редактирование места" : "Добавление нового места"}
@@ -603,16 +647,18 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
           </Dialog.Title>
 
           <form 
-            className="flex-grow overflow-hidden h-full flex flex-col" 
+            className="flex-grow overflow-auto h-full flex flex-col" 
             onSubmit={(e) => {
               e.preventDefault();
               e.stopPropagation();
               return false;
             }}
           >
-            <div className="flex-grow overflow-auto p-6 flex flex-col md:flex-row gap-6" style={{ height: 'calc(100% - 140px)' }}>
+            <div className={`flex-grow p-4 flex flex-col md:flex-row gap-4 ${isMobile ? 'overflow-auto' : 'overflow-hidden'}`} style={{ 
+              height: isMobile ? 'auto' : 'calc(100% - 140px)'
+            }}>
               {/* Левая колонка - форма */}
-              <div className="md:w-1/2 md:h-full overflow-y-auto px-2">
+              <div className="w-full md:w-1/2 md:h-full overflow-visible px-2 mb-4 md:mb-0 order-1 md:order-1">
                 <PlaceForm 
                   name={name}
                   setName={setName}
@@ -633,7 +679,10 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
               </div>
 
               {/* Правая колонка - фотографии */}
-              <div className="md:w-1/2 md:h-full overflow-y-auto relative z-20 px-2 flex">
+              <div className="w-full md:w-1/2 md:h-full overflow-visible relative z-20 px-2 flex order-2 md:order-2" style={{
+                height: isMobile ? 'auto' : '100%',
+                minHeight: isMobile ? '600px' : 'auto'
+              }}>
                 <PhotoUploadArea 
                   photos={photos}
                   deletedPhotos={deletedPhotos}

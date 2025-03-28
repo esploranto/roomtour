@@ -15,6 +15,15 @@
   flex: 1;
 }
 
+.photo-upload-area.mobile {
+  min-height: 600px;
+  height: auto;
+  max-height: none;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
 .photo-upload-area.empty {
   justify-content: center;
   align-items: center;
@@ -35,6 +44,11 @@
   padding: 2rem;
   text-align: center;
   flex: 1;
+}
+
+.photo-upload-area-empty.mobile {
+  padding: 1rem;
+  min-height: 200px;
 }
 
 .photo-upload-area-empty.dragging {
@@ -78,6 +92,14 @@
   padding: 1rem;
   overflow-y: auto;
   flex: 1;
+}
+
+.photo-grid-container.mobile {
+  padding: 0.75rem;
+  overflow-y: auto;
+  flex: 1;
+  height: auto;
+  min-height: 300px;
 }
 
 .photo-grid {
@@ -255,26 +277,75 @@
   z-index: 10;
 }
 
+/* Медиа-запросы для мобильных устройств */
 @media (max-width: 768px) {
   .photo-grid {
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 0.75rem;
   }
   
   .deleted-photos-grid {
     grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 0.5rem;
+  }
+
+  /* Новые стили для мобильного отображения */
+  .photo-upload-area {
+    height: auto;
+    min-height: 600px;
+    max-height: none;
+  }
+
+  .photo-grid-container {
+    overflow-y: auto;
+    height: auto;
+    min-height: 600px;
+    flex: 1;
+    padding: 0.75rem;
+  }
+  
+  .main-text {
+    font-size: 1rem;
+  }
+  
+  .sub-text {
+    font-size: 0.75rem;
+  }
+  
+  .upload-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 0.75rem;
+  }
+  
+  .photo-index {
+    width: 1.25rem;
+    height: 1.25rem;
+    font-size: 0.7rem;
+  }
+  
+  .delete-btn,
+  .restore-btn,
+  .drag-handle {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  
+  .photo-upload-area-empty {
+    padding: 1rem;
+    min-height: 200px;
   }
 }
 
-/* Добавляем анимацию для drag-and-drop */
 @keyframes pulse {
   0% {
-    border-color: #d1d5db;
+    opacity: 1;
   }
   50% {
-    border-color: #3b82f6;
+    opacity: 0.6;
   }
   100% {
-    border-color: #d1d5db;
+    opacity: 1;
   }
 }
 
