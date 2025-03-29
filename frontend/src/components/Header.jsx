@@ -47,7 +47,7 @@ export default function Header({ onPlaceAdded, onDialogStateChange }) {
   return (
     <>
       <header className="header relative">
-        <div className="container mx-auto p-4 pb-0">
+        <div className="container mx-auto px-4 py-1">
           <div className="flex justify-between items-center h-20">
             {/* Логотип */}
             <Link to="/" className="flex items-center text-xl font-bold text-gray-900 dark:text-white">

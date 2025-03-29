@@ -8,7 +8,7 @@ import {
   CarouselPrevious,
   CarouselNext,
 } from "@/components/ui/carousel.tsx";
-import { ArrowLeft, MoreVertical, Edit, Trash2, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, MoreVertical, Edit, Trash2, X, ChevronLeft, ChevronRight, Share, MapPin, CalendarDays } from "lucide-react";
 import { usePlace, usePlaces } from "@/lib/hooks";
 import { AuthContext } from "@/context/AuthContext";
 import { placesService } from "@/api";
@@ -31,6 +31,7 @@ export default function Place() {
   const searchParams = new URLSearchParams(location.search);
   const isNew = searchParams.get('isNew') === 'true';
   const carouselRef = useRef(null);
+  const mapRef = useRef(null);
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
   const { showSuccess, showError } = useToast();
@@ -264,6 +265,13 @@ export default function Place() {
     }
   };
 
+  // Переход к карте
+  const scrollToMap = () => {
+    if (mapRef.current) {
+      mapRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   // Полноэкранный просмотр изображений - исправляем проверку изображений
   const openFullscreenImage = (image, index) => {
     if (!image || !image.image_url) {
@@ -305,12 +313,14 @@ export default function Place() {
   if (isLoading) {
     return (
       <div className="container mx-auto py-8">
-        <Button variant="outline" asChild className="mb-4">
-          <Link to={`/${username}`}>
-            <ArrowLeft size={16} className="mr-2" />
-            Назад к профилю
-          </Link>
-        </Button>
+        <div className="flex justify-between items-center mb-6">
+          <Button variant="outline" asChild>
+            <Link to={`/${username}`}>
+              <ArrowLeft size={16} className="mr-2" />
+              Назад к профилю
+            </Link>
+          </Button>
+        </div>
         <div className="text-center p-8">
           <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
           <p className="mt-2">Загрузка данных места...</p>
@@ -322,16 +332,14 @@ export default function Place() {
   if (error) {
     return (
       <div className="container mx-auto py-8">
-        <div className="flex items-center mb-6">
+        <div className="flex justify-between items-center mb-6">
           <Button
-            variant="ghost"
-            size="icon"
+            variant="default"
             onClick={() => navigate(-1)}
-            className="mr-2"
           >
-            <ArrowLeft className="h-6 w-6" />
+            <ArrowLeft className="h-5 w-5 mr-2" />
+            Назад
           </Button>
-          <h1 className="text-2xl font-bold">Ошибка</h1>
         </div>
         <div className="text-center py-8">
           <h2 className="text-xl font-semibold mb-4">
@@ -351,12 +359,14 @@ export default function Place() {
   if (!place) {
     return (
       <div className="container mx-auto py-8">
-        <Button variant="outline" asChild className="mb-4">
-          <Link to={`/${username}`}>
-            <ArrowLeft size={16} className="mr-2" />
-            Назад к профилю
-          </Link>
-        </Button>
+        <div className="flex justify-between items-center mb-6">
+          <Button variant="outline" asChild>
+            <Link to={`/${username}`}>
+              <ArrowLeft size={16} className="mr-2" />
+              Назад к профилю
+            </Link>
+          </Button>
+        </div>
         <div className="text-center p-8">
           <p className="text-gray-600">Место не найдено</p>
         </div>
@@ -367,150 +377,240 @@ export default function Place() {
   // Определяем настройки карусели в зависимости от количества изображений
   const hasImages = place.images && place.images.length > 0;
   const imagesCount = hasImages ? place.images.length : 0;
-  
-  // Определяем класс для CarouselItem в зависимости от количества изображений
-  const getCarouselItemClass = () => {
-    if (imagesCount === 1) {
-      return "basis-full"; // Одно изображение занимает всю ширину
-    } else if (imagesCount === 2) {
-      return "md:basis-1/2"; // Два изображения в ряд
-    } else {
-      return "md:basis-1/2 lg:basis-1/3"; // Три и более изображений
-    }
-  };
 
   return (
     <div className="container mx-auto py-8">
-      {/* Кнопка "Назад к профилю" */}
-      <Button variant="outline" asChild className="mb-6">
-        <Link to={`/${username}`}>
-          <ArrowLeft size={16} className="mr-2" />
-          Назад к профилю
-        </Link>
-      </Button>
+      {/* Навигация */}
+      <div className="flex justify-between items-center mb-6">
+        <Button variant="outline" asChild>
+          <Link to={`/${username}`}>
+            <ArrowLeft size={16} className="mr-2" />
+            Назад к профилю
+          </Link>
+        </Button>
+      </div>
 
-      <div className="mb-8">
-        <div className="flex justify-between items-start">
-          <div>
-            {(place.name !== undefined && place.name !== null && place.name !== 'Без названия') && (
-              <h1 className="text-3xl font-medium mb-2">{String(place.name)}</h1>
-            )}
+      <div className="flex flex-col md:flex-row gap-6 pt-8">
+        {/* Левая колонка - информация о месте */}
+        <div className="md:w-2/5 md:sticky md:top-24 md:self-start">
+          <div className="bg-gray-100 dark:bg-gray-800/60 rounded-2xl p-6 pb-12 space-y-8 ">
+            {/* Заголовок с кнопками */}
+            <div className="flex justify-between items-start">
+              <h1 className="text-3xl font-medium pr-4">
+                {(place.name !== undefined && place.name !== null && place.name !== 'Без названия') 
+                  ? String(place.name) 
+                  : 'Без названия'}
+              </h1>
+              <div className="flex items-center gap-2 shrink-0">
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  title="Поделиться"
+                  className="rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                >
+                  <Share className="h-5 w-5" />
+                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button 
+                      variant="ghost" 
+                      size="icon"
+                      title="Дополнительные действия"
+                      disabled={isDeleting}
+                      className="rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                    >
+                      <MoreVertical className="h-5 w-5" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-48 bg-white dark:bg-gray-800 border-none rounded-lg space-y-0">
+                    <DropdownMenuItem onClick={handleEditPlace} className="hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors items-start gap-0.5 rounded-md">
+                      <Edit className="mr-2 h-4 w-4 mt-0.5" />
+                      Редактировать место
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem 
+                      onClick={handleDeleteClick}
+                      className="text-red-600 focus:text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors gap-0.5 rounded-md"
+                    >
+                      <Trash2 className="mr-2 h-4 w-4" />
+                      Удалить
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            </div>
+            
+            {/* Адрес с кнопкой "На карте" */}
             {place.location && place.location !== 'Без адреса' && (
-              <p className="text-gray-500 dark:text-gray-400">{place.location}</p>
+              <div className="mb-4">
+                <div className="flex items-center gap-1">
+                  <MapPin className="h-6 w-6 mr-1" />
+                  <p className="text-gray-700 dark:text-gray-300 mr-2">{place.location}</p>
+                  <Button 
+                    variant="default" 
+                    size="sm" 
+                    className="text-gray-500 dark:text-gray-500 py-1 px-2 h-auto bg-gray-100 dark:bg-gray-800" 
+                    onClick={scrollToMap}
+                  >
+                    <span>На карте</span>
+                  </Button>
+                </div>
+              </div>
+            )}
+            
+            {/* Даты */}
+            {place.dates && (
+              <div className="mb-4">
+                <div className="flex items-center gap-1">
+                  <CalendarDays className="h-6 w-6 mr-1" />
+                  <p className="text-gray-700 dark:text-gray-300">
+                    {(() => {
+                      // Парсим и форматируем даты в нужном формате
+                      const [startDate, endDate] = parseDateRange(place.dates);
+                      if (startDate || endDate) {
+                        return formatDateRange(startDate, endDate);
+                      }
+                      return place.dates; // Fallback на исходный формат, если парсинг не удался
+                    })()}
+                  </p>
+                </div>
+              </div>
+            )}
+            
+            {/* Тип жилья */}
+            {place.type && (
+              <div className="mb-4">
+                <h2 className="text-lg font-medium mb-1">Тип жилья</h2>
+                <p className="text-gray-700 dark:text-gray-300">{place.type}</p>
+              </div>
+            )}
+            
+            {/* Что понравилось */}
+            {place.pros && (
+              <div className="mb-4">
+                <h2 className="text-lg font-medium mb-1">Что понравилось</h2>
+                <p className="text-gray-700 dark:text-gray-300">{place.pros}</p>
+              </div>
+            )}
+            
+            {/* Что не понравилось */}
+            {place.cons && (
+              <div className="mb-4">
+                <h2 className="text-lg font-medium mb-1">Что не понравилось</h2>
+                <p className="text-gray-700 dark:text-gray-300">{place.cons}</p>
+              </div>
+            )}
+            
+            {/* Оценка */}
+            <div className="mb-4">
+              <h2 className="text-lg font-medium mb-1">Оценка</h2>
+              <div className="flex items-center">
+                <div className="flex">
+                  {Array.from({ length: 5 }, (_, i) => (
+                    <span
+                      key={i}
+                      className={`text-2xl ${
+                        i < place.rating ? "text-yellow-500" : "text-gray-300"
+                      }`}
+                    >
+                      ★
+                    </span>
+                  ))}
+                </div>
+                <span className="ml-2 font-medium">{place.rating}/5</span>
+              </div>
+            </div>
+            
+            {/* Место в рейтинге */}
+            {place.rank && (
+              <div className="mb-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                <div className="text-center">
+                  <div className="text-xl font-bold">{place.rank}</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">место</div>
+                  <Link to="/рейтинг" className="text-blue-600 dark:text-blue-400 text-sm mt-1 block">
+                    в моём рейтинге
+                  </Link>
+                </div>
+              </div>
+            )}
+            
+            {/* Отзыв */}
+            {place.review && (
+              <div className="mb-4">
+                <h2 className="text-lg font-medium mb-1">Отзыв</h2>
+                <p className="text-gray-700 dark:text-gray-300">{place.review}</p>
+              </div>
             )}
           </div>
-          
-          {/* Кнопка с троеточием (отображается всегда) */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button 
-                variant="ghost" 
-                size="icon"
-                title="Дополнительные действия"
-                disabled={isDeleting}
-              >
-                <MoreVertical className="h-5 w-5" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48 bg-white dark:bg-gray-800">
-              <DropdownMenuItem onClick={handleEditPlace}>
-                <Edit className="mr-2 h-4 w-4" />
-                Редактировать место
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem 
-                onClick={handleDeleteClick}
-                className="text-red-600 focus:text-red-600"
-              >
-                <Trash2 className="mr-2 h-4 w-4" />
-                Удалить
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
         </div>
-      </div>
-      
-      {/* Даты */}
-      {place.dates && (
-        <div className="mb-6">
-          <h2 className="text-lg font-medium mb-1">Даты проживания</h2>
-          <p className="text-gray-500 dark:text-gray-400">
-            {(() => {
-              // Парсим и форматируем даты в нужном формате
-              const [startDate, endDate] = parseDateRange(place.dates);
-              if (startDate || endDate) {
-                return formatDateRange(startDate, endDate);
-              }
-              return place.dates; // Fallback на исходный формат, если парсинг не удался
-            })()}
-          </p>
-        </div>
-      )}
 
-      {/* Карусель с изображениями */}
-      {hasImages ? (
-        <div className="mb-8">
-          <Carousel 
-            ref={carouselRef} 
-            className="w-full max-w-5xl mx-auto"
-            opts={{
-              align: "start",
-              loop: true,
-            }}
-            tabIndex={0} // Делаем карусель фокусируемой
-          >
-            <CarouselContent className="max-h-[500px]">
-              {place.images.map((image, index) => (
-                <CarouselItem key={index} className={`h-full ${getCarouselItemClass()}`}>
-                  <div className="p-1 h-full flex items-center justify-center">
+        {/* Правая колонка - фотографии */}
+        <div className="md:w-3/5">
+          {hasImages ? (
+            <div className="mb-0">
+              {/* Десктоп - грид с фотографиями */}
+              <div className="hidden md:grid grid-cols-2 md:grid-cols-2 gap-1 overflow-hidden rounded-2xl">
+                {place.images.map((image, index) => (
+                  <div 
+                    key={index} 
+                    className="relative aspect-square cursor-pointer overflow-hidden"
+                    onClick={() => openFullscreenImage(image, index)}
+                  >
                     <img
                       src={image.image_url}
                       alt={`${place.name} - изображение ${index + 1}`}
-                      className="max-h-[480px] w-auto object-contain rounded-lg mx-auto cursor-pointer"
-                      onClick={() => openFullscreenImage(image, index)}
+                      className="h-full w-full object-cover hover:scale-105 transition-transform duration-200"
                     />
                   </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            {imagesCount > 1 && (
-              <>
-                <CarouselPrevious className="left-2" data-carousel-prev />
-                <CarouselNext className="right-2" data-carousel-next />
-              </>
-            )}
-          </Carousel>
-        </div>
-      ) : (
-        <div className="mb-8 bg-gray-100 h-64 flex items-center justify-center rounded-lg">
-          <p className="text-gray-500">Нет изображений</p>
-        </div>
-      )}
-
-      {/* Рейтинг */}
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-2">Рейтинг</h2>
-        <div className="flex">
-          {Array.from({ length: 5 }, (_, i) => (
-            <span
-              key={i}
-              className={`text-2xl ${
-                i < place.rating ? "text-yellow-500" : "text-gray-300"
-              }`}
-            >
-              ★
-            </span>
-          ))}
+                ))}
+              </div>
+              
+              {/* Мобильный - карусель */}
+              <div className="md:hidden rounded-2xl overflow-hidden">
+                <Carousel 
+                  ref={carouselRef} 
+                  className="w-full"
+                  opts={{
+                    align: "start",
+                    loop: true,
+                  }}
+                >
+                  <CarouselContent>
+                    {place.images.map((image, index) => (
+                      <CarouselItem key={index} className="basis-full">
+                        <div 
+                          className="relative aspect-square cursor-pointer overflow-hidden"
+                          onClick={() => openFullscreenImage(image, index)}
+                        >
+                          <img
+                            src={image.image_url}
+                            alt={`${place.name} - изображение ${index + 1}`}
+                            className="h-full w-full object-cover"
+                          />
+                        </div>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious className="left-2" />
+                  <CarouselNext className="right-2" />
+                </Carousel>
+              </div>
+            </div>
+          ) : (
+            <div className="mb-8 bg-gray-100 dark:bg-gray-800 h-64 flex items-center justify-center rounded-2xl">
+              <p className="text-gray-500 dark:text-gray-400">Нет изображений</p>
+            </div>
+          )}
         </div>
       </div>
-
-      {/* Отзыв */}
-      {place.review && (
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold mb-2">Отзыв</h2>
-          <p className="text-gray-500 dark:text-gray-400">{place.review}</p>
+      
+      {/* Карта (добавим позже) */}
+      <div ref={mapRef} className="mt-12">
+        <h2 className="text-2xl font-medium mb-4">Расположение</h2>
+        <div className="bg-gray-100 dark:bg-gray-800 h-96 rounded-2xl flex items-center justify-center">
+          <p className="text-gray-500 dark:text-gray-400">Карта будет добавлена позже</p>
         </div>
-      )}
+      </div>
       
       {/* Попап редактирования места */}
       {console.log('Рендерим AddPlacePopup, isOpen:', isEditPopupOpen)}
