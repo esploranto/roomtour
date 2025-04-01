@@ -11,8 +11,10 @@ const PlaceForm = ({
   setName,
   address,
   setAddress,
-  comment,
-  setComment,
+  pros,
+  setPros,
+  cons,
+  setCons,
   startDate,
   setStartDate,
   endDate,
@@ -44,7 +46,7 @@ const PlaceForm = ({
   };
 
   return (
-    <div className="space-y-4 w-full">
+    <div className="space-y-4 w-full h-full">
       <div>
         <Label htmlFor="name" className="block mb-2">Название</Label>
         <Input
@@ -109,12 +111,23 @@ const PlaceForm = ({
       </div>
 
       <div>
-        <Label htmlFor="comment" className="block mb-2">Комментарий</Label>
+        <Label htmlFor="pros" className="block mb-2">Что понравилось</Label>
         <Textarea
-          id="comment"
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          placeholder="Опишите опыт проживания"
+          id="pros"
+          value={pros}
+          onChange={(e) => setPros(e.target.value)}
+          placeholder="Опишите, что вам понравилось"
+          rows={3}
+        />
+      </div>
+
+      <div>
+        <Label htmlFor="cons" className="block mb-2">Что не понравилось</Label>
+        <Textarea
+          id="cons"
+          value={cons}
+          onChange={(e) => setCons(e.target.value)}
+          placeholder="Опишите, что вам не понравилось"
           rows={3}
         />
       </div>

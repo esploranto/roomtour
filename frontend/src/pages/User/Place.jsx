@@ -8,7 +8,7 @@ import {
   CarouselPrevious,
   CarouselNext,
 } from "@/components/ui/carousel.tsx";
-import { ArrowLeft, MoreVertical, Edit, Trash2, X, ChevronLeft, ChevronRight, Share, MapPin, CalendarDays } from "lucide-react";
+import { ArrowLeft, MoreVertical, Edit, Trash2, X, ChevronLeft, ChevronRight, Share, MapPin, CalendarDays, ThumbsUp, Annoyed } from "lucide-react";
 import { usePlace, usePlaces } from "@/lib/hooks";
 import { AuthContext } from "@/context/AuthContext";
 import { placesService } from "@/api";
@@ -46,98 +46,79 @@ export default function Place() {
   const [fullscreenImage, setFullscreenImage] = useState(null);
   const [fullscreenIndex, setFullscreenIndex] = useState(0);
   
-  console.log('Place - монтирование компонента');
-  
   const [place, setPlace] = useState(null);
   
-  useEffect(() => {
-    console.log('Place - получены параметры из URL:', { username, placeId });
-    setIsLoading(true);
-    
-    const fetchPlace = async () => {
-      try {
-        console.log('Place - начало загрузки места с ID:', placeId);
-        const data = await placesService.getPlace(placeId);
-        console.log('Place - сырые данные с сервера:', data);
-        
-        if (!data) {
-          console.error('Place - данные отсутствуют');
-          setError({ status: 404, message: 'Место не найдено' });
-          showError('Место не найдено');
-          return;
-        }
-
-        // Проверяем, есть ли изображения
-        if (!data.images || !Array.isArray(data.images)) {
-          console.warn('Place - изображения отсутствуют или не в формате массива:', data.images);
-          data.images = []; // Устанавливаем пустой массив, если изображений нет
-        } else {
-          console.log('Place - загружено изображений:', data.images.length);
-          data.images.forEach((img, idx) => {
-            console.log(`Изображение ${idx}:`, img);
-          });
-          
-          // Проверяем корректность каждого изображения
-          data.images = data.images.filter(image => {
-            if (!image || (!image.image_url && !image.url)) {
-              console.warn('Place - некорректное изображение в массиве:', image);
-              return false;
-            }
-            // Нормализуем структуру - обеспечиваем наличие image_url
-            if (!image.image_url && image.url) {
-              image.image_url = image.url;
-            }
-            return true;
-          });
-          
-          // Сортируем изображения по порядку, если есть поле order
-          if (data.images.length > 0 && data.images[0].order !== undefined) {
-            console.log('Place - сортируем изображения по order');
-            data.images.sort((a, b) => {
-              return (a.order ?? 999) - (b.order ?? 999);
-            });
-          } else {
-            console.log('Place - порядок изображений не определен, оставляем как есть');
-          }
-          
-          console.log('Place - после обработки изображений:', data.images.length);
-        }
-
-        // Преобразуем числовое значение в строку, если оно есть
-        if (typeof data.name === 'number') {
-          data.name = String(data.name);
-        }
-        
-        setPlace(data);
-        console.log('Place - место успешно установлено в состояние:', data);
-        setError(null);
-        
-        // Проверяем, пришли ли мы с формы добавления места
-        const fromAddPlace = sessionStorage.getItem('fromAddPlace');
-        if (fromAddPlace === 'true') {
-          try {
-            console.log('Place - запуск конфетти для нового места');
-            triggerNewPlaceConfetti();
-          } catch (confettiError) {
-            console.error('Ошибка при запуске конфетти:', confettiError);
-          }
-          sessionStorage.removeItem('fromAddPlace');
-        }
-      } catch (err) {
-        console.error('Ошибка при загрузке места:', err);
-        const errorMessage = err.message || 'Не удалось загрузить данные места';
-        setError({ 
-          status: err.response?.status || 500,
-          message: errorMessage
-        });
-        showError(errorMessage);
-      } finally {
+  // Получаем место по ID
+  const fetchPlace = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      
+      const data = await placesService.getPlace(placeId);
+      
+      // Проверяем, что данные получены
+      if (!data) {
+        setError({ status: 404, message: 'Место не найдено' });
         setIsLoading(false);
+        return;
+      }
+      
+      // Проверяем формат изображений
+      if (data.images && !Array.isArray(data.images)) {
+        data.images = [];
+      }
+      
+      // Обрабатываем изображения
+      if (data.images && data.images.length > 0) {
+        // Фильтруем некорректные изображения
+        data.images = data.images.filter(image => {
+          if (!image || !image.image_url) {
+            return false;
+          }
+          return true;
+        });
+        
+        // Сортируем изображения по полю order, если оно присутствует
+        if (data.images.length > 0 && data.images[0].order !== undefined) {
+          data.images.sort((a, b) => (a.order || 0) - (b.order || 0));
+        }
+      }
+      
+      // Устанавливаем данные места
+      setPlace(data);
+      setIsLoading(false);
+      
+      // Проверяем, было ли место только что добавлено
+      const fromAddPlace = sessionStorage.getItem('fromAddPlace');
+      if (fromAddPlace === 'true') {
+        try {
+          triggerNewPlaceConfetti();
+          sessionStorage.removeItem('fromAddPlace');
+        } catch (confettiError) {
+          console.error('Ошибка при запуске конфетти:', confettiError);
+        }
+      }
+    } catch (err) {
+      console.error('Ошибка при загрузке места:', err);
+      const errorMessage = err.message || 'Не удалось загрузить данные места';
+      setError({ status: err.status || 500, message: errorMessage });
+      setIsLoading(false);
+    }
+  };
+
+  // Загружаем место при монтировании компонента или изменении ID
+  useEffect(() => {
+    if (placeId) {
+      fetchPlace();
+    }
+    
+    // Очищаем при размонтировании
+    return () => {
+      if (place && place.images) {
+        // Освобождаем ресурсы
       }
     };
-    
-    fetchPlace();
-  }, [placeId, showError]);
+  }, [placeId]);
 
   useEffect(() => {
     if (isNew) {
@@ -486,18 +467,22 @@ export default function Place() {
             )}
             
             {/* Что понравилось */}
-            {place.pros && (
+            {(place.pros && place.pros.trim() !== "") && (
               <div className="mb-4">
-                <h2 className="text-lg font-medium mb-1">Что понравилось</h2>
-                <p className="text-gray-700 dark:text-gray-300">{place.pros}</p>
+                <div className="flex items-center gap-1">
+                  <ThumbsUp className="h-6 w-6 mr-1" />
+                  <p className="text-gray-700 dark:text-gray-300">{place.pros}</p>
+                </div>
               </div>
             )}
             
             {/* Что не понравилось */}
-            {place.cons && (
+            {(place.cons && place.cons.trim() !== "") && (
               <div className="mb-4">
-                <h2 className="text-lg font-medium mb-1">Что не понравилось</h2>
-                <p className="text-gray-700 dark:text-gray-300">{place.cons}</p>
+                <div className="flex items-center gap-1">
+                  <Annoyed className="h-6 w-6 mr-1" />
+                  <p className="text-gray-700 dark:text-gray-300">{place.cons}</p>
+                </div>
               </div>
             )}
             
@@ -531,14 +516,6 @@ export default function Place() {
                     в моём рейтинге
                   </Link>
                 </div>
-              </div>
-            )}
-            
-            {/* Отзыв */}
-            {place.review && (
-              <div className="mb-4">
-                <h2 className="text-lg font-medium mb-1">Отзыв</h2>
-                <p className="text-gray-700 dark:text-gray-300">{place.review}</p>
               </div>
             )}
           </div>
@@ -669,23 +646,29 @@ export default function Place() {
             <img 
               src={fullscreenImage.image_url} 
               alt={`${place.name} - полноэкранное изображение`}
-              className="max-h-[90vh] max-w-[90vw] object-contain"
+              className="max-h-[80vh] max-w-[90vw] object-contain"
             />
             
-            {/* Индикатор текущего изображения (кружочки) */}
+            {/* Превью изображений (thumbnails) */}
             {imagesCount > 1 && (
-              <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2">
-                {place.images.map((_, index) => (
+              <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-0 overflow-x-auto max-w-[90vw] p-2">
+                {place.images.map((image, index) => (
                   <div
                     key={index}
-                    className={`w-3 h-3 rounded-full transition-all ${
-                      index === fullscreenIndex ? 'bg-white' : 'bg-white/50'
+                    className={`w-16 h-16 md:w-20 md:h-20 rounded-md overflow-hidden cursor-pointer border-2 transition-all ${
+                      index === fullscreenIndex ? 'border-white opacity-100' : 'border-transparent opacity-70'
                     }`}
                     onClick={() => {
                       setFullscreenIndex(index);
                       setFullscreenImage(place.images[index]);
                     }}
-                  />
+                  >
+                    <img 
+                      src={image.image_url} 
+                      alt={`Превью ${index + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
                 ))}
               </div>
             )}

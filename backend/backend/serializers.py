@@ -36,12 +36,14 @@ class PlaceSerializer(serializers.ModelSerializer):
     location = serializers.CharField(max_length=255, required=False, allow_blank=True, allow_null=True)
     rating = serializers.IntegerField(required=False, allow_null=True)
     review = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    pros = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    cons = serializers.CharField(required=False, allow_blank=True, allow_null=True)
     user_id = serializers.CharField(max_length=255, required=False, allow_blank=True, allow_null=True)
     username = serializers.CharField(max_length=255, required=False, allow_blank=True, allow_null=True)
     
     class Meta:
         model = Place
-        fields = ['id', 'user_id', 'username', 'name', 'location', 'rating', 'review', 'dates', 'images', 'slug']
+        fields = ['id', 'user_id', 'username', 'name', 'location', 'rating', 'review', 'pros', 'cons', 'dates', 'images', 'slug']
         read_only_fields = ['id', 'slug', 'created_at']
         
     def _format_month_ru(self, month_number):

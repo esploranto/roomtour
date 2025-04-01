@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .scrollbar-hide {
+    /* Для Firefox */
+    scrollbar-width: none;
+    /* Для Chrome, Safari и Opera */
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    /* Для IE и Edge */
+    -ms-overflow-style: none;
+  }
+}
+
 html, body {
     height: 100%;
     margin: 0;

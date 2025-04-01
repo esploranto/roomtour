@@ -49,7 +49,8 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
   const { setOnDropCallback, setAcceptsFiles, setAcceptedFileTypes } = useDragAndDrop();
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
-  const [comment, setComment] = useState("");
+  const [pros, setPros] = useState("");
+  const [cons, setCons] = useState("");
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [photos, setPhotos] = useState([]);
@@ -69,259 +70,244 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
   const { width } = useWindowSize();
   const isMobile = width < 768;
   
-  // Обработчик добавления фотографий - определяем как функцию, а не useCallback
-  function processAddPhotos(newFiles) {
-    if (!newFiles || newFiles.length === 0) return;
-    
-    console.log("Получены файлы для загрузки:", newFiles);
-    
-    // Проверяем, не превышает ли общее количество фото максимальное число (50)
-    if (photos.length + newFiles.length > 50) {
-      showError('Максимальное количество фотографий: 50');
-      return;
-    }
-    
+  // Обработчик для загрузки фотографий
+  const processAddPhotos = (newFiles) => {
     try {
-      // Фильтруем файлы, которые уже есть в списке
+      // Фильтруем только валидные файлы
       const uniqueNewFiles = newFiles.filter(file => {
-        // Проверяем, является ли объект файлом
+        // Проверяем, что объект является файлом
         if (!(file instanceof File)) {
-          console.warn('Объект не является файлом:', file);
           return false;
         }
         
+        // Проверяем, что такой файл еще не добавлен
         const isDuplicate = photos.some(photo => {
+          // Если у элемента есть свойство file и это объект File, проверяем его имя, размер и дату
           if (photo.file instanceof File) {
             return photo.file.name === file.name && 
-                   photo.file.size === file.size;
+                   photo.file.size === file.size &&
+                   photo.file.lastModified === file.lastModified;
           }
           return false;
         });
+        
         return !isDuplicate;
       });
       
-      console.log("Уникальные файлы для добавления:", uniqueNewFiles);
-      
       // Добавляем только новые файлы
       if (uniqueNewFiles.length > 0) {
+        // Преобразуем файлы в объекты фото
         const newPhotos = uniqueNewFiles.map(file => ({
-          id: Date.now() + '_' + Math.random().toString(36).substring(2, 9),
+          id: `temp_${Date.now()}_${Math.random().toString(36).slice(2)}`,
           file,
-          preview: URL.createObjectURL(file),
-          isNew: true
+          url: URL.createObjectURL(file),
+          previewUrl: URL.createObjectURL(file),
+          order: photos.length // Устанавливаем порядок для нового фото
         }));
         
-        setPhotos(prevPhotos => [...prevPhotos, ...newPhotos]);
+        // Обновляем состояние
+        setPhotos(prev => [...prev, ...newPhotos]);
         setFormChanged(true);
       }
     } catch (err) {
       console.error("Ошибка при добавлении фото:", err);
-      showError('Ошибка при добавлении фото: ' + err.message);
+      showError("Не удалось добавить фотографии");
     }
-  }
-  
-  // Оборачиваем нашу функцию в useCallback для оптимизации
-  const handleAddPhotos = useCallback((files) => processAddPhotos(files), [photos.length, showError]);
-
-  // Настраиваем глобальное перетаскивание файлов
-  useEffect(() => {
-    // Определяем обработчик файлов в useEffect, чтобы избежать циклической зависимости
-    function handleFiles(files) {
-      if (files && files.length > 0) {
-        console.log('AddPlacePopup: получены файлы из контекста drag-and-drop', files.length);
-        processAddPhotos(files);
-      }
-    }
-    
-    if (isOpen) {
-      console.log('AddPlacePopup: форма открыта, включаем прием файлов');
-      // Включаем прием файлов при открытии формы
-      setAcceptsFiles(true);
-      // Устанавливаем принимаемые типы файлов (только изображения)
-      setAcceptedFileTypes(['image/*']);
-      // Устанавливаем колбэк для обработки перетаскиваемых файлов
-      setOnDropCallback(handleFiles);
-    }
-    
-    // Очищаем при закрытии
-    return () => {
-      console.log('AddPlacePopup: форма закрыта или размонтирована, отключаем прием файлов');
-      setAcceptsFiles(false);
-      setOnDropCallback(null);
-    };
-  }, [isOpen, setAcceptsFiles, setAcceptedFileTypes, setOnDropCallback]);
-
-  // Устанавливаем фокус на поле "Название" только при первом рендере пустой формы
-  useEffect(() => {
-    if (isOpen && !isEditMode && isFirstRender.current) {
-      // Проверка на наличие данных в localStorage
-      const wasFormPreviouslyFilled = localStorage.getItem('addPlaceForm') !== null;
-      
-      // Проверка текущего состояния формы
-      const isFormCurrentlyEmpty = 
-        name === "" && 
-        address === "" && 
-        comment === "" && 
-        rating === 0 && 
-        photos.length === 0 &&
-        startDate === null &&
-        endDate === null &&
-        !hasAttemptedSubmit;
-      
-      // Устанавливаем фокус только если форма никогда не заполнялась И сейчас пуста
-      if (!wasFormPreviouslyFilled && isFormCurrentlyEmpty) {
-        // Используем большую задержку для гарантированной установки фокуса
-        setTimeout(() => {
-          if (nameInputRef.current) {
-            nameInputRef.current.focus();
-          } else {
-            // Запасной вариант через DOM API
-            const nameInput = document.getElementById('name');
-            if (nameInput) {
-              nameInput.focus();
-            }
-          }
-        }, 500);
-      }
-      
-      // Сбрасываем флаг первого рендера
-      isFirstRender.current = false;
-    }
-    
-    // При закрытии формы сбрасываем флаг первого рендера
-    if (!isOpen) {
-      isFirstRender.current = true;
-    }
-  }, [isOpen, isEditMode, name, address, comment, rating, photos, startDate, endDate, hasAttemptedSubmit]);
-
-  // Восстанавливаем форму из localStorage, если нужно
-  useEffect(() => {
-    if (isOpen) {
-      // Восстанавливаем форму из localStorage только если:
-      // 1. Это режим редактирования ИЛИ
-      // 2. Была попытка добавления и пользователь закрыл форму
-      const savedForm = localStorage.getItem('addPlaceForm');
-      const wasAttemptedSubmit = localStorage.getItem('addPlaceAttemptedSubmit') === 'true';
-      
-      if (savedForm && (isEditMode || wasAttemptedSubmit) && !formChanged) {
-        try {
-          const parsedForm = JSON.parse(savedForm);
-          setName(parsedForm.name || "");
-          setAddress(parsedForm.address || "");
-          setComment(parsedForm.comment || "");
-          setRating(parsedForm.rating || 0);
-          
-          if (parsedForm.startDate) {
-            setStartDate(new Date(parsedForm.startDate));
-          }
-          if (parsedForm.endDate) {
-            setEndDate(new Date(parsedForm.endDate));
-          }
-          
-          setInitialFormState({
-            name: parsedForm.name || "",
-            address: parsedForm.address || "",
-            comment: parsedForm.comment || "",
-            rating: parsedForm.rating || 0,
-            startDate: parsedForm.startDate ? new Date(parsedForm.startDate) : null,
-            endDate: parsedForm.endDate ? new Date(parsedForm.endDate) : null,
-          });
-          
-          setHasAttemptedSubmit(wasAttemptedSubmit);
-        } catch (e) {
-          console.error('Ошибка при восстановлении формы:', e);
-          localStorage.removeItem('addPlaceForm');
-          localStorage.removeItem('addPlaceAttemptedSubmit');
-        }
-      }
-    }
-  }, [isOpen, isEditMode, formChanged]);
-
-  // Сохраняем форму в localStorage при изменениях
-  useEffect(() => {
-    if (isOpen) {
-      const hasChanges = 
-        name !== "" || 
-        address !== "" || 
-        comment !== "" || 
-        rating !== 0 || 
-        photos.length > 0 ||
-        startDate !== null ||
-        endDate !== null;
-      
-      setFormChanged(hasChanges);
-      
-      // Сохраняем в localStorage только если была попытка добавления места
-      if (hasChanges && hasAttemptedSubmit) {
-        const formState = {
-          name,
-          address,
-          comment,
-          rating,
-          startDate: startDate ? startDate.toISOString() : null,
-          endDate: endDate ? endDate.toISOString() : null,
-        };
-        localStorage.setItem('addPlaceForm', JSON.stringify(formState));
-        localStorage.setItem('addPlaceAttemptedSubmit', 'true');
-      }
-    }
-  }, [name, address, comment, rating, photos, startDate, endDate, isOpen, hasAttemptedSubmit]);
-
-  // Обработчик удаления фотографии
-  const handleDeletePhoto = (index) => {
-    // Получаем фото, которое нужно удалить
-    const photoToDelete = photos[index];
-    if (!photoToDelete) return;
-    
-    console.log('[DEBUG] Удаление фото:', index, photoToDelete);
-    
-    // Если это существующее фото с сервера (имеет числовой ID или строковый без подчеркивания)
-    const isExistingServerPhoto = photoToDelete._id || 
-      (photoToDelete.id && (typeof photoToDelete.id === 'number' || (typeof photoToDelete.id === 'string' && !photoToDelete.id.includes('_'))));
-      
-    if (isExistingServerPhoto) {
-      setDeletedPhotos(prev => [...prev, photoToDelete]);
-      setPhotos(prev => prev.filter((_, i) => i !== index));
-    } 
-    // Если это новое фото
-    else {
-      setPhotos(prev => {
-        const newPhotos = [...prev];
-        const deletedPhoto = newPhotos.splice(index, 1)[0];
-        if (deletedPhoto && deletedPhoto.preview) {
-          URL.revokeObjectURL(deletedPhoto.preview);
-        }
-        return newPhotos;
-      });
-    }
-    
-    setFormChanged(true);
   };
 
-  // Обработчик восстановления фотографии
-  const handleRestorePhoto = (index) => {
-    // Получаем фото, которое нужно восстановить
-    const photoToRestore = deletedPhotos[index];
-    if (!photoToRestore) return;
+  // Мемоизируем обработчик для предотвращения лишних рендеров
+  const handleAddPhotos = useCallback((files) => processAddPhotos(files), [photos.length, showError]);
+  
+  // Настраиваем прием файлов через drag-and-drop
+  useEffect(() => {
+    // Регистрируем обработчик для файлов из drag-and-drop
+    const onExternalFilesReceived = (files) => {
+      processAddPhotos(files);
+    };
     
-    console.log('[DEBUG] Восстановление фото:', index, photoToRestore);
+    // Активируем drag-and-drop, когда форма открыта
+    if (isOpen) {
+      setAcceptsFiles(true);
+      setAcceptedFileTypes(['image/jpeg', 'image/png', 'image/jpg', 'image/webp']);
+      setOnDropCallback(onExternalFilesReceived);
+    }
     
-    // Проверяем, не превышает ли общее количество фото максимальное число
-    if (photos.length >= 50) {
-      showError('Максимальное количество фотографий: 50');
+    // Отключаем drag-and-drop при закрытии формы
+    return () => {
+      if (isOpen) {
+        setAcceptsFiles(false);
+        setOnDropCallback(null);
+      }
+    };
+  }, [isOpen, setAcceptsFiles, setAcceptedFileTypes, setOnDropCallback]);
+  
+  // Автосохранение формы в localStorage
+  useEffect(() => {
+    if (!isOpen || isEditMode) return;
+    
+    // Проверяем, заполнена ли форма
+    const wasFormPreviouslyFilled = localStorage.getItem('addPlaceForm') !== null;
+    
+    // Проверяем, пуста ли форма сейчас
+    const isFormCurrentlyEmpty =
+      name === "" &&
+      address === "" &&
+      pros === "" &&
+      cons === "" &&
+      photos.length === 0 &&
+      startDate === null &&
+      endDate === null &&
+      rating === 0;
+      
+    // Если форма пуста и ранее не была заполнена, или пользователь пытался отправить форму, не сохраняем
+    if ((isFormCurrentlyEmpty && !wasFormPreviouslyFilled) || hasAttemptedSubmit) {
       return;
     }
     
-    // Добавляем фото обратно в основной список
-    setPhotos(prev => [...prev, photoToRestore]);
+    // Фокусируемся на поле ввода имени при открытии формы
+    if (isFirstRender.current && isOpen) {
+      isFirstRender.current = false;
+      const nameInput = document.getElementById('name');
+      if (nameInput) {
+        setTimeout(() => nameInput.focus(), 100);
+      }
+    }
     
-    // Удаляем из списка удаленных фото
-    setDeletedPhotos(prev => prev.filter((_, i) => i !== index));
+    // Сохраняем форму в localStorage
+    localStorage.setItem('addPlaceForm', JSON.stringify({
+      name,
+      address,
+      pros,
+      cons,
+      rating,
+      startDate: startDate ? startDate.toISOString() : null,
+      endDate: endDate ? endDate.toISOString() : null
+    }));
+  }, [isOpen, isEditMode, name, address, pros, cons, rating, photos, startDate, endDate, hasAttemptedSubmit]);
+  
+  // Восстановление формы из localStorage при открытии
+  useEffect(() => {
+    if (!isOpen || isEditMode) return;
     
-    setFormChanged(true);
+    try {
+      const savedForm = localStorage.getItem('addPlaceForm');
+      const wasAttemptedSubmit = localStorage.getItem('addPlaceAttemptedSubmit') === 'true';
+      setHasAttemptedSubmit(wasAttemptedSubmit);
+      
+      if (savedForm) {
+        const parsedForm = JSON.parse(savedForm);
+        setName(parsedForm.name || "");
+        setAddress(parsedForm.address || "");
+        setPros(parsedForm.pros || "");
+        setCons(parsedForm.cons || "");
+        setRating(parsedForm.rating || 0);
+        
+        // Восстанавливаем даты
+        if (parsedForm.startDate) {
+          setStartDate(new Date(parsedForm.startDate));
+        }
+        if (parsedForm.endDate) {
+          setEndDate(new Date(parsedForm.endDate));
+        }
+        
+        // Устанавливаем начальное состояние формы для отслеживания изменений
+        setInitialFormState({
+          name: parsedForm.name || "",
+          address: parsedForm.address || "",
+          pros: parsedForm.pros || "",
+          cons: parsedForm.cons || "",
+          rating: parsedForm.rating || 0,
+          photos: [],
+          startDate: parsedForm.startDate ? new Date(parsedForm.startDate) : null,
+          endDate: parsedForm.endDate ? new Date(parsedForm.endDate) : null
+        });
+      }
+    } catch (e) {
+      console.error('Ошибка при восстановлении формы:', e);
+    }
+  }, [isOpen, isEditMode]);
+  
+  // Отслеживание изменений в форме
+  useEffect(() => {
+    if (!isOpen) return;
+    
+    // Определяем, были ли внесены изменения
+    const hasChanges =
+      name !== initialFormState.name ||
+      address !== initialFormState.address ||
+      pros !== initialFormState.pros ||
+      cons !== initialFormState.cons ||
+      rating !== initialFormState.rating ||
+      photos.length !== initialFormState.photos.length ||
+      startDate !== initialFormState.startDate ||
+      endDate !== initialFormState.endDate;
+      
+    // Сохраняем текущее состояние формы
+    const formState = {
+      name,
+      address,
+      pros,
+      cons,
+      rating,
+      photos,
+      startDate,
+      endDate
+    };
+    
+    setFormChanged(hasChanges);
+    setInitialFormState(formState);
+  }, [name, address, pros, cons, rating, photos, startDate, endDate, isOpen, hasAttemptedSubmit]);
+  
+  // Обработчик для удаления фотографии
+  const handleDeletePhoto = (index) => {
+    try {
+      const photoToDelete = photos[index];
+      
+      // Обновляем состояние фото
+      setPhotos(prev => {
+        const newPhotos = [...prev];
+        const deletedPhoto = newPhotos.splice(index, 1)[0];
+        
+        // Если это существующее фото с сервера, добавляем его в список удаленных
+        const isExistingServerPhoto = photoToDelete._id || 
+                                     (photoToDelete.id && typeof photoToDelete.id === 'number');
+                                     
+        if (isExistingServerPhoto && !deletedPhotos.includes(photoToDelete)) {
+          setDeletedPhotos(prev => [...prev, photoToDelete]);
+        }
+        
+        return newPhotos;
+      });
+      
+      setFormChanged(true);
+    } catch (error) {
+      console.error('Ошибка при удалении фото:', error);
+      showError('Не удалось удалить фото');
+    }
   };
-
-  // Обработчик изменения порядка фотографий
+  
+  // Обработчик для восстановления удаленной фотографии
+  const handleRestorePhoto = (index) => {
+    try {
+      const photoToRestore = deletedPhotos[index];
+      
+      // Удаляем фото из списка удаленных
+      setDeletedPhotos(prev => {
+        const newDeletedPhotos = [...prev];
+        newDeletedPhotos.splice(index, 1);
+        return newDeletedPhotos;
+      });
+      
+      // Добавляем фото обратно в основной список
+      setPhotos(prev => [...prev, photoToRestore]);
+      setFormChanged(true);
+    } catch (error) {
+      console.error('Ошибка при восстановлении фото:', error);
+      showError('Не удалось восстановить фото');
+    }
+  };
+  
+  // Обработчик для изменения порядка фотографий
   const handleReorderPhotos = (fromIndex, toIndex) => {
     setPhotos(prevPhotos => {
       const result = [...prevPhotos];
@@ -332,271 +318,284 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
     
     setFormChanged(true);
   };
-
-  const isFormValid = 
-    name.trim() !== "" || 
-    address.trim() !== "" || 
-    comment.trim() !== "" || 
-    rating > 0 || 
-    photos.length > 0 ||
-    startDate !== null ||
-    endDate !== null;
-
+  
+  // Проверка валидности формы
+  const isFormValid =
+    ((name.trim() !== "" ||
+      address.trim() !== "" ||
+      pros.trim() !== "" ||
+      cons.trim() !== "" ||
+      photos.length > 0 ||
+      startDate !== null ||
+      endDate !== null ||
+      rating > 0) &&
+     !loading) ||
+    isEditMode;
+    
+  // Сброс формы
   const resetForm = () => {
     setName("");
     setAddress("");
-    setComment("");
+    setPros("");
+    setCons("");
     setStartDate(null);
     setEndDate(null);
-    photos.forEach(photo => photo.preview && URL.revokeObjectURL(photo.preview));
     setPhotos([]);
+    setDeletedPhotos([]);
     setRating(0);
     setError(null);
-    setShowMap(false);
+    setLoading(false);
     setFormChanged(false);
     setHasAttemptedSubmit(false);
-    
-    // Очищаем localStorage полностью только если не в режиме редактирования
-    if (!isEditMode) {
-      localStorage.removeItem('addPlaceForm');
-      localStorage.removeItem('addPlaceAttemptedSubmit');
-    }
+    localStorage.removeItem('addPlaceForm');
+    localStorage.removeItem('addPlaceAttemptedSubmit');
   };
-
+  
+  // Безопасное закрытие формы с сохранением данных
   const safelyCloseForm = () => {
-    if (formChanged) {
+    if (isEditMode) {
+      // Если это режим редактирования, просто закрываем форму
       onClose();
     } else {
-      resetForm();
-      onClose();
-    }
-  };
-
-  const handleCancel = () => {
-    if (formChanged) {
-      if (window.confirm('У вас есть несохраненные изменения. Вы уверены, что хотите закрыть форму?')) {
+      // Если форма не менялась, просто закрываем ее
+      if (!formChanged) {
         resetForm();
-        onClose();
       }
-    } else {
+      onClose();
+    }
+  };
+  
+  // Обработчик для кнопки "Отмена"
+  const handleCancel = () => {
+    // Если форма не менялась или это режим редактирования, просто закрываем ее
+    if (!formChanged || isEditMode) {
+      safelyCloseForm();
+      return;
+    }
+    
+    // Показываем диалоговое окно подтверждения
+    if (confirm("Вы уверены, что хотите закрыть форму? Все несохраненные данные будут потеряны.")) {
       resetForm();
       onClose();
     }
   };
 
+  // Обработчик для удаления места
+  const handleDeletePlace = () => {
+    return; // Функция не реализована
+  };
+
+  // Обработчик отправки формы
   const handleSubmit = async (e) => {
-    if (e) {
-      e.preventDefault();
-      e.stopPropagation();
+    if (e) e.preventDefault();
+    
+    // Устанавливаем флаг попытки отправки
+    setHasAttemptedSubmit(true);
+    localStorage.setItem('addPlaceAttemptedSubmit', 'true');
+    
+    if (!isFormValid) {
+      showError("Пожалуйста, заполните хотя бы одно поле");
+      return;
     }
     
-    if (loading) return;
-    
+    // Начинаем загрузку
     setLoading(true);
     setError(null);
-    setHasAttemptedSubmit(true);
+    
+    // Форматируем дату для отправки
+    const formatDate = (date) => date ? format(date, 'dd.MM.yyyy') : '';
+    let formattedDate = '';
+    
+    // Если есть обе даты, форматируем диапазон
+    if (startDate && endDate) {
+      formattedDate = `${formatDate(startDate)} – ${formatDate(endDate)}`;
+    } 
+    // Если только одна дата, используем ее
+    else if (startDate) {
+      formattedDate = formatDate(startDate);
+    } else if (endDate) {
+      formattedDate = formatDate(endDate);
+    }
+    
+    let updatedPlace = null;
     
     try {
-      // Подготавливаем данные места
-      const placeData = {
-        name: name.trim() || "Без названия",
-        location: address.trim() || "Без адреса",
-        review: comment.trim(),
-        rating: rating || null
-      };
-
-      // Если есть даты, форматируем их
-      if (startDate && endDate) {
-        // Используем прямой формат дат DD.MM.YYYY для надежности
-        placeData.dates = `${format(startDate, 'dd.MM.yyyy')} – ${format(endDate, 'dd.MM.yyyy')}`;
-        console.log("[DEBUG] Сохраняем диапазон дат:", placeData.dates);
-      }
-
-      let updatedPlace;
-      
       if (isEditMode) {
-        // Добавляем ID удаленных фотографий
-        if (deletedPhotos.length > 0) {
-          // Фильтруем только числовые ID фотографий с сервера (исключаем временные ID новых фото)
-          const serverDeletedIds = deletedPhotos
-            .map(photo => photo.id)
-            .filter(id => typeof id === 'number');
-          
-          console.log('[DEBUG] ID фотографий для удаления (только числовые):', serverDeletedIds);
-          
-          if (serverDeletedIds.length > 0) {
-            placeData.deleted_image_ids = serverDeletedIds;
-          }
+        // Подготовка данных для редактирования
+        const placeData = {
+          name: name.trim() || "Без названия",
+          location: address.trim() || "Без адреса",
+          pros: pros.trim(),
+          cons: cons.trim(),
+          rating: rating || null
+        };
+        
+        if (formattedDate) {
+          placeData.dates = formattedDate;
         }
         
-        // Обновляем место
-        console.log('[DEBUG] Отправляем запрос на обновление места:', placeData);
+        // Собираем ID фотографий для удаления
+        const photoIdsToDelete = deletedPhotos
+          .map(photo => photo.id)
+          .filter(id => typeof id === 'number');
+          
+        if (photoIdsToDelete.length > 0) {
+          placeData.deleted_photos = photoIdsToDelete;
+        }
+        
+        // Обновляем основные данные места
         updatedPlace = await placesService.updatePlace(place.slug || place.id, placeData);
-        console.log('[DEBUG] Место после обновления:', updatedPlace);
         
         // Загружаем новые фотографии, если они есть
-        const newPhotos = photos.filter(photo => photo.file && (!photo.id || typeof photo.id === 'string')); 
-        console.log('[DEBUG] Общее количество фотографий:', photos.length);
-        console.log('[DEBUG] Новые фотографии для загрузки:', newPhotos.length);
-        
-        if (newPhotos.length > 0) {
-          const formData = new FormData();
-          let photosAdded = 0;
+        const newPhotoFiles = photos
+          .filter(photo => photo.file instanceof File)
+          .map(photo => ({ file: photo.file }));
           
-          newPhotos.forEach((photo, index) => {
-            if (photo.file instanceof File) {
-              console.log(`[DEBUG] Добавляем файл ${index + 1}:`, photo.file.name);
-              formData.append('images', photo.file);
-              photosAdded++;
-            }
+        if (newPhotoFiles.length > 0) {
+          const formData = new FormData();
+          newPhotoFiles.forEach(photo => {
+            formData.append('images', photo.file);
           });
           
-          if (photosAdded > 0) {
-            console.log('[DEBUG] Отправляем запрос на загрузку изображений, всего файлов:', photosAdded);
-            try {
-              const uploadedImages = await placesService.uploadImages(place.slug || place.id, formData);
-              console.log('[DEBUG] Результат загрузки изображений:', uploadedImages);
-              
-              // Перезагружаем место, чтобы получить актуальные данные
-              updatedPlace = await placesService.getPlace(place.slug || place.id);
-              console.log('[DEBUG] Место после загрузки изображений:', updatedPlace);
-            } catch (uploadError) {
-              console.error('[DEBUG] Ошибка при загрузке изображений:', uploadError);
-            }
-          }
+          // Загружаем изображения
+          await placesService.uploadImages(place.slug || place.id, formData);
+          
+          // Перезагружаем место для получения актуальных данных
+          updatedPlace = await placesService.getPlace(place.slug || place.id);
         }
         
-        // Обновляем порядок фотографий если есть фото с сервера (с числовыми ID)
+        // Обновляем порядок фотографий если есть фото с сервера
         const serverPhotoIds = photos
           .map(photo => photo.id)
           .filter(id => typeof id === 'number');
-        
-        console.log('[DEBUG] ID фотографий на сервере для обновления порядка:', serverPhotoIds);
-        
+          
         if (serverPhotoIds.length > 0) {
-          try {
-            console.log('[DEBUG] Отправляем запрос на обновление порядка фото');
-            const orderResult = await placesService.updateImageOrder(place.slug || place.id, serverPhotoIds);
-            console.log('[DEBUG] Результат обновления порядка:', orderResult);
-            
-            // Загружаем финальное состояние места
-            updatedPlace = await placesService.getPlace(place.slug || place.id);
-          } catch (orderError) {
-            console.error('[DEBUG] Ошибка при обновлении порядка фото:', orderError);
-          }
+          await placesService.updateImageOrder(place.slug || place.id, serverPhotoIds);
+          
+          // Получаем финальное состояние места
+          updatedPlace = await placesService.getPlace(place.slug || place.id);
         }
         
-        console.log('[DEBUG] Финальное состояние места после всех операций:', updatedPlace);
+        // Обновляем кэш SWR
+        mutate();
         
-        // Вызываем колбэк обновления
+        // Указываем, что место было отредактировано
+        sessionStorage.setItem('fromEditPlace', 'true');
+        
+        // Очищаем localStorage от данных формы
+        localStorage.removeItem('addPlaceForm');
+        localStorage.removeItem('addPlaceAttemptedSubmit');
+        
+        // Показываем уведомление об успехе
+        showSuccess('Место успешно обновлено');
+        
+        // Обновляем UI и закрываем форму
         if (onPlaceUpdated) {
-          console.log('[DEBUG] Вызываем колбэк обновления с данными:', updatedPlace);
           onPlaceUpdated(updatedPlace);
         }
       } else {
-        // Создаем новое место
-        updatedPlace = await placesService.createPlace(placeData);
-        console.log('[DEBUG] Создано новое место:', updatedPlace);
+        // Создание нового места
+        // Подготавливаем данные для отправки на бэкенд
+        const placeData = {
+          name: name.trim() || "Без названия",
+          location: address.trim() || "Без адреса",
+          pros: pros.trim(),
+          cons: cons.trim(),
+          rating: rating || null
+        };
         
-        // Загружаем фотографии для нового места
-        if (photos.length > 0) {
-          const formData = new FormData();
-          let photosAdded = 0;
-          
-          photos.forEach(photo => {
-            if (photo.file instanceof File) {
-              formData.append('images', photo.file);
-              photosAdded++;
-            }
-          });
-          
-          if (photosAdded > 0) {
-            console.log('[DEBUG] Загружаем фото для нового места, всего:', photosAdded);
-            try {
-              const uploadedImages = await placesService.uploadImages(updatedPlace.slug || updatedPlace.id, formData);
-              console.log('[DEBUG] Загруженные изображения для нового места:', uploadedImages);
-              
-              // Перезагружаем место для получения актуальных данных
-              updatedPlace = await placesService.getPlace(updatedPlace.slug || updatedPlace.id);
-            } catch (uploadError) {
-              console.error('[DEBUG] Ошибка при загрузке изображений для нового места:', uploadError);
-            }
-          }
+        if (formattedDate) {
+          placeData.dates = formattedDate;
         }
         
-        // Вызываем колбэк создания
-        if (onPlaceAdded) {
-          console.log('[DEBUG] Вызываем колбэк добавления с данными:', updatedPlace);
-          onPlaceAdded(updatedPlace);
+        // Проверяем, есть ли у нас аутентифицированный пользователь
+        if (user) {
+          placeData.user_id = user.id;
+          placeData.username = user.username;
+        }
+        
+        // Подготавливаем файлы фотографий
+        const newPhotoFiles = photos
+          .filter(photo => photo.file instanceof File)
+          .map(photo => ({ file: photo.file }));
+          
+        // Создаем место (с фотографиями или без)
+        updatedPlace = await placesService.createPlace(placeData, newPhotoFiles);
+        
+        // Обновляем кэш SWR
+        mutate();
+        
+        // Показываем конфетти при успешном добавлении места
+        sessionStorage.setItem('fromAddPlace', 'true');
+        
+        // Очищаем localStorage после успешного добавления
+        localStorage.removeItem('addPlaceForm');
+        localStorage.removeItem('addPlaceAttemptedSubmit');
+        
+        // Показываем уведомление об успехе
+        showSuccess('Вы успешно добавили место');
+        
+        // Перенаправляем на страницу нового места
+        if (updatedPlace) {
+          navigate(`/${user.username}/${updatedPlace.slug || updatedPlace.id}?isNew=true`);
         }
       }
-
-      // Обновляем кэш SWR
-      mutate();
       
-      // Показываем уведомление об успехе
-      showSuccess(isEditMode ? 'Место успешно обновлено' : 'Место успешно добавлено');
-      
-      // Сбрасываем форму и закрываем попап
+      // Завершаем операцию для обоих режимов
       resetForm();
+      setLoading(false);
       onClose();
       
-      // Если это новое место, перенаправляем на его страницу
-      if (!isEditMode && updatedPlace) {
-        sessionStorage.setItem('fromAddPlace', 'true');
-        navigate(`/${user.username}/${updatedPlace.slug || updatedPlace.id}?isNew=true`);
-      }
-    } catch (err) {
-      console.error('Ошибка при сохранении места:', err);
-      setError(err.message || 'Произошла ошибка при сохранении места');
-      showError(err.message || 'Произошла ошибка при сохранении места');
-    } finally {
+    } catch (error) {
+      console.error('Ошибка при сохранении места:', error);
+      setError(error.message || 'Произошла ошибка при сохранении данных');
       setLoading(false);
     }
   };
-
+  
+  // При открытии попапа в режиме редактирования загружаем данные места
   useEffect(() => {
     if (isOpen && isEditMode && place) {
-      // Не загружаем заполнители в поля формы
-      setName(place.name === 'Без названия' ? "" : (place.name || ""));
-      setAddress(place.location === 'Без адреса' ? "" : (place.location || ""));
-      setComment(place.review || "");
+      // Устанавливаем поля формы из данных места
+      setName(place.name || "");
+      setAddress(place.location || "");
+      setPros(place.pros || "");
+      setCons(place.cons || "");
       setRating(place.rating || 0);
       
-      let parsedStartDate = null;
-      let parsedEndDate = null;
-      
+      // Устанавливаем даты, если они есть
       if (place.dates) {
-        [parsedStartDate, parsedEndDate] = parseDateRange(place.dates);
-        
-        setStartDate(parsedStartDate);
-        setEndDate(parsedEndDate);
+        try {
+          const [start, end] = parseDateRange(place.dates);
+          if (start) setStartDate(start);
+          if (end) setEndDate(end);
+        } catch (e) {
+          console.error('Ошибка при парсинге дат:', e);
+        }
       }
       
-      if (place.images && place.images.length > 0) {
-        // Преобразуем существующие изображения в нужный формат
-        const formattedImages = place.images.map(image => ({
-          id: image.id || image._id,
-          image_url: image.url || image.image_url,
-          url: image.url || image.image_url,
-          source: image.url || image.image_url,
-          options: {
-            type: 'local',
-            metadata: {
-              photoId: image.id || image._id
-            }
-          }
+      // Устанавливаем фотографии
+      if (place.images && Array.isArray(place.images)) {
+        const formattedImages = place.images.map(img => ({
+          id: img.id,
+          url: img.image_url,
+          previewUrl: img.image_url,
+          order: img.order || 0
         }));
+        
         setPhotos(formattedImages);
       }
       
+      // Устанавливаем начальное состояние формы для отслеживания изменений
       setInitialFormState({
-        name: place.name === 'Без названия' ? "" : (place.name || ""),
-        address: place.location === 'Без адреса' ? "" : (place.location || ""),
-        comment: place.review || "",
+        name: place.name || "",
+        address: place.location || "",
+        pros: place.pros || "",
+        cons: place.cons || "",
         rating: place.rating || 0,
-        startDate: parsedStartDate,
-        endDate: parsedEndDate
+        photos: place.images || [],
+        startDate: null,
+        endDate: null
       });
     }
   }, [isOpen, isEditMode, place]);
@@ -612,7 +611,7 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
           className="fixed inset-0 bg-black/50 z-[900] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" 
         />
         <Dialog.Content 
-          className="fixed top-[50%] left-[50%] max-h-[90vh] w-[90vw] max-w-[1200px] translate-x-[-50%] translate-y-[-50%] bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden flex flex-col z-[1000]"
+          className="fixed top-[50%] left-[50%] max-h-[90vh] w-[90vw] max-w-[1200px] translate-x-[-50%] translate-y-[-50%] bg-white dark:bg-gray-800 shadow-lg rounded-2xl overflow-hidden flex flex-col z-[1000]"
           onInteractOutside={(e) => {
             if (formChanged) {
               e.preventDefault();
@@ -647,7 +646,7 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
           </Dialog.Title>
 
           <form 
-            className="flex-grow overflow-auto h-full flex flex-col" 
+            className="flex-grow overflow-hidden h-full flex flex-col" 
             onSubmit={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -658,14 +657,16 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
               height: isMobile ? 'auto' : 'calc(100% - 140px)'
             }}>
               {/* Левая колонка - форма */}
-              <div className="w-full md:w-1/2 md:h-full overflow-visible px-2 mb-4 md:mb-0 order-1 md:order-1">
+              <div className="w-full md:w-1/2 md:h-full overflow-auto px-2 mb-4 md:mb-0 order-1 md:order-1 scrollbar-hide">
                 <PlaceForm 
                   name={name}
                   setName={setName}
                   address={address}
                   setAddress={setAddress}
-                  comment={comment}
-                  setComment={setComment}
+                  pros={pros}
+                  setPros={setPros}
+                  cons={cons}
+                  setCons={setCons}
                   startDate={startDate}
                   setStartDate={setStartDate}
                   endDate={endDate}
@@ -679,7 +680,7 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
               </div>
 
               {/* Правая колонка - фотографии */}
-              <div className="w-full md:w-1/2 md:h-full overflow-visible relative z-20 px-2 flex order-2 md:order-2" style={{
+              <div className="w-full md:w-1/2 md:h-full overflow-auto relative z-20 px-2 flex order-2 md:order-2 scrollbar-hide" style={{
                 height: isMobile ? 'auto' : '100%',
                 minHeight: isMobile ? '600px' : 'auto'
               }}>
