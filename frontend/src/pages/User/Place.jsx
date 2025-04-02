@@ -530,13 +530,13 @@ export default function Place() {
                 {place.images.map((image, index) => (
                   <div 
                     key={index} 
-                    className="relative aspect-square cursor-pointer overflow-hidden"
+                    className="relative rounded-sm aspect-square cursor-pointer overflow-hidden"
                     onClick={() => openFullscreenImage(image, index)}
                   >
                     <img
                       src={image.image_url}
                       alt={`${place.name} - изображение ${index + 1}`}
-                      className="h-full w-full object-cover hover:scale-105 transition-transform duration-200"
+                      className="h-full w-full rounded-sm object-cover hover:scale-105 transition-transform duration-200"
                     />
                   </div>
                 ))}

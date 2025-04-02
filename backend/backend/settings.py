@@ -14,7 +14,13 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import environ
 import os
 
-env = environ.Env()
+env = environ.Env(
+    # Устанавливаем типы параметров и значения по умолчанию
+    DEBUG=(bool, False),
+    SECRET_KEY=(str, ''),
+    ALLOWED_HOSTS=(list, []),
+    CORS_ALLOWED_ORIGINS=(list, [])
+)
 environ.Env.read_env(os.path.join(os.path.dirname(__file__), ".env"))
 
 from pathlib import Path
@@ -27,12 +33,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-t+!@a+d=$om6^d6c#pr!g)gl#xsgdxvpukqfgd3gt%-isl2wqf'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1'])
 
 
 # Application definition
@@ -90,8 +96,8 @@ DATABASES = {
         'NAME': env('DB_NAME'),
         'USER': env('DB_USER'),
         'PASSWORD': env('DB_PASSWORD'),
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'HOST': env('DB_HOST', default='localhost'),
+        'PORT': env('DB_PORT', default='5432'),
     }
 }
 
@@ -143,7 +149,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS settings
-CORS_ALLOWED_ORIGINS = [
+CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS', default=[
     "http://localhost:5173",  # Стандартный порт Vite для разработки
     "http://127.0.0.1:5173",
     "http://localhost:5174",  # Альтернативный порт Vite
@@ -152,7 +158,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5175",
     "http://localhost:5176",  # Еще один альтернативный порт Vite
     "http://127.0.0.1:5176",
-]
+])
 
 # Включаем для разработки, отключить в продакшене
 CORS_ALLOW_CREDENTIALS = True
@@ -179,7 +185,7 @@ CORS_ALLOW_HEADERS = [
     'x-requested-with',
 ]
 
-# Добавляем настройки для обработки медиафайлов в режиме разработки
+# Настройки CORS в режиме разработки
 if DEBUG:
     # Проверяем, что corsheaders уже не добавлен в INSTALLED_APPS
     if 'corsheaders' not in INSTALLED_APPS:
@@ -190,20 +196,30 @@ if DEBUG:
     if cors_middleware not in MIDDLEWARE:
         MIDDLEWARE.insert(1, cors_middleware)
     
-    CORS_ALLOW_ALL_ORIGINS = True
+    # Используем более безопасный подход вместо CORS_ALLOW_ALL_ORIGINS=True
+    # Явно указываем разрешенные источники для разработки
+    if env('CORS_DEVELOPMENT_MODE', default=False):
+        CORS_ALLOWED_ORIGINS.extend([
+            "http://localhost:3000",  # Добавляем порт для React
+            "http://127.0.0.1:3000",  
+        ])
+    else:
+        # Если не в режиме разработки, используем только указанные источники
+        pass
+
     CORS_ALLOW_CREDENTIALS = True
     CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
-    CORS_ALLOW_HEADERS = [
-        'accept',
-        'accept-encoding',
-        'authorization',
-        'content-type',
-        'dnt',
-        'origin',
-        'user-agent',
-        'x-csrftoken',
-        'x-requested-with',
-    ]
+
+# Настройки безопасности
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_HSTS_SECONDS = 0  # Установите в production
+SECURE_HSTS_INCLUDE_SUBDOMAINS = False  # Установите в production
+SECURE_HSTS_PRELOAD = False  # Установите в production
+SECURE_SSL_REDIRECT = False  # Установите в production
+SESSION_COOKIE_SECURE = False  # Установите в production
+CSRF_COOKIE_SECURE = False  # Установите в production
 
 # Настройки логирования
 LOGGING = {
@@ -248,6 +264,5 @@ LOGGING = {
 
 # Создаем директорию для логов, если она не существует
 LOGS_DIR = os.path.join(BASE_DIR, 'logs')
-if not os.path.exists(LOGS_DIR):
-    os.makedirs(LOGS_DIR)
+os.makedirs(LOGS_DIR, exist_ok=True)
 

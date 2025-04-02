@@ -46,14 +46,14 @@ const PlaceForm = ({
   };
 
   return (
-    <div className="space-y-4 w-full h-full">
+    <div className="space-y-5 w-full h-full">
       <div>
         <Label htmlFor="name" className="block mb-2">Название</Label>
         <Input
           id="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="Например «Выходные на майские»"
+          placeholder="Например: «Выходные на майские»"
           autoComplete="off"
           aria-autocomplete="none"
           ref={nameInputRef}
@@ -98,8 +98,8 @@ const PlaceForm = ({
         )}
       </div>
 
-      <div className="space-y-2">
-        <Label>Даты проживания</Label>
+      <div>
+        <Label className="block mb-2">Даты проживания</Label>
         <DateRangePicker
           value={dateRange}
           onChange={handleDateRangeChange}
@@ -111,23 +111,23 @@ const PlaceForm = ({
       </div>
 
       <div>
-        <Label htmlFor="pros" className="block mb-2">Что понравилось</Label>
+        <Label htmlFor="pros" className="block mb-2">Понравилось</Label>
         <Textarea
           id="pros"
           value={pros}
           onChange={(e) => setPros(e.target.value)}
-          placeholder="Опишите, что вам понравилось"
+          placeholder="Опишите, что было классно"
           rows={3}
         />
       </div>
 
       <div>
-        <Label htmlFor="cons" className="block mb-2">Что не понравилось</Label>
+        <Label htmlFor="cons" className="block mb-2">Не понравилось</Label>
         <Textarea
           id="cons"
           value={cons}
           onChange={(e) => setCons(e.target.value)}
-          placeholder="Опишите, что вам не понравилось"
+          placeholder="Опишите, что было плохо"
           rows={3}
         />
       </div>

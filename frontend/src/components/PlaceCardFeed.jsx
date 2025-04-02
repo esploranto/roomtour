@@ -75,7 +75,7 @@ export default function PlaceCardFeed({ username, initialPlaces = null }) {
   }
   
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-4 mb-24 auto-rows-fr overflow-visible">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-1 mb-24 auto-rows-fr overflow-hidden">
       {sortedPlaces.map((place, index) => {
         // Определяем идентификатор для URL
         const placeIdentifier = place.slug && place.slug.trim() !== '' 
