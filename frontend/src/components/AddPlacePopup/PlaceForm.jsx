@@ -23,7 +23,8 @@ const PlaceForm = ({
   setRating,
   showMap,
   setShowMap,
-  nameInputRef
+  nameInputRef,
+  autoFocusName = false
 }) => {
   const dateRange = {
     from: startDate,

@@ -70,29 +70,73 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
   const { width } = useWindowSize();
   const isMobile = width < 768;
   
+  console.log("AddPlacePopup рендеринг:", {
+    isOpen,
+    isEditMode,
+    savedForm: localStorage.getItem('addPlaceForm')
+  });
+  
   // Обработчик для загрузки фотографий
-  const processAddPhotos = (newFiles) => {
+  const processAddPhotos = useCallback((newFiles) => {
     try {
-      // Фильтруем только валидные файлы
-      const uniqueNewFiles = newFiles.filter(file => {
+      console.log("processAddPhotos вызван с:", newFiles);
+      
+      // Защитная проверка
+      if (!newFiles) {
+        console.log("newFiles равен null или undefined, выход из функции");
+        return;
+      }
+      
+      // Проверяем, является ли newFiles массивом
+      if (!Array.isArray(newFiles)) {
+        console.log("newFiles не является массивом, выход из функции");
+        return;
+      }
+      
+      // Проверяем, не пустой ли массив
+      if (newFiles.length === 0) {
+        console.log("newFiles - пустой массив, выход из функции");
+        return;
+      }
+      
+      console.log("Прошли все проверки, обрабатываем файлы");
+      
+      // Создаем временный массив для хранения валидных файлов
+      const uniqueNewFiles = [];
+      
+      // Проверяем каждый файл вручную
+      for (let i = 0; i < newFiles.length; i++) {
+        const file = newFiles[i];
+        
         // Проверяем, что объект является файлом
         if (!(file instanceof File)) {
-          return false;
+          console.log("Файл не является экземпляром File:", file);
+          continue;
         }
         
         // Проверяем, что такой файл еще не добавлен
-        const isDuplicate = photos.some(photo => {
+        let isDuplicate = false;
+        
+        for (let j = 0; j < photos.length; j++) {
+          const photo = photos[j];
+          
           // Если у элемента есть свойство file и это объект File, проверяем его имя, размер и дату
           if (photo.file instanceof File) {
-            return photo.file.name === file.name && 
-                   photo.file.size === file.size &&
-                   photo.file.lastModified === file.lastModified;
+            if (photo.file.name === file.name && 
+                photo.file.size === file.size &&
+                photo.file.lastModified === file.lastModified) {
+              isDuplicate = true;
+              break;
+            }
           }
-          return false;
-        });
+        }
         
-        return !isDuplicate;
-      });
+        if (!isDuplicate) {
+          uniqueNewFiles.push(file);
+        }
+      }
+      
+      console.log("Найдено уникальных файлов:", uniqueNewFiles.length);
       
       // Добавляем только новые файлы
       if (uniqueNewFiles.length > 0) {
@@ -105,6 +149,8 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
           order: photos.length // Устанавливаем порядок для нового фото
         }));
         
+        console.log("Подготовлено новых фото для добавления:", newPhotos.length);
+        
         // Обновляем состояние
         setPhotos(prev => [...prev, ...newPhotos]);
         setFormChanged(true);
@@ -113,33 +159,82 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
       console.error("Ошибка при добавлении фото:", err);
       showError("Не удалось добавить фотографии");
     }
-  };
+  }, [photos, showError, setPhotos, setFormChanged]);
 
   // Мемоизируем обработчик для предотвращения лишних рендеров
-  const handleAddPhotos = useCallback((files) => processAddPhotos(files), [photos.length, showError]);
+  const handleAddPhotos = useCallback((files) => {
+    console.log("handleAddPhotos вызван с:", files);
+    
+    // Преобразуем FileList в массив, если необходимо
+    const fileArray = files instanceof FileList ? Array.from(files) : files;
+    
+    if (fileArray && Array.isArray(fileArray) && fileArray.length > 0) {
+      processAddPhotos(fileArray);
+    } else {
+      console.log("handleAddPhotos: нет файлов для обработки или данные некорректны");
+    }
+  }, [processAddPhotos]);
+  
+  // Обработчик для изображений, полученных не через стандартный инпут
+  const onExternalFilesReceived = useCallback((files) => {
+    console.log("onExternalFilesReceived вызван с:", files);
+    
+    // Преобразуем FileList в массив, если необходимо
+    const fileArray = files instanceof FileList ? Array.from(files) : files;
+    
+    if (fileArray && Array.isArray(fileArray) && fileArray.length > 0) {
+      processAddPhotos(fileArray);
+    } else {
+      console.log("onExternalFilesReceived: нет файлов для обработки или данные некорректны");
+    }
+  }, [processAddPhotos]);
   
   // Настраиваем прием файлов через drag-and-drop
   useEffect(() => {
-    // Регистрируем обработчик для файлов из drag-and-drop
-    const onExternalFilesReceived = (files) => {
-      processAddPhotos(files);
-    };
-    
     // Активируем drag-and-drop, когда форма открыта
     if (isOpen) {
+      // Создаем функцию-обработчик событий для поддержки событий FilesReceived
+      const handleFilesReceived = (e) => {
+        console.log("Получено событие FilesReceived:", e);
+        if (e && e.detail && e.detail.files) {
+          console.log("Передача файлов в onExternalFilesReceived");
+          onExternalFilesReceived(e.detail.files);
+        } else {
+          console.log("Событие FilesReceived не содержит файлов:", e);
+        }
+      };
+      
+      // Настраиваем drag-and-drop через контекст
+      console.log("Настраиваем drag-and-drop для открытой формы");
       setAcceptsFiles(true);
       setAcceptedFileTypes(['image/jpeg', 'image/png', 'image/jpg', 'image/webp']);
-      setOnDropCallback(onExternalFilesReceived);
-    }
-    
-    // Отключаем drag-and-drop при закрытии формы
-    return () => {
-      if (isOpen) {
+      setOnDropCallback((files) => {
+        console.log("Вызван onDropCallback с:", files);
+        if (files) {
+          onExternalFilesReceived(files);
+        } else {
+          console.log("onDropCallback вызван с null или undefined");
+        }
+      });
+      
+      // Добавляем обработчик кастомного события
+      document.addEventListener('FilesReceived', handleFilesReceived);
+      
+      // Очищаем обработчик при закрытии
+      return () => {
+        console.log("Очищаем обработчики для drag-and-drop");
+        document.removeEventListener('FilesReceived', handleFilesReceived);
         setAcceptsFiles(false);
         setOnDropCallback(null);
-      }
-    };
-  }, [isOpen, setAcceptsFiles, setAcceptedFileTypes, setOnDropCallback]);
+      };
+    } else {
+      // Если форма закрыта, отключаем drag-and-drop
+      console.log("Отключаем drag-and-drop для закрытой формы");
+      setAcceptsFiles(false);
+      setOnDropCallback(null);
+      return () => {};
+    }
+  }, [isOpen, onExternalFilesReceived, setAcceptsFiles, setAcceptedFileTypes, setOnDropCallback]);
   
   // Автосохранение формы в localStorage
   useEffect(() => {
@@ -162,15 +257,6 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
     // Если форма пуста и ранее не была заполнена, или пользователь пытался отправить форму, не сохраняем
     if ((isFormCurrentlyEmpty && !wasFormPreviouslyFilled) || hasAttemptedSubmit) {
       return;
-    }
-    
-    // Фокусируемся на поле ввода имени при открытии формы
-    if (isFirstRender.current && isOpen) {
-      isFirstRender.current = false;
-      const nameInput = document.getElementById('name');
-      if (nameInput) {
-        setTimeout(() => nameInput.focus(), 100);
-      }
     }
     
     // Сохраняем форму в localStorage
@@ -601,11 +687,15 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
   }, [isOpen, isEditMode, place]);
 
   return (
-    <Dialog.Root open={isOpen} onOpenChange={(open) => {
+    <Dialog.Root 
+      open={isOpen} 
+      onOpenChange={(open) => {
         if (!open) {
           onClose();
         }
-      }}>
+      }}
+      initialFocus={isOpen && !isEditMode && !localStorage.getItem('addPlaceForm') ? nameInputRef : undefined}
+    >
       <Dialog.Portal>
         <Dialog.Overlay 
           className="fixed inset-0 bg-black/50 z-[900] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" 
@@ -639,6 +729,7 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
                   e.stopPropagation();
                   safelyCloseForm();
                 }}
+                tabIndex="-1"
               >
                 <X className="h-5 w-5 text-gray-500 dark:text-gray-400" />
               </button>
@@ -676,6 +767,7 @@ export default function AddPlacePopup({ isOpen, onClose, onPlaceAdded, onPlaceUp
                   showMap={showMap}
                   setShowMap={setShowMap}
                   nameInputRef={nameInputRef}
+                  autoFocusName={isOpen && !isEditMode && !localStorage.getItem('addPlaceForm')}
                 />
               </div>
 
