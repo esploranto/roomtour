@@ -140,9 +140,9 @@ export default function Place() {
         if (carouselElement) {
           carouselElement.focus();
           
-          // Добавляем глобальный обработчик клавиатурных событий
-          const handleKeyDown = (e) => {
-            if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+          // Добавляем обработчик для навигации по карусели
+          const handleCarouselKeyDown = (e) => {
+            if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && !e.altKey && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
               // Предотвращаем стандартное поведение (прокрутку страницы)
               e.preventDefault();
               
@@ -157,17 +157,55 @@ export default function Place() {
             }
           };
           
-          // Добавляем обработчик
-          window.addEventListener('keydown', handleKeyDown);
+          // Добавляем обработчик на элемент карусели, а не на window
+          carouselElement.addEventListener('keydown', handleCarouselKeyDown);
           
           // Очищаем обработчик при размонтировании
           return () => {
-            window.removeEventListener('keydown', handleKeyDown);
+            carouselElement.removeEventListener('keydown', handleCarouselKeyDown);
           };
         }
       }, 300);
     }
   }, [place]);
+
+  // Добавляем глобальный обработчик для открытия полноэкранного режима при нажатии стрелок
+  useEffect(() => {
+    // Обработчик только когда НЕ в полноэкранном режиме и есть изображения
+    if (!fullscreenImage && place && place.images && place.images.length > 0) {
+      const handleGlobalKeyDown = (e) => {
+        // Открываем полноэкранный режим при нажатии стрелок
+        // Только если нет активного элемента ввода
+        const activeElement = document.activeElement;
+        const isInputActive = activeElement && (
+          activeElement.tagName === 'INPUT' || 
+          activeElement.tagName === 'TEXTAREA' || 
+          activeElement === carouselRef.current
+        );
+        
+        if (!isInputActive && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) {
+          e.preventDefault();
+          
+          if (e.key === 'ArrowLeft') {
+            // Открываем с последним изображением при нажатии стрелки влево
+            const lastIndex = place.images.length - 1;
+            openFullscreenImage(place.images[lastIndex], lastIndex);
+          } else if (e.key === 'ArrowRight') {
+            // Открываем с первым изображением при нажатии стрелки вправо
+            openFullscreenImage(place.images[0], 0);
+          }
+        }
+      };
+      
+      // Добавляем глобальный обработчик
+      window.addEventListener('keydown', handleGlobalKeyDown);
+      
+      // Очищаем обработчик при размонтировании или при изменении состояния
+      return () => {
+        window.removeEventListener('keydown', handleGlobalKeyDown);
+      };
+    }
+  }, [place, fullscreenImage, carouselRef]);
 
   // Обработчик для клавиатурной навигации в полноэкранном режиме
   useEffect(() => {
